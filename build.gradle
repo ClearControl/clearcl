@@ -75,7 +75,8 @@ dependencies
     compile ('javax.vecmath:vecmath:1.5.2')
 
 	// Bioformats
-	compile(group: 'ome', name: 'bio-formats-tools', version: '5.5.3')
+	compile(group: 'ome', name: 'formats-api', version: '5.5.3')
+	compile(group: 'ome', name: 'formats-bsd', version: '5.5.3')
 
 	// Junit:
 	compile group: 'junit', name: 'junit', version: '4.12'
