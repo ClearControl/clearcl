@@ -18,18 +18,11 @@ if(hasProperty('bintray_user') && hasProperty('bintray_key') )
     publish = true 
     
     pkg {
-      // bintray repo name:
-      repo = bintray_repo
-      
-      //An optional organization name when the repo belongs to one of the user's orgs
-      userOrg = bintray_userorg 
-      
-      // package name:
-      name = bintray_packagename
-      
-      // package description:
-      desc = bintray_packagename
-      
+      repo = 'clij'
+      userOrg = 'haesleinhuepf' //An optional organization name when the repo belongs to one of the user's orgs
+      name = project.name
+      desc = project.name
+
       licenses = ['LGPL-3.0']
       publicDownloadNumbers = true
       

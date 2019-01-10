@@ -19,7 +19,7 @@ try {
 	download {
 		src 'https://github.com/ClearControl/master/blob/master/master.gradle?raw=true'
 		dest project.ext.masterfile
-		overwrite true
+		overwrite false
 		onlyIfModified true
 		tempAndMove true
 	}
@@ -132,7 +132,7 @@ if (JavaVersion.current().isJava8Compatible()) {
 // PUBLISHING
 
 group   = project.ext.groupname
-version = project.ext.versionsMap[project.name]
+version = "0.7.1-m"
 
 artifacts
 {

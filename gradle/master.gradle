@@ -30,7 +30,7 @@ ext {
   
   // device adapters:
   versionsMap['dcamj']                   = "2.1.7"  // depends directly on coremem
-  versionsMap['clearcl']                 = "0.6.2"  // depends directly on coremem
+  versionsMap['clearcl']                 = "0.7.1-m"  // depends directly on coremem
   
   // Level 2:
   versionsMap['clearvolume']             = "1.4.2"  // depends directly on clearcl, clearaudio, cleargl
