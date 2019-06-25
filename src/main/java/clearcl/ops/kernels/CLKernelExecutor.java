@@ -3,7 +3,6 @@ package clearcl.ops.kernels;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import clearcl.ClearCLBuffer;
@@ -39,7 +38,7 @@ public class CLKernelExecutor
   long[] globalSizes;
 
   private final HashMap<String, ClearCLProgram> programCacheMap =
-                                                                new HashMap();
+                                                                new HashMap<>();
   ClearCLProgram currentProgram = null;
 
   private static final boolean DEBUG = false;
@@ -358,7 +357,7 @@ public class CLKernelExecutor
       }
     }
 
-    Map<String, Object> openCLDefines = new HashMap();
+    Map<String, Object> openCLDefines = new HashMap<>();
     openCLDefines.put("MAX_ARRAY_SIZE", MAX_ARRAY_SIZE); // needed for median.
                                                          // Median is limited to
                                                          // a given array length
@@ -631,12 +630,6 @@ public class CLKernelExecutor
   }
 
   protected ClearCLKernel getKernel(ClearCLContext context,
-                                    String kernelName) throws IOException
-  {
-    return this.getKernel(context, kernelName, (Map) null);
-  }
-
-  protected ClearCLKernel getKernel(ClearCLContext context,
                                     String kernelName,
                                     Map<String, Object> defines) throws IOException,
                                                                  NullPointerException
@@ -659,11 +652,8 @@ public class CLKernelExecutor
     {
       clProgram = context.createProgram(this.anchorClass, new String[]
       { this.programFilename });
-      Iterator iterator = defines.entrySet().iterator();
-
-      while (iterator.hasNext())
+      for (Map.Entry<String, Object> entry : defines.entrySet())
       {
-        Map.Entry<String, Object> entry = (Map.Entry) iterator.next();
         if (entry.getValue() instanceof String)
         {
           clProgram.addDefine((String) entry.getKey(),
