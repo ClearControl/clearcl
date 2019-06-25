@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import clearcl.ClearCLBuffer;
 import clearcl.ClearCLImage;
+import clearcl.ocllib.kernels.CLKernels;
 import coremem.enums.NativeTypeEnum;
 
 /**
@@ -33,7 +34,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "absolute_" + src.getDimension() + "d",
                         parameters);
@@ -52,7 +53,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "absolute_" + src.getDimension() + "d",
                         parameters);
@@ -74,7 +75,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImages)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "addPixelwise_" + src.getDimension() + "d",
                         parameters);
@@ -96,7 +97,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImages)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "addPixelwise_" + src.getDimension() + "d",
                         parameters);
@@ -117,7 +118,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "addScalar_" + src.getDimension() + "d",
                         parameters);
@@ -138,7 +139,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "addScalar_" + src.getDimension() + "d",
                         parameters);
@@ -164,7 +165,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "addWeightedPixelwise_" + src.getDimension()
                                    + "d",
@@ -191,7 +192,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "addWeightedPixelwise_" + src.getDimension()
                                    + "d",
@@ -215,7 +216,7 @@ public class Kernels
     parameters.put("output", dst);
     parameters.put("mat", matrixCl);
 
-    boolean result = clke.execute(Kernels.class,
+    boolean result = clke.execute(CLKernels.class,
                                   "affineTransforms.cl",
                                   "affine",
                                   parameters);
@@ -249,7 +250,7 @@ public class Kernels
     parameters.put("output", dst);
     parameters.put("mat", matrixCl);
 
-    boolean result = clke.execute(Kernels.class,
+    boolean result = clke.execute(CLKernels.class,
                                   "affineTransforms_interpolate.cl",
                                   "affine_interpolate",
                                   parameters);
@@ -280,7 +281,7 @@ public class Kernels
     parameters.put("vectorY", vectorY);
 
     boolean result =
-                   clke.execute(Kernels.class,
+                   clke.execute(CLKernels.class,
                                 "deform_interpolate.cl",
                                 "deform_2d_interpolate",
                                 parameters);
@@ -302,7 +303,7 @@ public class Kernels
     parameters.put("vectorZ", vectorZ);
 
     boolean result =
-                   clke.execute(Kernels.class,
+                   clke.execute(CLKernels.class,
                                 "deform_interpolate.cl",
                                 "deform_3d_interpolate",
                                 parameters);
@@ -322,7 +323,7 @@ public class Kernels
     parameters.put("vectorY", vectorY);
 
     boolean result =
-                   clke.execute(Kernels.class,
+                   clke.execute(CLKernels.class,
                                 "deform.cl",
                                 "deform_2d",
                                 parameters);
@@ -344,7 +345,7 @@ public class Kernels
     parameters.put("vectorZ", vectorZ);
 
     boolean result =
-                   clke.execute(Kernels.class,
+                   clke.execute(CLKernels.class,
                                 "deform.cl",
                                 "deform_3d",
                                 parameters);
@@ -436,7 +437,7 @@ public class Kernels
     parameters.put("dst_max", dst_max);
     parameters.put("dst_arg", dst_arg);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "projections.cl",
                         "arg_max_project_3d_2d",
                         parameters);
@@ -452,7 +453,7 @@ public class Kernels
     parameters.put("dst_max", dst_max);
     parameters.put("dst_arg", dst_arg);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "projections.cl",
                         "arg_max_project_3d_2d",
                         parameters);
@@ -468,7 +469,7 @@ public class Kernels
     parameters.put("src2", src2);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "binary_and_" + src1.getDimension() + "d",
                         parameters);
@@ -484,7 +485,7 @@ public class Kernels
     parameters.put("src2", src2);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "binary_and_" + src1.getDimension() + "d",
                         parameters);
@@ -500,7 +501,7 @@ public class Kernels
     parameters.put("src2", src2);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "binary_xor_" + src1.getDimension() + "d",
                         parameters);
@@ -516,7 +517,7 @@ public class Kernels
     parameters.put("src2", src2);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "binary_xor_" + src1.getDimension() + "d",
                         parameters);
@@ -530,7 +531,7 @@ public class Kernels
     parameters.put("src1", src1);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "binary_not_" + src1.getDimension() + "d",
                         parameters);
@@ -544,7 +545,7 @@ public class Kernels
     parameters.put("src1", src1);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "binary_not_" + src1.getDimension() + "d",
                         parameters);
@@ -560,7 +561,7 @@ public class Kernels
     parameters.put("src2", src2);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "binary_or_" + src1.getDimension() + "d",
                         parameters);
@@ -576,7 +577,7 @@ public class Kernels
     parameters.put("src2", src2);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "binary_or_" + src1.getDimension() + "d",
                         parameters);
@@ -728,7 +729,7 @@ public class Kernels
     parameters.put("Ny", radiusToKernelSize(radiusY));
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryCounting.cl",
                         "count_nonzero_image2d",
                         parameters);
@@ -745,7 +746,7 @@ public class Kernels
     parameters.put("Ny", radiusToKernelSize(radiusY));
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryCounting.cl",
                         "count_nonzero_slicewise_image3d",
                         parameters);
@@ -764,7 +765,7 @@ public class Kernels
     parameters.put("Nz", radiusToKernelSize(radiusZ));
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryCounting.cl",
                         "count_nonzero_image3d",
                         parameters);
@@ -781,7 +782,7 @@ public class Kernels
     parameters.put("Ny", radiusToKernelSize(radiusY));
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryCounting.cl",
                         "count_nonzero_image2d",
                         parameters);
@@ -798,7 +799,7 @@ public class Kernels
     parameters.put("Ny", radiusToKernelSize(radiusY));
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryCounting.cl",
                         "count_nonzero_slicewise_image3d",
                         parameters);
@@ -817,7 +818,7 @@ public class Kernels
     parameters.put("Nz", radiusToKernelSize(radiusZ));
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryCounting.cl",
                         "count_nonzero_image3d",
                         parameters);
@@ -872,7 +873,10 @@ public class Kernels
       {
         parameters.put("dst", dst);
       }
-      clke.execute(Kernels.class, clFilename, kernelname, parameters);
+      clke.execute(CLKernels.class,
+                   clFilename,
+                   kernelname,
+                   parameters);
     }
     else
     {
@@ -902,7 +906,10 @@ public class Kernels
         parameters.put("src", dst);
         parameters.put("dst", temp);
       }
-      clke.execute(Kernels.class, clFilename, kernelname, parameters);
+      clke.execute(CLKernels.class,
+                   clFilename,
+                   kernelname,
+                   parameters);
     }
     else
     {
@@ -926,7 +933,7 @@ public class Kernels
         parameters.put("dim", 2);
         parameters.put("src", temp);
         parameters.put("dst", dst);
-        clke.execute(Kernels.class,
+        clke.execute(CLKernels.class,
                      clFilename,
                      kernelname,
                      parameters);
@@ -964,7 +971,7 @@ public class Kernels
     parameters.put("sy", sigmaY);
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "blur.cl",
                         "gaussian_blur_slicewise_image3d",
                         parameters);
@@ -985,7 +992,7 @@ public class Kernels
     parameters.put("sy", sigmaY);
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "blur.cl",
                         "gaussian_blur_slicewise_image3d",
                         parameters);
@@ -1071,7 +1078,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "duplication.cl",
                         "copy_" + srcNumberOfDimensions + "d",
                         parameters);
@@ -1121,14 +1128,14 @@ public class Kernels
     parameters.put("slice", planeIndex);
     if (src.getDimension() == 2 && dst.getDimension() == 3)
     {
-      return clke.execute(Kernels.class,
+      return clke.execute(CLKernels.class,
                           "duplication.cl",
                           "putSliceInStack",
                           parameters);
     }
     else if (src.getDimension() == 3 && dst.getDimension() == 2)
     {
-      return clke.execute(Kernels.class,
+      return clke.execute(CLKernels.class,
                           "duplication.cl",
                           "copySlice",
                           parameters);
@@ -1148,18 +1155,18 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("slice", planeIndex);
-    // return clke.execute(Kernels.class, "duplication.cl", "copySlice",
+    // return clke.execute(CLKernels.class, "duplication.cl", "copySlice",
     // parameters);
     if (src.getDimension() == 2 && dst.getDimension() == 3)
     {
-      return clke.execute(Kernels.class,
+      return clke.execute(CLKernels.class,
                           "duplication.cl",
                           "putSliceInStack",
                           parameters);
     }
     else if (src.getDimension() == 3 && dst.getDimension() == 2)
     {
-      return clke.execute(Kernels.class,
+      return clke.execute(CLKernels.class,
                           "duplication.cl",
                           "copySlice",
                           parameters);
@@ -1183,7 +1190,7 @@ public class Kernels
     parameters.put("start_x", startX);
     parameters.put("start_y", startY);
     parameters.put("start_z", startZ);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "duplication.cl",
                         "crop_3d",
                         parameters);
@@ -1200,7 +1207,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("start_x", startX);
     parameters.put("start_y", startY);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "duplication.cl",
                         "crop_2d",
                         parameters);
@@ -1219,7 +1226,7 @@ public class Kernels
     parameters.put("start_x", startX);
     parameters.put("start_y", startY);
     parameters.put("start_z", startZ);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "duplication.cl",
                         "crop_3d",
                         parameters);
@@ -1236,7 +1243,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("start_x", startX);
     parameters.put("start_y", startY);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "duplication.cl",
                         "crop_2d",
                         parameters);
@@ -1261,7 +1268,7 @@ public class Kernels
     parameters.put("radius", radius);
     parameters.put("i", deltaPos);
     parameters.put("dimension", dimension);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "cross_correlation.cl",
                         "cross_correlation_3d",
                         parameters);
@@ -1286,7 +1293,7 @@ public class Kernels
     parameters.put("radius", radius);
     parameters.put("i", deltaPos);
     parameters.put("dimension", dimension);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "cross_correlation.cl",
                         "cross_correlation_3d",
                         parameters);
@@ -1371,7 +1378,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (detectOptima)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "detection.cl",
                         "detect_local_optima_" + src.getDimension()
                                         + "d",
@@ -1393,7 +1400,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (detectOptima)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "detection.cl",
                         "detect_local_optima_" + src.getDimension()
                                         + "d",
@@ -1415,7 +1422,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (detectOptima)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "detection.cl",
                         "detect_local_optima_" + src.getDimension()
                                         + "d_slice_by_slice",
@@ -1437,7 +1444,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (detectOptima)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "detection.cl",
                         "detect_local_optima_" + src.getDimension()
                                         + "d_slice_by_slice",
@@ -1461,7 +1468,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "differenceOfGaussian.cl",
                         "subtract_convolved_images_"
                                                    + src.getDimension()
@@ -1486,7 +1493,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "differenceOfGaussian.cl",
                         "subtract_convolved_images_"
                                                    + src.getDimension()
@@ -1505,7 +1512,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "dilate_box_neighborhood_"
                                                + src.getDimension()
@@ -1524,7 +1531,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "dilate_box_neighborhood_"
                                                + src.getDimension()
@@ -1543,7 +1550,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "dilate_box_neighborhood_slice_by_slice",
                         parameters);
@@ -1560,7 +1567,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "dilate_box_neighborhood_slice_by_slice",
                         parameters);
@@ -1577,7 +1584,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "dilate_diamond_neighborhood_"
                                                + src.getDimension()
@@ -1596,7 +1603,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "dilate_diamond_neighborhood_"
                                                + src.getDimension()
@@ -1615,7 +1622,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "dilate_diamond_neighborhood_slice_by_slice",
                         parameters);
@@ -1632,7 +1639,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "dilate_diamond_neighborhood_slice_by_slice",
                         parameters);
@@ -1655,7 +1662,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "dividePixelwise_" + src.getDimension() + "d",
                         parameters);
@@ -1678,7 +1685,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "dividePixelwise_" + src.getDimension() + "d",
                         parameters);
@@ -1697,7 +1704,7 @@ public class Kernels
     parameters.put("factor_x", 1.f / factorX);
     parameters.put("factor_y", 1.f / factorY);
     parameters.put("factor_z", 1.f / factorZ);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "downsampling.cl",
                         "downsample_3d_nearest",
                         parameters);
@@ -1716,7 +1723,7 @@ public class Kernels
     parameters.put("factor_x", 1.f / factorX);
     parameters.put("factor_y", 1.f / factorY);
     parameters.put("factor_z", 1.f / factorZ);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "downsampling.cl",
                         "downsample_3d_nearest",
                         parameters);
@@ -1733,7 +1740,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("factor_x", 1.f / factorX);
     parameters.put("factor_y", 1.f / factorY);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "downsampling.cl",
                         "downsample_2d_nearest",
                         parameters);
@@ -1750,7 +1757,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("factor_x", 1.f / factorX);
     parameters.put("factor_y", 1.f / factorY);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "downsampling.cl",
                         "downsample_2d_nearest",
                         parameters);
@@ -1763,7 +1770,7 @@ public class Kernels
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "downsampling.cl",
                         "downsample_xy_by_half_median",
                         parameters);
@@ -1776,7 +1783,7 @@ public class Kernels
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "downsampling.cl",
                         "downsample_xy_by_half_median",
                         parameters);
@@ -1794,7 +1801,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "erode_diamond_neighborhood_"
                                                + src.getDimension()
@@ -1814,7 +1821,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "erode_diamond_neighborhood_"
                                                + src.getDimension()
@@ -1834,7 +1841,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "erode_diamond_neighborhood_slice_by_slice",
                         parameters);
@@ -1852,7 +1859,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "erode_diamond_neighborhood_slice_by_slice",
                         parameters);
@@ -1870,7 +1877,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "erode_box_neighborhood_" + src.getDimension()
                                                + "d",
@@ -1889,7 +1896,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "erode_box_neighborhood_" + src.getDimension()
                                                + "d",
@@ -1908,7 +1915,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "erode_box_neighborhood_slice_by_slice",
                         parameters);
@@ -1926,7 +1933,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "binaryProcessing.cl",
                         "erode_box_neighborhood_slice_by_slice",
                         parameters);
@@ -1970,7 +1977,7 @@ public class Kernels
     {
       parameters.put("step_size_z", stepSizeZ);
     }
-    clke.execute(Kernels.class,
+    clke.execute(CLKernels.class,
                  "histogram.cl",
                  "histogram_image_" + src.getDimension() + "d",
                  globalSizes,
@@ -1995,7 +2002,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "neighbors.cl",
                         "gradientX_" + src.getDimension() + "d",
                         parameters);
@@ -2012,7 +2019,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "neighbors.cl",
                         "gradientY_" + src.getDimension() + "d",
                         parameters);
@@ -2029,7 +2036,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "neighbors.cl",
                         "gradientZ_" + src.getDimension() + "d",
                         parameters);
@@ -2046,7 +2053,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "neighbors.cl",
                         "gradientX_" + src.getDimension() + "d",
                         parameters);
@@ -2063,7 +2070,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "neighbors.cl",
                         "gradientY_" + src.getDimension() + "d",
                         parameters);
@@ -2080,7 +2087,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "neighbors.cl",
                         "gradientZ_" + src.getDimension() + "d",
                         parameters);
@@ -2120,7 +2127,7 @@ public class Kernels
     parameters.put("flipx", flipx ? 1 : 0);
     parameters.put("flipy", flipy ? 1 : 0);
     parameters.put("flipz", flipz ? 1 : 0);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "flip.cl",
                         "flip_3d",
                         parameters);
@@ -2137,7 +2144,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("flipx", flipx ? 1 : 0);
     parameters.put("flipy", flipy ? 1 : 0);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "flip.cl",
                         "flip_2d",
                         parameters);
@@ -2156,7 +2163,7 @@ public class Kernels
     parameters.put("flipx", flipx ? 1 : 0);
     parameters.put("flipy", flipy ? 1 : 0);
     parameters.put("flipz", flipz ? 1 : 0);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "flip.cl",
                         "flip_3d",
                         parameters);
@@ -2173,7 +2180,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("flipx", flipx ? 1 : 0);
     parameters.put("flipy", flipy ? 1 : 0);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "flip.cl",
                         "flip_2d",
                         parameters);
@@ -2210,7 +2217,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "thresholding.cl",
                         "apply_local_threshold_" + src.getDimension()
                                            + "d",
@@ -2234,7 +2241,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "thresholding.cl",
                         "apply_local_threshold_" + src.getDimension()
                                            + "d",
@@ -2255,7 +2262,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (mask)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "mask.cl",
                         "mask_" + src.getDimension() + "d",
                         parameters);
@@ -2275,7 +2282,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (mask)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "mask.cl",
                         "mask_" + src.getDimension() + "d",
                         parameters);
@@ -2291,7 +2298,7 @@ public class Kernels
     parameters.put("mask", mask);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "mask.cl",
                         "maskStackWithPlane",
                         parameters);
@@ -2307,7 +2314,7 @@ public class Kernels
     parameters.put("mask", mask);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "mask.cl",
                         "maskStackWithPlane",
                         parameters);
@@ -2325,7 +2332,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "maximum_image2d",
                         parameters);
@@ -2343,7 +2350,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "maximum_image2d",
                         parameters);
@@ -2363,7 +2370,7 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "maximum_image3d",
                         parameters);
@@ -2383,7 +2390,7 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "maximum_image3d",
                         parameters);
@@ -2400,7 +2407,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("radius", radius);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "maximum_image2d_ij",
                         parameters);
@@ -2417,7 +2424,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("radius", radius);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "maximum_image2d_ij",
                         parameters);
@@ -2435,7 +2442,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "maximum_slicewise_image3d",
                         parameters);
@@ -2497,7 +2504,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "maximum_slicewise_image3d",
                         parameters);
@@ -2519,7 +2526,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (maximumImages)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "maxPixelwise_" + src.getDimension() + "d",
                         parameters);
@@ -2541,7 +2548,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (maximumImages)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "maxPixelwise_" + src.getDimension() + "d",
                         parameters);
@@ -2563,7 +2570,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (maximumImages)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "maxPixelwiseScalar_" + src.getDimension()
                                    + "d",
@@ -2586,7 +2593,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (maximumImages)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "maxPixelwiseScalar_" + src.getDimension()
                                    + "d",
@@ -2609,7 +2616,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (minimumImages)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "minPixelwise_" + src.getDimension() + "d",
                         parameters);
@@ -2631,7 +2638,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (minimumImages)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "minPixelwise_" + src.getDimension() + "d",
                         parameters);
@@ -2653,7 +2660,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (minimumImageAndScalar)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "minPixelwiseScalar_" + src.getDimension()
                                    + "d",
@@ -2676,7 +2683,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (minimumImageAndScalar)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "minPixelwiseScalar_" + src.getDimension()
                                    + "d",
@@ -2691,7 +2698,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst_max", dst_max);
 
-    clke.execute(Kernels.class,
+    clke.execute(CLKernels.class,
                  "projections.cl",
                  "max_project_3d_2d",
                  parameters);
@@ -2707,7 +2714,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst_max", dst_max);
 
-    clke.execute(Kernels.class,
+    clke.execute(CLKernels.class,
                  "projections.cl",
                  "max_project_3d_2d",
                  parameters);
@@ -2723,7 +2730,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst_min", dst_min);
 
-    clke.execute(Kernels.class,
+    clke.execute(CLKernels.class,
                  "projections.cl",
                  "min_project_3d_2d",
                  parameters);
@@ -2739,7 +2746,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst_min", dst_min);
 
-    clke.execute(Kernels.class,
+    clke.execute(CLKernels.class,
                  "projections.cl",
                  "min_project_3d_2d",
                  parameters);
@@ -2755,7 +2762,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    clke.execute(Kernels.class,
+    clke.execute(CLKernels.class,
                  "projections.cl",
                  "mean_project_3d_2d",
                  parameters);
@@ -2771,7 +2778,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    clke.execute(Kernels.class,
+    clke.execute(CLKernels.class,
                  "projections.cl",
                  "mean_project_3d_2d",
                  parameters);
@@ -2793,7 +2800,7 @@ public class Kernels
     parameters.put("projection_y", projectedDimensionY);
     parameters.put("projection_dim", projectedDimension);
 
-    clke.execute(Kernels.class,
+    clke.execute(CLKernels.class,
                  "projections.cl",
                  "max_project_dim_select_3d_2d",
                  parameters);
@@ -2815,7 +2822,7 @@ public class Kernels
     parameters.put("projection_y", projectedDimensionY);
     parameters.put("projection_dim", projectedDimension);
 
-    clke.execute(Kernels.class,
+    clke.execute(CLKernels.class,
                  "projections.cl",
                  "max_project_dim_select_3d_2d",
                  parameters);
@@ -2835,7 +2842,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "mean_image2d",
                         parameters);
@@ -2853,7 +2860,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "mean_image2d",
                         parameters);
@@ -2870,7 +2877,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("radius", radius);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "mean_image2d_ij",
                         parameters);
@@ -2887,7 +2894,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("radius", radius);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "mean_image2d_ij",
                         parameters);
@@ -2907,7 +2914,7 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "mean_image3d",
                         parameters);
@@ -2927,7 +2934,7 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "mean_image3d",
                         parameters);
@@ -2989,7 +2996,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "mean_slicewise_image3d",
                         parameters);
@@ -3007,7 +3014,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "mean_slicewise_image3d",
                         parameters);
@@ -3029,7 +3036,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "median_image2d",
                         parameters);
@@ -3051,7 +3058,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "median_image2d",
                         parameters);
@@ -3076,7 +3083,7 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "median_image3d",
                         parameters);
@@ -3101,7 +3108,7 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "median_image3d",
                         parameters);
@@ -3123,7 +3130,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "median_slicewise_image3d",
                         parameters);
@@ -3145,7 +3152,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "median_slicewise_image3d",
                         parameters);
@@ -3167,7 +3174,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "median_box_image2d",
                         parameters);
@@ -3189,7 +3196,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "median_box_image2d",
                         parameters);
@@ -3214,7 +3221,7 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "median_box_image3d",
                         parameters);
@@ -3239,7 +3246,7 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "median_box_image3d",
                         parameters);
@@ -3261,7 +3268,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "median_box_slicewise_image3d",
                         parameters);
@@ -3283,7 +3290,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "median_box_slicewise_image3d",
                         parameters);
@@ -3301,7 +3308,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "minimum_image2d",
                         parameters);
@@ -3319,7 +3326,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "minimum_image2d",
                         parameters);
@@ -3339,7 +3346,7 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "minimum_image3d",
                         parameters);
@@ -3359,7 +3366,7 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "minimum_image3d",
                         parameters);
@@ -3376,7 +3383,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("radius", radius);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "minimum_image2d_ij",
                         parameters);
@@ -3393,7 +3400,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("radius", radius);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "minimum_image2d_ij",
                         parameters);
@@ -3455,7 +3462,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "minimum_slicewise_image3d",
                         parameters);
@@ -3473,7 +3480,7 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "filtering.cl",
                         "minimum_slicewise_image3d",
                         parameters);
@@ -3496,7 +3503,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "multiplyPixelwise_" + src.getDimension()
                                    + "d",
@@ -3519,7 +3526,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "multiplyPixelwise_" + src.getDimension()
                                    + "d",
@@ -3539,7 +3546,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (multiplyImageAndCoordinate)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "multiply_pixelwise_with_coordinate_3d",
                         parameters);
@@ -3558,7 +3565,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (multiplyImageAndCoordinate)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "multiply_pixelwise_with_coordinate_3d",
                         parameters);
@@ -3578,7 +3585,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "multiplyScalar_" + src.getDimension() + "d",
                         parameters);
@@ -3598,7 +3605,7 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "multiplyScalar_" + src.getDimension() + "d",
                         parameters);
@@ -3626,7 +3633,7 @@ public class Kernels
     map.put("src", src);
     map.put("scalars", clBuffer);
     map.put("dst", dst);
-    boolean result = clke.execute(Kernels.class,
+    boolean result = clke.execute(CLKernels.class,
                                   "math.cl",
                                   "multiplySliceBySliceWithScalars",
                                   map);
@@ -3658,7 +3665,7 @@ public class Kernels
     map.put("src", src);
     map.put("scalars", clBuffer);
     map.put("dst", dst);
-    boolean result = clke.execute(Kernels.class,
+    boolean result = clke.execute(CLKernels.class,
                                   "math.cl",
                                   "multiplySliceBySliceWithScalars",
                                   map);
@@ -3677,7 +3684,7 @@ public class Kernels
     parameters.put("src", input3d);
     parameters.put("src1", input2d);
     parameters.put("dst", output3d);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "multiplyStackWithPlanePixelwise",
                         parameters);
@@ -3692,7 +3699,7 @@ public class Kernels
     parameters.put("src", input3d);
     parameters.put("src1", input2d);
     parameters.put("dst", output3d);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "multiplyStackWithPlanePixelwise",
                         parameters);
@@ -3707,7 +3714,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("exponent", exponent);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "power_" + src.getDimension() + "d",
                         parameters);
@@ -3724,7 +3731,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("exponent", exponent);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "math.cl",
                         "power_" + src.getDimension() + "d",
                         parameters);
@@ -3742,7 +3749,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("deltaAngle", deltaAngle);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "projections.cl",
                         "radialProjection3d",
                         parameters);
@@ -3760,7 +3767,7 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("deltaAngle", deltaAngle);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "projections.cl",
                         "radialProjection3d",
                         parameters);
@@ -3776,7 +3783,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "reslicing.cl",
                         "reslice_bottom_3d",
                         parameters);
@@ -3792,7 +3799,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "reslicing.cl",
                         "reslice_bottom_3d",
                         parameters);
@@ -3806,7 +3813,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "reslicing.cl",
                         "reslice_left_3d",
                         parameters);
@@ -3820,7 +3827,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "reslicing.cl",
                         "reslice_left_3d",
                         parameters);
@@ -3834,7 +3841,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "reslicing.cl",
                         "reslice_right_3d",
                         parameters);
@@ -3848,7 +3855,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "reslicing.cl",
                         "reslice_right_3d",
                         parameters);
@@ -3862,7 +3869,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "reslicing.cl",
                         "reslice_top_3d",
                         parameters);
@@ -3876,7 +3883,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "reslicing.cl",
                         "reslice_top_3d",
                         parameters);
@@ -3890,7 +3897,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "rotate.cl",
                         "rotate_left_" + dst.getDimension() + "d",
                         parameters);
@@ -3904,7 +3911,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "rotate.cl",
                         "rotate_left_" + dst.getDimension() + "d",
                         parameters);
@@ -3918,7 +3925,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "rotate.cl",
                         "rotate_right_" + dst.getDimension() + "d",
                         parameters);
@@ -3932,7 +3939,7 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "rotate.cl",
                         "rotate_right_" + dst.getDimension() + "d",
                         parameters);
@@ -3946,7 +3953,7 @@ public class Kernels
     parameters.put("dst", clImage);
     parameters.put("value", value);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "set.cl",
                         "set_" + clImage.getDimension() + "d",
                         parameters);
@@ -3960,7 +3967,7 @@ public class Kernels
     parameters.put("dst", clImage);
     parameters.put("value", value);
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "set.cl",
                         "set_" + clImage.getDimension() + "d",
                         parameters);
@@ -3990,7 +3997,7 @@ public class Kernels
       parameters.put("dst" + i, clImagesOut[i]);
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "stacksplitting.cl",
                         "split_" + clImagesOut.length + "_stacks",
                         parameters);
@@ -4020,7 +4027,7 @@ public class Kernels
       parameters.put("dst" + i, clImagesOut[i]);
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "stacksplitting.cl",
                         "split_" + clImagesOut.length + "_stacks",
                         parameters);
@@ -4061,7 +4068,7 @@ public class Kernels
             HashMap<String, Object> parameters = new HashMap<>();
             parameters.put("src", clImage);
             parameters.put("dst_max", clReducedImage);
-            clke.execute(Kernels.class, "projections.cl", "max_project_3d_2d", parameters);
+            clke.execute(CLKernels.class, "projections.cl", "max_project_3d_2d", parameters);
         }
   
         RandomAccessibleInterval rai = clke.convert(clReducedImage, RandomAccessibleInterval.class);
@@ -4090,7 +4097,7 @@ public class Kernels
           HashMap<String, Object> parameters = new HashMap<>();
           parameters.put("src", clImage);
           parameters.put("dst_max", clReducedImage);
-          clke.execute(Kernels.class, "projections.cl", "max_project_3d_2d", parameters);
+          clke.execute(CLKernels.class, "projections.cl", "max_project_3d_2d", parameters);
       }
   
       RandomAccessibleInterval rai = clke.convert(clReducedImage, RandomAccessibleInterval.class);
@@ -4118,7 +4125,7 @@ public class Kernels
           HashMap<String, Object> parameters = new HashMap<>();
           parameters.put("src", clImage);
           parameters.put("dst_min", clReducedImage);
-          clke.execute(Kernels.class, "projections.cl", "min_project_3d_2d", parameters);
+          clke.execute(CLKernels.class, "projections.cl", "min_project_3d_2d", parameters);
       }
   
       RandomAccessibleInterval rai = clke.convert(clReducedImage, RandomAccessibleInterval.class);
@@ -4146,7 +4153,7 @@ public class Kernels
           HashMap<String, Object> parameters = new HashMap<>();
           parameters.put("src", clImage);
           parameters.put("dst_min", clReducedImage);
-          clke.execute(Kernels.class, "projections.cl", "min_project_3d_2d", parameters);
+          clke.execute(CLKernels.class, "projections.cl", "min_project_3d_2d", parameters);
       }
   
       RandomAccessibleInterval rai = clke.convert(clReducedImage, RandomAccessibleInterval.class);
@@ -4173,7 +4180,7 @@ public class Kernels
           HashMap<String, Object> parameters = new HashMap<>();
           parameters.put("src", clImage);
           parameters.put("dst", clReducedImage);
-          clke.execute(Kernels.class, "projections.cl", "sum_project_3d_2d", parameters);
+          clke.execute(CLKernels.class, "projections.cl", "sum_project_3d_2d", parameters);
       }
   
       RandomAccessibleInterval rai = clke.convert(clReducedImage, RandomAccessibleInterval.class);
@@ -4197,7 +4204,7 @@ public class Kernels
           HashMap<String, Object> parameters = new HashMap<>();
           parameters.put("src", clImage);
           parameters.put("dst", clReducedImage);
-          clke.execute(Kernels.class, "projections.cl", "sum_project_3d_2d", parameters);
+          clke.execute(CLKernels.class, "projections.cl", "sum_project_3d_2d", parameters);
       }
   
       RandomAccessibleInterval rai = clke.convert(clReducedImage, RandomAccessibleInterval.class);
@@ -4256,7 +4263,7 @@ public class Kernels
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", clImage);
     parameters.put("dst", clReducedImage);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "projections.cl",
                         "sum_project_3d_2d",
                         parameters);
@@ -4269,7 +4276,7 @@ public class Kernels
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", clImage);
     parameters.put("dst", clReducedImage);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "projections.cl",
                         "sum_project_3d_2d",
                         parameters);
@@ -4282,7 +4289,7 @@ public class Kernels
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", clImageIn);
     parameters.put("dst", clImageOut);
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "tenengradFusion.cl",
                         "tenengrad_weight_unnormalized_slice_wise",
                         parameters);
@@ -4341,7 +4348,7 @@ public class Kernels
       parameters.put("src", clImagesIn[i]);
       parameters.put("dst", temporaryImage);
 
-      clke.execute(Kernels.class,
+      clke.execute(CLKernels.class,
                    "tenengradFusion.cl",
                    "tenengrad_weight_unnormalized",
                    parameters);
@@ -4375,7 +4382,7 @@ public class Kernels
                           (int) (clImagesIn[0].getWidth()
                                  / temporaryImages[0].getWidth()));
 
-    boolean success = clke.execute(Kernels.class,
+    boolean success = clke.execute(CLKernels.class,
                                    "tenengradFusion.cl",
                                    String.format("tenengrad_fusion_with_provided_weights_%d_images",
                                                  clImagesIn.length),
@@ -4412,7 +4419,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "thresholding.cl",
                         "apply_threshold_" + src.getDimension() + "d",
                         parameters);
@@ -4435,7 +4442,7 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(Kernels.class,
+    return clke.execute(CLKernels.class,
                         "thresholding.cl",
                         "apply_threshold_" + src.getDimension() + "d",
                         parameters);

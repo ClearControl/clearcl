@@ -20,7 +20,7 @@ import coremem.enums.NativeTypeEnum;
  *
  * @author nico
  */
-public class nioConverters
+public class NioConverters
 {
 
   /**
