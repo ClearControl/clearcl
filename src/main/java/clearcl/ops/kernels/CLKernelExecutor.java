@@ -158,6 +158,7 @@ public class CLKernelExecutor
       return "";
     }
     else
+    {
       switch (pDType)
       {
       case Byte:
@@ -173,6 +174,7 @@ public class CLKernelExecutor
       default:
         return "";
       }
+    }
   }
 
   private static String nativeTypeToOpenCLTypeShortName(NativeTypeEnum pDType)
@@ -182,6 +184,7 @@ public class CLKernelExecutor
       return "";
     }
     else
+    {
       switch (pDType)
       {
       case Byte:
@@ -197,6 +200,7 @@ public class CLKernelExecutor
       default:
         return "";
       }
+    }
   }
 
   public ClearCLBuffer createCLBuffer(ClearCLBuffer inputCL)

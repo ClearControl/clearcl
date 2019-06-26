@@ -592,8 +592,8 @@ public class Kernels
                                   dst,
                                   "kernels/blur.cl",
                                   "gaussian_blur_sep_image"
-                                             + src.getDimension()
-                                             + "d",
+                                                     + src.getDimension()
+                                                     + "d",
                                   sigmaToKernelSize(blurSigmaX),
                                   sigmaToKernelSize(blurSigmaY),
                                   sigmaToKernelSize(0),
@@ -614,8 +614,8 @@ public class Kernels
                                   dst,
                                   "kernels/blur.cl",
                                   "gaussian_blur_sep_image"
-                                             + src.getDimension()
-                                             + "d",
+                                                     + src.getDimension()
+                                                     + "d",
                                   sigmaToKernelSize(blurSigmaX),
                                   sigmaToKernelSize(blurSigmaY),
                                   sigmaToKernelSize(0),
@@ -636,8 +636,8 @@ public class Kernels
                                   dst,
                                   "kernels/blur.cl",
                                   "gaussian_blur_sep_image"
-                                             + src.getDimension()
-                                             + "d",
+                                                     + src.getDimension()
+                                                     + "d",
                                   sigmaToKernelSize(blurSigmaX),
                                   sigmaToKernelSize(blurSigmaY),
                                   sigmaToKernelSize(0),
@@ -659,8 +659,8 @@ public class Kernels
                                   dst,
                                   "kernels/blur.cl",
                                   "gaussian_blur_sep_image"
-                                             + src.getDimension()
-                                             + "d",
+                                                     + src.getDimension()
+                                                     + "d",
                                   sigmaToKernelSize(blurSigmaX),
                                   sigmaToKernelSize(blurSigmaY),
                                   sigmaToKernelSize(blurSigmaZ),
@@ -682,8 +682,8 @@ public class Kernels
                                   dst,
                                   "kernels/blur.cl",
                                   "gaussian_blur_sep_image"
-                                             + src.getDimension()
-                                             + "d",
+                                                     + src.getDimension()
+                                                     + "d",
                                   sigmaToKernelSize(blurSigmaX),
                                   sigmaToKernelSize(blurSigmaY),
                                   sigmaToKernelSize(blurSigmaZ),
@@ -705,8 +705,8 @@ public class Kernels
                                   dst,
                                   "kernels/blur.cl",
                                   "gaussian_blur_sep_image"
-                                             + src.getDimension()
-                                             + "d",
+                                                     + src.getDimension()
+                                                     + "d",
                                   sigmaToKernelSize(blurSigmaX),
                                   sigmaToKernelSize(blurSigmaY),
                                   sigmaToKernelSize(blurSigmaZ),
@@ -835,7 +835,7 @@ public class Kernels
                                                 float blurSigmaZ,
                                                 long dimensions)
   {
-     boolean result = true;
+    boolean result = true;
     int[] n = new int[]
     { kernelSizeX, kernelSizeY, kernelSizeZ };
     float[] blurSigma = new float[]
@@ -872,8 +872,12 @@ public class Kernels
       {
         parameters.put("dst", dst);
       }
-      if (!clke.execute(OCLlib.class, clFilename, kernelname, parameters)) {
-         result = false;
+      if (!clke.execute(OCLlib.class,
+                        clFilename,
+                        kernelname,
+                        parameters))
+      {
+        result = false;
       }
     }
     else
@@ -904,8 +908,12 @@ public class Kernels
         parameters.put("src", dst);
         parameters.put("dst", temp);
       }
-      if (!clke.execute(OCLlib.class, clFilename, kernelname, parameters)) {
-         result = false;
+      if (!clke.execute(OCLlib.class,
+                        clFilename,
+                        kernelname,
+                        parameters))
+      {
+        result = false;
       }
     }
     else
@@ -931,10 +939,11 @@ public class Kernels
         parameters.put("src", temp);
         parameters.put("dst", dst);
         if (!clke.execute(OCLlib.class,
-                     clFilename,
-                     kernelname,
-                     parameters)) {
-           result = false;
+                          clFilename,
+                          kernelname,
+                          parameters))
+        {
+          result = false;
         }
       }
       else
