@@ -19,8 +19,6 @@ import clearcl.io.TiffWriter;
 import clearcl.test.ClearCLBasicTests;
 import coremem.enums.NativeTypeEnum;
 
-import org.junit.Test;
-
 /**
  * Test for File input/output
  *
@@ -28,7 +26,7 @@ import org.junit.Test;
  */
 public class ClearCLIOTests
 {
-  @Test
+
   public void testTiffWriter() throws Throwable
   {
     ClearCLBackendInterface lClearCLBackend =
