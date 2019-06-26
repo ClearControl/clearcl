@@ -16,7 +16,6 @@ import clearcl.enums.ImageChannelOrder;
 import clearcl.enums.KernelAccessType;
 import clearcl.enums.MemAllocMode;
 import clearcl.exceptions.OpenCLException;
-import clearcl.util.ElapsedTime;
 import coremem.enums.NativeTypeEnum;
 
 /**
@@ -235,33 +234,33 @@ public class CLKernelExecutor
                                dimensions);
   }
 
-  public boolean execute(String pProgramFilename,
-                         String pKernelname,
-                         Map<String, Object> pParameterMap)
+  public void execute(String pProgramFilename,
+                      String pKernelname,
+                      Map<String, Object> pParameterMap) throws CLKernelException
   {
-    return execute(Object.class,
-                   pProgramFilename,
-                   pKernelname,
-                   pParameterMap);
+    execute(Object.class,
+            pProgramFilename,
+            pKernelname,
+            pParameterMap);
   }
 
-  public boolean execute(Class pAnchorClass,
-                         String pProgramFilename,
-                         String pKernelname,
-                         Map<String, Object> pParameterMap)
+  public void execute(Class pAnchorClass,
+                      String pProgramFilename,
+                      String pKernelname,
+                      Map<String, Object> pParameterMap) throws CLKernelException
   {
-    return execute(pAnchorClass,
-                   pProgramFilename,
-                   pKernelname,
-                   null,
-                   pParameterMap);
+    execute(pAnchorClass,
+            pProgramFilename,
+            pKernelname,
+            null,
+            pParameterMap);
   }
 
-  public boolean execute(Class pAnchorClass,
-                         String pProgramFilename,
-                         String pKernelname,
-                         long[] pGlobalsizes,
-                         Map<String, Object> pParameterMap)
+  public void execute(Class pAnchorClass,
+                      String pProgramFilename,
+                      String pKernelname,
+                      long[] pGlobalsizes,
+                      Map<String, Object> pParameterMap) throws CLKernelException
   {
     final boolean[] result = new boolean[1];
 
@@ -273,17 +272,14 @@ public class CLKernelExecutor
       }
     }
 
-    ElapsedTime.measure("kernel + build " + pKernelname, () -> {
-      this.setProgramFilename(pProgramFilename);
-      this.setKernelName(pKernelname);
-      this.setAnchorClass(pAnchorClass);
-      this.setParameterMap(pParameterMap);
-      this.setGlobalSizes(pGlobalsizes);
+    this.setProgramFilename(pProgramFilename);
+    this.setKernelName(pKernelname);
+    this.setAnchorClass(pAnchorClass);
+    this.setParameterMap(pParameterMap);
+    this.setGlobalSizes(pGlobalsizes);
 
-      this.setParameterMap(pParameterMap);
-      result[0] = this.enqueue(true);
-    });
-    return result[0];
+    this.setParameterMap(pParameterMap);
+    this.enqueue(true);
   }
 
   /**
@@ -297,7 +293,7 @@ public class CLKernelExecutor
     this.parameterMap = parameterMap;
   }
 
-  public boolean enqueue(boolean waitToFinish)
+  public void enqueue(boolean waitToFinish) throws CLKernelException
   {
     if (DEBUG)
     {
@@ -483,10 +479,8 @@ public class CLKernelExecutor
     }
     catch (IOException e1)
     {
-      // e1.printStackTrace();
-      System.out.println("IOException accessing clearCLKernal: "
-                         + kernelName);
-      return false;
+      throw new CLKernelException("IOException accessing clearCLKernal: "
+                                  + kernelName);
     }
 
     if (clearCLKernel != null)
@@ -515,19 +509,33 @@ public class CLKernelExecutor
         System.out.println("Executing " + kernelName);
       }
 
+      try
+      {
+        clearCLKernel.run(waitToFinish);
+      }
+      catch (Exception e)
+      {
+        throw new CLKernelException("",
+                                    (clearCLKernel.getSourceCode()));
+      }
+
+      /* 
+       // If it is desired to measure execution times...
+      // Would need to rewrite the measure function to throw exceptions
       final ClearCLKernel kernel = clearCLKernel;
-      double duration = ElapsedTime.measure("Pure kernel execution",
-                                            () -> {
-                                              try
-                                              {
-                                                kernel.run(waitToFinish);
-                                              }
-                                              catch (Exception e)
-                                              {
-                                                // e.printStackTrace();
-                                                System.out.println(kernel.getSourceCode());
-                                              }
-                                            });
+      double duration = ElapsedTime.measure("Pure kernel execution", new Runnable() {
+        @Override
+        public void run() {
+          try
+          {
+            kernel.run(waitToFinish);
+          }
+          catch (Exception e)
+          {
+            throw new CLKernelException ("", (kernel.getSourceCode()));
+          }
+        }
+      });
       if (DEBUG)
       {
         System.out.println("Returned from " + kernelName
@@ -535,10 +543,10 @@ public class CLKernelExecutor
                            + duration
                            + " msec");
       }
+      */
       clearCLKernel.close();
     }
 
-    return true;
   }
 
   private ArrayList<String> getImageVariablesFromSource()

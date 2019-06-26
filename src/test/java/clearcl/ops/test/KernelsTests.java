@@ -11,6 +11,7 @@ import clearcl.backend.ClearCLBackends;
 import clearcl.enums.HostAccessType;
 import clearcl.enums.KernelAccessType;
 import clearcl.enums.MemAllocMode;
+import clearcl.ops.kernels.CLKernelException;
 import clearcl.ops.kernels.CLKernelExecutor;
 import clearcl.ops.kernels.Kernels;
 import coremem.enums.NativeTypeEnum;
@@ -49,13 +50,6 @@ public class KernelsTests
                                                          1,
                                                          NativeTypeEnum.UnsignedShort,
                                                          dimensions);
-      /*
-      ClearCLBuffer lCLsrcBuffer
-              = lCLContext.createBuffer(
-                      HostAccessType.ReadWrite,
-                      KernelAccessType.ReadWrite,
-                      NativeTypeEnum.UnsignedShort,
-                      xSize * ySize); */
 
       CLKernelExecutor lCLKE = new CLKernelExecutor(lCLContext,
                                                     clearcl.ocllib.OCLlib.class,
@@ -65,11 +59,14 @@ public class KernelsTests
 
       ClearCLBuffer lCldstBuffer = lCLKE.createCLBuffer(lCLsrcBuffer);
 
-      Assert.assertTrue(Kernels.blur(lCLKE,
-                                     lCLsrcBuffer,
-                                     lCldstBuffer,
-                                     4.0f,
-                                     4.0f));
+      try
+      {
+        Kernels.blur(lCLKE, lCLsrcBuffer, lCldstBuffer, 4.0f, 4.0f);
+      }
+      catch (CLKernelException clkExc)
+      {
+        Assert.fail(clkExc.getMessage());
+      }
 
       lCLKE.close();
 

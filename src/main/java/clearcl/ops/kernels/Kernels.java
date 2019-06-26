@@ -5,6 +5,7 @@ import static clearcl.ops.kernels.KernelUtils.sigmaToKernelSize;
 
 import java.nio.FloatBuffer;
 import java.util.HashMap;
+import java.util.Map;
 
 import clearcl.ClearCLBuffer;
 import clearcl.ClearCLImage;
@@ -21,9 +22,9 @@ import coremem.enums.NativeTypeEnum;
 public class Kernels
 {
 
-  public static boolean absolute(CLKernelExecutor clke,
-                                 ClearCLImage src,
-                                 ClearCLImage dst)
+  public static void absolute(CLKernelExecutor clke,
+                              ClearCLImage src,
+                              ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -34,15 +35,15 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "absolute_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "absolute_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean absolute(CLKernelExecutor clke,
-                                 ClearCLBuffer src,
-                                 ClearCLBuffer dst)
+  public static void absolute(CLKernelExecutor clke,
+                              ClearCLBuffer src,
+                              ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -53,16 +54,16 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "absolute_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "absolute_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean addImages(CLKernelExecutor clke,
-                                  ClearCLImage src,
-                                  ClearCLImage src1,
-                                  ClearCLImage dst)
+  public static void addImages(CLKernelExecutor clke,
+                               ClearCLImage src,
+                               ClearCLImage src1,
+                               ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -75,16 +76,16 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImages)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "addPixelwise_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "addPixelwise_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean addImages(CLKernelExecutor clke,
-                                  ClearCLBuffer src,
-                                  ClearCLBuffer src1,
-                                  ClearCLBuffer dst)
+  public static void addImages(CLKernelExecutor clke,
+                               ClearCLBuffer src,
+                               ClearCLBuffer src1,
+                               ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -97,16 +98,16 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImages)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "addPixelwise_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "addPixelwise_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean addImageAndScalar(CLKernelExecutor clke,
-                                          ClearCLImage src,
-                                          ClearCLImage dst,
-                                          Float scalar)
+  public static void addImageAndScalar(CLKernelExecutor clke,
+                                       ClearCLImage src,
+                                       ClearCLImage dst,
+                                       Float scalar) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -118,16 +119,16 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "addScalar_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "addScalar_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean addImageAndScalar(CLKernelExecutor clke,
-                                          ClearCLBuffer src,
-                                          ClearCLBuffer dst,
-                                          Float scalar)
+  public static void addImageAndScalar(CLKernelExecutor clke,
+                                       ClearCLBuffer src,
+                                       ClearCLBuffer dst,
+                                       Float scalar) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -139,18 +140,18 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "addScalar_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "addScalar_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean addImagesWeighted(CLKernelExecutor clke,
-                                          ClearCLImage src,
-                                          ClearCLImage src1,
-                                          ClearCLImage dst,
-                                          Float factor,
-                                          Float factor1)
+  public static void addImagesWeighted(CLKernelExecutor clke,
+                                       ClearCLImage src,
+                                       ClearCLImage src1,
+                                       ClearCLImage dst,
+                                       Float factor,
+                                       Float factor1) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -165,19 +166,18 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "addWeightedPixelwise_" + src.getDimension()
-                                           + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "addWeightedPixelwise_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean addImagesWeighted(CLKernelExecutor clke,
-                                          ClearCLBuffer src,
-                                          ClearCLBuffer src1,
-                                          ClearCLBuffer dst,
-                                          Float factor,
-                                          Float factor1)
+  public static void addImagesWeighted(CLKernelExecutor clke,
+                                       ClearCLBuffer src,
+                                       ClearCLBuffer src1,
+                                       ClearCLBuffer dst,
+                                       Float factor,
+                                       Float factor1) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -192,17 +192,16 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "addWeightedPixelwise_" + src.getDimension()
-                                           + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "addWeightedPixelwise_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean affineTransform(CLKernelExecutor clke,
-                                        ClearCLBuffer src,
-                                        ClearCLBuffer dst,
-                                        float[] matrix)
+  public static void affineTransform(CLKernelExecutor clke,
+                                     ClearCLBuffer src,
+                                     ClearCLBuffer dst,
+                                     float[] matrix) throws CLKernelException
   {
 
     ClearCLBuffer matrixCl = clke.createCLBuffer(new long[]
@@ -216,27 +215,26 @@ public class Kernels
     parameters.put("output", dst);
     parameters.put("mat", matrixCl);
 
-    boolean result = clke.execute(OCLlib.class,
-                                  "kernels/affineTransforms.cl",
-                                  "affine",
-                                  parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/affineTransforms.cl",
+                 "affine",
+                 parameters);
 
     matrixCl.close();
 
-    return result;
   }
   /*
-    public static boolean affineTransform(CLKernelExecutor clke, ClearCLBuffer src, ClearCLBuffer dst, AffineTransform3D at) {
+    public static void affineTransform(CLKernelExecutor clke, ClearCLBuffer src, ClearCLBuffer dst, AffineTransform3D at) {
         at = at.inverse();
         float[] matrix = AffineTransform.matrixToFloatArray(at);
         return affineTransform(clke, src, dst, matrix);
     }
     */
 
-  public static boolean affineTransform(CLKernelExecutor clke,
-                                        ClearCLImage src,
-                                        ClearCLImage dst,
-                                        float[] matrix)
+  public static void affineTransform(CLKernelExecutor clke,
+                                     ClearCLImage src,
+                                     ClearCLImage dst,
+                                     float[] matrix) throws CLKernelException
   {
 
     ClearCLBuffer matrixCl = clke.createCLBuffer(new long[]
@@ -250,29 +248,28 @@ public class Kernels
     parameters.put("output", dst);
     parameters.put("mat", matrixCl);
 
-    boolean result = clke.execute(OCLlib.class,
-                                  "kernels/affineTransforms_interpolate.cl",
-                                  "affine_interpolate",
-                                  parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/affineTransforms_interpolate.cl",
+                 "affine_interpolate",
+                 parameters);
 
     matrixCl.close();
 
-    return result;
   }
 
   /*
-  public static boolean affineTransform(CLKernelExecutor clke, ClearCLImage src, ClearCLImage dst, AffineTransform3D at) {
+  public static void affineTransform(CLKernelExecutor clke, ClearCLImage src, ClearCLImage dst, AffineTransform3D at) {
       at = at.inverse();
       float[] matrix = AffineTransform.matrixToFloatArray(at);
       return affineTransform(clke, src, dst, matrix);
   }
   */
 
-  public static boolean applyVectorfield(CLKernelExecutor clke,
-                                         ClearCLImage src,
-                                         ClearCLImage vectorX,
-                                         ClearCLImage vectorY,
-                                         ClearCLImage dst)
+  public static void applyVectorfield(CLKernelExecutor clke,
+                                      ClearCLImage src,
+                                      ClearCLImage vectorX,
+                                      ClearCLImage vectorY,
+                                      ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -280,20 +277,18 @@ public class Kernels
     parameters.put("vectorX", vectorX);
     parameters.put("vectorY", vectorY);
 
-    boolean result =
-                   clke.execute(OCLlib.class,
-                                "kernels/deform_interpolate.cl",
-                                "deform_2d_interpolate",
-                                parameters);
-    return result;
+    clke.execute(OCLlib.class,
+                 "kernels/deform_interpolate.cl",
+                 "deform_2d_interpolate",
+                 parameters);
   }
 
-  public static boolean applyVectorfield(CLKernelExecutor clke,
-                                         ClearCLImage src,
-                                         ClearCLImage vectorX,
-                                         ClearCLImage vectorY,
-                                         ClearCLImage vectorZ,
-                                         ClearCLImage dst)
+  public static void applyVectorfield(CLKernelExecutor clke,
+                                      ClearCLImage src,
+                                      ClearCLImage vectorX,
+                                      ClearCLImage vectorY,
+                                      ClearCLImage vectorZ,
+                                      ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -302,19 +297,17 @@ public class Kernels
     parameters.put("vectorY", vectorY);
     parameters.put("vectorZ", vectorZ);
 
-    boolean result =
-                   clke.execute(OCLlib.class,
-                                "kernels/deform_interpolate.cl",
-                                "deform_3d_interpolate",
-                                parameters);
-    return result;
+    clke.execute(OCLlib.class,
+                 "kernels/deform_interpolate.cl",
+                 "deform_3d_interpolate",
+                 parameters);
   }
 
-  public static boolean applyVectorfield(CLKernelExecutor clke,
-                                         ClearCLBuffer src,
-                                         ClearCLBuffer vectorX,
-                                         ClearCLBuffer vectorY,
-                                         ClearCLBuffer dst)
+  public static void applyVectorfield(CLKernelExecutor clke,
+                                      ClearCLBuffer src,
+                                      ClearCLBuffer vectorX,
+                                      ClearCLBuffer vectorY,
+                                      ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -322,19 +315,18 @@ public class Kernels
     parameters.put("vectorX", vectorX);
     parameters.put("vectorY", vectorY);
 
-    boolean result = clke.execute(OCLlib.class,
-                                  "kernels/deform.cl",
-                                  "deform_2d",
-                                  parameters);
-    return result;
+    clke.execute(OCLlib.class,
+                 "kernels/deform.cl",
+                 "deform_2d",
+                 parameters);
   }
 
-  public static boolean applyVectorfield(CLKernelExecutor clke,
-                                         ClearCLBuffer src,
-                                         ClearCLBuffer vectorX,
-                                         ClearCLBuffer vectorY,
-                                         ClearCLBuffer vectorZ,
-                                         ClearCLBuffer dst)
+  public static void applyVectorfield(CLKernelExecutor clke,
+                                      ClearCLBuffer src,
+                                      ClearCLBuffer vectorX,
+                                      ClearCLBuffer vectorY,
+                                      ClearCLBuffer vectorZ,
+                                      ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -343,15 +335,14 @@ public class Kernels
     parameters.put("vectorY", vectorY);
     parameters.put("vectorZ", vectorZ);
 
-    boolean result = clke.execute(OCLlib.class,
-                                  "kernels/deform.cl",
-                                  "deform_3d",
-                                  parameters);
-    return result;
+    clke.execute(OCLlib.class,
+                 "kernels/deform.cl",
+                 "deform_3d",
+                 parameters);
   }
 
   /*
-  public static boolean automaticThreshold(CLKernelExecutor clke, ClearCLBuffer src, ClearCLBuffer dst, String userSelectedMethod) {
+  public static void automaticThreshold(CLKernelExecutor clke, ClearCLBuffer src, ClearCLBuffer dst, String userSelectedMethod) {
       Float minimumGreyValue = 0f;
       Float maximumGreyValue = 0f;
       Integer numberOfBins = 256;
@@ -368,7 +359,7 @@ public class Kernels
   }
   
   
-  public static boolean automaticThreshold(CLKernelExecutor clke, ClearCLBuffer src, ClearCLBuffer dst, String userSelectedMethod, Float minimumGreyValue, Float maximumGreyValue, Integer numberOfBins) {
+  public static void automaticThreshold(CLKernelExecutor clke, ClearCLBuffer src, ClearCLBuffer dst, String userSelectedMethod, Float minimumGreyValue, Float maximumGreyValue, Integer numberOfBins) {
   
       if (minimumGreyValue == null)
       {
@@ -425,337 +416,337 @@ public class Kernels
   }
   */
 
-  public static boolean argMaximumZProjection(CLKernelExecutor clke,
-                                              ClearCLImage src,
-                                              ClearCLImage dst_max,
-                                              ClearCLImage dst_arg)
+  public static void argMaximumZProjection(CLKernelExecutor clke,
+                                           ClearCLImage src,
+                                           ClearCLImage dst_max,
+                                           ClearCLImage dst_arg) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst_max", dst_max);
     parameters.put("dst_arg", dst_arg);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/projections.cl",
-                        "arg_max_project_3d_2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/projections.cl",
+                 "arg_max_project_3d_2d",
+                 parameters);
   }
 
-  public static boolean argMaximumZProjection(CLKernelExecutor clke,
-                                              ClearCLBuffer src,
-                                              ClearCLBuffer dst_max,
-                                              ClearCLBuffer dst_arg)
+  public static void argMaximumZProjection(CLKernelExecutor clke,
+                                           ClearCLBuffer src,
+                                           ClearCLBuffer dst_max,
+                                           ClearCLBuffer dst_arg) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst_max", dst_max);
     parameters.put("dst_arg", dst_arg);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/projections.cl",
-                        "arg_max_project_3d_2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/projections.cl",
+                 "arg_max_project_3d_2d",
+                 parameters);
   }
 
-  public static boolean binaryAnd(CLKernelExecutor clke,
-                                  ClearCLImage src1,
-                                  ClearCLImage src2,
-                                  ClearCLImage dst)
+  public static void binaryAnd(CLKernelExecutor clke,
+                               ClearCLImage src1,
+                               ClearCLImage src2,
+                               ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src1", src1);
     parameters.put("src2", src2);
     parameters.put("dst", dst);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "binary_and_" + src1.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "binary_and_" + src1.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean binaryAnd(CLKernelExecutor clke,
-                                  ClearCLBuffer src1,
-                                  ClearCLBuffer src2,
-                                  ClearCLBuffer dst)
+  public static void binaryAnd(CLKernelExecutor clke,
+                               ClearCLBuffer src1,
+                               ClearCLBuffer src2,
+                               ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src1", src1);
     parameters.put("src2", src2);
     parameters.put("dst", dst);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "binary_and_" + src1.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "binary_and_" + src1.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean binaryXOr(CLKernelExecutor clke,
-                                  ClearCLImage src1,
-                                  ClearCLImage src2,
-                                  ClearCLImage dst)
+  public static void binaryXOr(CLKernelExecutor clke,
+                               ClearCLImage src1,
+                               ClearCLImage src2,
+                               ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src1", src1);
     parameters.put("src2", src2);
     parameters.put("dst", dst);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "binary_xor_" + src1.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "binary_xor_" + src1.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean binaryXOr(CLKernelExecutor clke,
-                                  ClearCLBuffer src1,
-                                  ClearCLBuffer src2,
-                                  ClearCLBuffer dst)
+  public static void binaryXOr(CLKernelExecutor clke,
+                               ClearCLBuffer src1,
+                               ClearCLBuffer src2,
+                               ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src1", src1);
     parameters.put("src2", src2);
     parameters.put("dst", dst);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "binary_xor_" + src1.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "binary_xor_" + src1.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean binaryNot(CLKernelExecutor clke,
-                                  ClearCLImage src1,
-                                  ClearCLImage dst)
+  public static void binaryNot(CLKernelExecutor clke,
+                               ClearCLImage src1,
+                               ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src1", src1);
     parameters.put("dst", dst);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "binary_not_" + src1.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "binary_not_" + src1.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean binaryNot(CLKernelExecutor clke,
-                                  ClearCLBuffer src1,
-                                  ClearCLBuffer dst)
+  public static void binaryNot(CLKernelExecutor clke,
+                               ClearCLBuffer src1,
+                               ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src1", src1);
     parameters.put("dst", dst);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "binary_not_" + src1.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "binary_not_" + src1.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean binaryOr(CLKernelExecutor clke,
-                                 ClearCLImage src1,
-                                 ClearCLImage src2,
-                                 ClearCLImage dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src1", src1);
-    parameters.put("src2", src2);
-    parameters.put("dst", dst);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "binary_or_" + src1.getDimension() + "d",
-                        parameters);
-  }
-
-  public static boolean binaryOr(CLKernelExecutor clke,
-                                 ClearCLBuffer src1,
-                                 ClearCLBuffer src2,
-                                 ClearCLBuffer dst)
+  public static void binaryOr(CLKernelExecutor clke,
+                              ClearCLImage src1,
+                              ClearCLImage src2,
+                              ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src1", src1);
     parameters.put("src2", src2);
     parameters.put("dst", dst);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "binary_or_" + src1.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "binary_or_" + src1.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean blur(CLKernelExecutor clke,
-                             ClearCLImage src,
-                             ClearCLImage dst,
-                             Float blurSigmaX,
-                             Float blurSigmaY)
+  public static void binaryOr(CLKernelExecutor clke,
+                              ClearCLBuffer src1,
+                              ClearCLBuffer src2,
+                              ClearCLBuffer dst) throws CLKernelException
   {
-    return executeSeparableKernel(clke,
-                                  src,
-                                  dst,
-                                  "kernels/blur.cl",
-                                  "gaussian_blur_sep_image"
-                                                     + src.getDimension()
-                                                     + "d",
-                                  sigmaToKernelSize(blurSigmaX),
-                                  sigmaToKernelSize(blurSigmaY),
-                                  sigmaToKernelSize(0),
-                                  blurSigmaX,
-                                  blurSigmaY,
-                                  0,
-                                  src.getDimension());
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src1", src1);
+    parameters.put("src2", src2);
+    parameters.put("dst", dst);
+
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "binary_or_" + src1.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean blur(CLKernelExecutor clke,
-                             ClearCLImage src,
-                             ClearCLBuffer dst,
-                             Float blurSigmaX,
-                             Float blurSigmaY)
+  public static void blur(CLKernelExecutor clke,
+                          ClearCLImage src,
+                          ClearCLImage dst,
+                          Float blurSigmaX,
+                          Float blurSigmaY) throws CLKernelException
   {
-    return executeSeparableKernel(clke,
-                                  src,
-                                  dst,
-                                  "kernels/blur.cl",
-                                  "gaussian_blur_sep_image"
-                                                     + src.getDimension()
-                                                     + "d",
-                                  sigmaToKernelSize(blurSigmaX),
-                                  sigmaToKernelSize(blurSigmaY),
-                                  sigmaToKernelSize(0),
-                                  blurSigmaX,
-                                  blurSigmaY,
-                                  0,
-                                  src.getDimension());
+    executeSeparableKernel(clke,
+                           src,
+                           dst,
+                           "kernels/blur.cl",
+                           "gaussian_blur_sep_image"
+                                              + src.getDimension()
+                                              + "d",
+                           sigmaToKernelSize(blurSigmaX),
+                           sigmaToKernelSize(blurSigmaY),
+                           sigmaToKernelSize(0),
+                           blurSigmaX,
+                           blurSigmaY,
+                           0,
+                           src.getDimension());
   }
 
-  public static boolean blur(CLKernelExecutor clke,
-                             ClearCLBuffer src,
-                             ClearCLBuffer dst,
-                             Float blurSigmaX,
-                             Float blurSigmaY)
+  public static void blur(CLKernelExecutor clke,
+                          ClearCLImage src,
+                          ClearCLBuffer dst,
+                          Float blurSigmaX,
+                          Float blurSigmaY) throws CLKernelException
   {
-    return executeSeparableKernel(clke,
-                                  src,
-                                  dst,
-                                  "kernels/blur.cl",
-                                  "gaussian_blur_sep_image"
-                                                     + src.getDimension()
-                                                     + "d",
-                                  sigmaToKernelSize(blurSigmaX),
-                                  sigmaToKernelSize(blurSigmaY),
-                                  sigmaToKernelSize(0),
-                                  blurSigmaX,
-                                  blurSigmaY,
-                                  0,
-                                  src.getDimension());
+    executeSeparableKernel(clke,
+                           src,
+                           dst,
+                           "kernels/blur.cl",
+                           "gaussian_blur_sep_image"
+                                              + src.getDimension()
+                                              + "d",
+                           sigmaToKernelSize(blurSigmaX),
+                           sigmaToKernelSize(blurSigmaY),
+                           sigmaToKernelSize(0),
+                           blurSigmaX,
+                           blurSigmaY,
+                           0,
+                           src.getDimension());
   }
 
-  public static boolean blur(CLKernelExecutor clke,
-                             ClearCLImage src,
-                             ClearCLImage dst,
-                             Float blurSigmaX,
-                             Float blurSigmaY,
-                             Float blurSigmaZ)
+  public static void blur(CLKernelExecutor clke,
+                          ClearCLBuffer src,
+                          ClearCLBuffer dst,
+                          Float blurSigmaX,
+                          Float blurSigmaY) throws CLKernelException
   {
-    return executeSeparableKernel(clke,
-                                  src,
-                                  dst,
-                                  "kernels/blur.cl",
-                                  "gaussian_blur_sep_image"
-                                                     + src.getDimension()
-                                                     + "d",
-                                  sigmaToKernelSize(blurSigmaX),
-                                  sigmaToKernelSize(blurSigmaY),
-                                  sigmaToKernelSize(blurSigmaZ),
-                                  blurSigmaX,
-                                  blurSigmaY,
-                                  blurSigmaZ,
-                                  src.getDimension());
+    executeSeparableKernel(clke,
+                           src,
+                           dst,
+                           "kernels/blur.cl",
+                           "gaussian_blur_sep_image"
+                                              + src.getDimension()
+                                              + "d",
+                           sigmaToKernelSize(blurSigmaX),
+                           sigmaToKernelSize(blurSigmaY),
+                           sigmaToKernelSize(0),
+                           blurSigmaX,
+                           blurSigmaY,
+                           0,
+                           src.getDimension());
   }
 
-  public static boolean blur(CLKernelExecutor clke,
-                             ClearCLImage src,
-                             ClearCLBuffer dst,
-                             Float blurSigmaX,
-                             Float blurSigmaY,
-                             Float blurSigmaZ)
+  public static void blur(CLKernelExecutor clke,
+                          ClearCLImage src,
+                          ClearCLImage dst,
+                          Float blurSigmaX,
+                          Float blurSigmaY,
+                          Float blurSigmaZ) throws CLKernelException
   {
-    return executeSeparableKernel(clke,
-                                  src,
-                                  dst,
-                                  "kernels/blur.cl",
-                                  "gaussian_blur_sep_image"
-                                                     + src.getDimension()
-                                                     + "d",
-                                  sigmaToKernelSize(blurSigmaX),
-                                  sigmaToKernelSize(blurSigmaY),
-                                  sigmaToKernelSize(blurSigmaZ),
-                                  blurSigmaX,
-                                  blurSigmaY,
-                                  blurSigmaZ,
-                                  src.getDimension());
+    executeSeparableKernel(clke,
+                           src,
+                           dst,
+                           "kernels/blur.cl",
+                           "gaussian_blur_sep_image"
+                                              + src.getDimension()
+                                              + "d",
+                           sigmaToKernelSize(blurSigmaX),
+                           sigmaToKernelSize(blurSigmaY),
+                           sigmaToKernelSize(blurSigmaZ),
+                           blurSigmaX,
+                           blurSigmaY,
+                           blurSigmaZ,
+                           src.getDimension());
   }
 
-  public static boolean blur(CLKernelExecutor clke,
-                             ClearCLBuffer src,
-                             ClearCLBuffer dst,
-                             Float blurSigmaX,
-                             Float blurSigmaY,
-                             Float blurSigmaZ)
+  public static void blur(CLKernelExecutor clke,
+                          ClearCLImage src,
+                          ClearCLBuffer dst,
+                          Float blurSigmaX,
+                          Float blurSigmaY,
+                          Float blurSigmaZ) throws CLKernelException
   {
-    return executeSeparableKernel(clke,
-                                  src,
-                                  dst,
-                                  "kernels/blur.cl",
-                                  "gaussian_blur_sep_image"
-                                                     + src.getDimension()
-                                                     + "d",
-                                  sigmaToKernelSize(blurSigmaX),
-                                  sigmaToKernelSize(blurSigmaY),
-                                  sigmaToKernelSize(blurSigmaZ),
-                                  blurSigmaX,
-                                  blurSigmaY,
-                                  blurSigmaZ,
-                                  src.getDimension());
+    executeSeparableKernel(clke,
+                           src,
+                           dst,
+                           "kernels/blur.cl",
+                           "gaussian_blur_sep_image"
+                                              + src.getDimension()
+                                              + "d",
+                           sigmaToKernelSize(blurSigmaX),
+                           sigmaToKernelSize(blurSigmaY),
+                           sigmaToKernelSize(blurSigmaZ),
+                           blurSigmaX,
+                           blurSigmaY,
+                           blurSigmaZ,
+                           src.getDimension());
   }
 
-  public static boolean countNonZeroPixelsLocally(CLKernelExecutor clke,
-                                                  ClearCLBuffer src,
-                                                  ClearCLBuffer dst,
-                                                  Integer radiusX,
-                                                  Integer radiusY)
+  public static void blur(CLKernelExecutor clke,
+                          ClearCLBuffer src,
+                          ClearCLBuffer dst,
+                          Float blurSigmaX,
+                          Float blurSigmaY,
+                          Float blurSigmaZ) throws CLKernelException
+  {
+    executeSeparableKernel(clke,
+                           src,
+                           dst,
+                           "kernels/blur.cl",
+                           "gaussian_blur_sep_image"
+                                              + src.getDimension()
+                                              + "d",
+                           sigmaToKernelSize(blurSigmaX),
+                           sigmaToKernelSize(blurSigmaY),
+                           sigmaToKernelSize(blurSigmaZ),
+                           blurSigmaX,
+                           blurSigmaY,
+                           blurSigmaZ,
+                           src.getDimension());
+  }
+
+  public static void countNonZeroPixelsLocally(CLKernelExecutor clke,
+                                               ClearCLBuffer src,
+                                               ClearCLBuffer dst,
+                                               Integer radiusX,
+                                               Integer radiusY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("Nx", radiusToKernelSize(radiusX));
     parameters.put("Ny", radiusToKernelSize(radiusY));
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryCounting.cl",
-                        "count_nonzero_image2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryCounting.cl",
+                 "count_nonzero_image2d",
+                 parameters);
   }
 
-  public static boolean countNonZeroPixelsLocallySliceBySlice(CLKernelExecutor clke,
-                                                              ClearCLBuffer src,
-                                                              ClearCLBuffer dst,
-                                                              Integer radiusX,
-                                                              Integer radiusY)
+  public static void countNonZeroPixelsLocallySliceBySlice(CLKernelExecutor clke,
+                                                           ClearCLBuffer src,
+                                                           ClearCLBuffer dst,
+                                                           Integer radiusX,
+                                                           Integer radiusY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("Nx", radiusToKernelSize(radiusX));
     parameters.put("Ny", radiusToKernelSize(radiusY));
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryCounting.cl",
-                        "count_nonzero_slicewise_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryCounting.cl",
+                 "count_nonzero_slicewise_image3d",
+                 parameters);
   }
 
-  public static boolean countNonZeroVoxelsLocally(CLKernelExecutor clke,
-                                                  ClearCLBuffer src,
-                                                  ClearCLBuffer dst,
-                                                  Integer radiusX,
-                                                  Integer radiusY,
-                                                  Integer radiusZ)
+  public static void countNonZeroVoxelsLocally(CLKernelExecutor clke,
+                                               ClearCLBuffer src,
+                                               ClearCLBuffer dst,
+                                               Integer radiusX,
+                                               Integer radiusY,
+                                               Integer radiusZ) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("Nx", radiusToKernelSize(radiusX));
@@ -763,52 +754,52 @@ public class Kernels
     parameters.put("Nz", radiusToKernelSize(radiusZ));
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryCounting.cl",
-                        "count_nonzero_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryCounting.cl",
+                 "count_nonzero_image3d",
+                 parameters);
   }
 
-  public static boolean countNonZeroPixelsLocally(CLKernelExecutor clke,
-                                                  ClearCLImage src,
-                                                  ClearCLImage dst,
-                                                  Integer radiusX,
-                                                  Integer radiusY)
+  public static void countNonZeroPixelsLocally(CLKernelExecutor clke,
+                                               ClearCLImage src,
+                                               ClearCLImage dst,
+                                               Integer radiusX,
+                                               Integer radiusY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("Nx", radiusToKernelSize(radiusX));
     parameters.put("Ny", radiusToKernelSize(radiusY));
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryCounting.cl",
-                        "count_nonzero_image2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryCounting.cl",
+                 "count_nonzero_image2d",
+                 parameters);
   }
 
-  public static boolean countNonZeroPixelsLocallySliceBySlice(CLKernelExecutor clke,
-                                                              ClearCLImage src,
-                                                              ClearCLImage dst,
-                                                              Integer radiusX,
-                                                              Integer radiusY)
+  public static void countNonZeroPixelsLocallySliceBySlice(CLKernelExecutor clke,
+                                                           ClearCLImage src,
+                                                           ClearCLImage dst,
+                                                           Integer radiusX,
+                                                           Integer radiusY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("Nx", radiusToKernelSize(radiusX));
     parameters.put("Ny", radiusToKernelSize(radiusY));
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryCounting.cl",
-                        "count_nonzero_slicewise_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryCounting.cl",
+                 "count_nonzero_slicewise_image3d",
+                 parameters);
   }
 
-  public static boolean countNonZeroVoxelsLocally(CLKernelExecutor clke,
-                                                  ClearCLImage src,
-                                                  ClearCLImage dst,
-                                                  Integer radiusX,
-                                                  Integer radiusY,
-                                                  Integer radiusZ)
+  public static void countNonZeroVoxelsLocally(CLKernelExecutor clke,
+                                               ClearCLImage src,
+                                               ClearCLImage dst,
+                                               Integer radiusX,
+                                               Integer radiusY,
+                                               Integer radiusZ) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("Nx", radiusToKernelSize(radiusX));
@@ -816,26 +807,25 @@ public class Kernels
     parameters.put("Nz", radiusToKernelSize(radiusZ));
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryCounting.cl",
-                        "count_nonzero_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryCounting.cl",
+                 "count_nonzero_image3d",
+                 parameters);
   }
 
-  private static boolean executeSeparableKernel(CLKernelExecutor clke,
-                                                Object src,
-                                                Object dst,
-                                                String clFilename,
-                                                String kernelname,
-                                                int kernelSizeX,
-                                                int kernelSizeY,
-                                                int kernelSizeZ,
-                                                float blurSigmaX,
-                                                float blurSigmaY,
-                                                float blurSigmaZ,
-                                                long dimensions)
+  private static void executeSeparableKernel(CLKernelExecutor clke,
+                                             Object src,
+                                             Object dst,
+                                             String clFilename,
+                                             String kernelname,
+                                             int kernelSizeX,
+                                             int kernelSizeY,
+                                             int kernelSizeZ,
+                                             float blurSigmaX,
+                                             float blurSigmaY,
+                                             float blurSigmaZ,
+                                             long dimensions) throws CLKernelException
   {
-    boolean result = true;
     int[] n = new int[]
     { kernelSizeX, kernelSizeY, kernelSizeZ };
     float[] blurSigma = new float[]
@@ -855,122 +845,121 @@ public class Kernels
       throw new IllegalArgumentException("Error: Wrong type of images in blurFast");
     }
 
-    HashMap<String, Object> parameters = new HashMap<>();
+    try
+    {
+      HashMap<String, Object> parameters = new HashMap<>();
 
-    if (blurSigma[0] > 0)
-    {
-      parameters.clear();
-      parameters.put("N", n[0]);
-      parameters.put("s", blurSigma[0]);
-      parameters.put("dim", 0);
-      parameters.put("src", src);
-      if (dimensions == 2)
-      {
-        parameters.put("dst", temp);
-      }
-      else
-      {
-        parameters.put("dst", dst);
-      }
-      if (!clke.execute(OCLlib.class,
-                        clFilename,
-                        kernelname,
-                        parameters))
-      {
-        result = false;
-      }
-    }
-    else
-    {
-      if (dimensions == 2)
-      {
-        Kernels.copyInternal(clke, src, temp, 2, 2);
-      }
-      else
-      {
-        Kernels.copyInternal(clke, src, dst, 3, 3);
-      }
-    }
-
-    if (blurSigma[1] > 0)
-    {
-      parameters.clear();
-      parameters.put("N", n[1]);
-      parameters.put("s", blurSigma[1]);
-      parameters.put("dim", 1);
-      if (dimensions == 2)
-      {
-        parameters.put("src", temp);
-        parameters.put("dst", dst);
-      }
-      else
-      {
-        parameters.put("src", dst);
-        parameters.put("dst", temp);
-      }
-      if (!clke.execute(OCLlib.class,
-                        clFilename,
-                        kernelname,
-                        parameters))
-      {
-        result = false;
-      }
-    }
-    else
-    {
-      if (dimensions == 2)
-      {
-        Kernels.copyInternal(clke, temp, dst, 2, 2);
-      }
-      else
-      {
-        Kernels.copyInternal(clke, dst, temp, 3, 3);
-      }
-    }
-
-    if (dimensions == 3)
-    {
-      if (blurSigma[2] > 0)
+      if (blurSigma[0] > 0)
       {
         parameters.clear();
-        parameters.put("N", n[2]);
-        parameters.put("s", blurSigma[2]);
-        parameters.put("dim", 2);
-        parameters.put("src", temp);
-        parameters.put("dst", dst);
-        if (!clke.execute(OCLlib.class,
-                          clFilename,
-                          kernelname,
-                          parameters))
+        parameters.put("N", n[0]);
+        parameters.put("s", blurSigma[0]);
+        parameters.put("dim", 0);
+        parameters.put("src", src);
+        if (dimensions == 2)
         {
-          result = false;
+          parameters.put("dst", temp);
         }
+        else
+        {
+          parameters.put("dst", dst);
+        }
+        clke.execute(OCLlib.class,
+                     clFilename,
+                     kernelname,
+                     parameters);
       }
       else
       {
-        Kernels.copyInternal(clke, temp, dst, 3, 3);
+        if (dimensions == 2)
+        {
+          Kernels.copyInternal(clke, src, temp, 2, 2);
+        }
+        else
+        {
+          Kernels.copyInternal(clke, src, dst, 3, 3);
+        }
+      }
+
+      if (blurSigma[1] > 0)
+      {
+        parameters.clear();
+        parameters.put("N", n[1]);
+        parameters.put("s", blurSigma[1]);
+        parameters.put("dim", 1);
+        if (dimensions == 2)
+        {
+          parameters.put("src", temp);
+          parameters.put("dst", dst);
+        }
+        else
+        {
+          parameters.put("src", dst);
+          parameters.put("dst", temp);
+        }
+        clke.execute(OCLlib.class,
+                     clFilename,
+                     kernelname,
+                     parameters);
+      }
+      else
+      {
+        if (dimensions == 2)
+        {
+          Kernels.copyInternal(clke, temp, dst, 2, 2);
+        }
+        else
+        {
+          Kernels.copyInternal(clke, dst, temp, 3, 3);
+        }
+      }
+
+      if (dimensions == 3)
+      {
+        if (blurSigma[2] > 0)
+        {
+          parameters.clear();
+          parameters.put("N", n[2]);
+          parameters.put("s", blurSigma[2]);
+          parameters.put("dim", 2);
+          parameters.put("src", temp);
+          parameters.put("dst", dst);
+          clke.execute(OCLlib.class,
+                       clFilename,
+                       kernelname,
+                       parameters);
+        }
+        else
+        {
+          Kernels.copyInternal(clke, temp, dst, 3, 3);
+        }
+      }
+    }
+    catch (CLKernelException clkExc)
+    {
+      throw clkExc;
+    }
+    finally
+    {
+      if (temp instanceof ClearCLBuffer)
+      {
+        ((ClearCLBuffer) temp).close();
+      }
+      else if (temp instanceof ClearCLImage)
+      {
+        ((ClearCLImage) temp).close();
       }
     }
 
-    if (temp instanceof ClearCLBuffer)
-    {
-      ((ClearCLBuffer) temp).close();
-    }
-    else if (temp instanceof ClearCLImage)
-    {
-      ((ClearCLImage) temp).close();
-    }
-
-    return result;
   }
 
-  public static boolean blurSliceBySlice(CLKernelExecutor clke,
-                                         ClearCLImage src,
-                                         ClearCLImage dst,
-                                         Integer kernelSizeX,
-                                         Integer kernelSizeY,
-                                         Float sigmaX,
-                                         Float sigmaY)
+  public static void blurSliceBySlice(CLKernelExecutor clke,
+                                      ClearCLImage src,
+                                      ClearCLImage dst,
+                                      Integer kernelSizeX,
+                                      Integer kernelSizeY,
+                                      Float sigmaX,
+                                      Float sigmaY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("Nx", kernelSizeX);
@@ -979,19 +968,19 @@ public class Kernels
     parameters.put("sy", sigmaY);
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(OCLlib.class,
-                        "kernels/blur.cl",
-                        "gaussian_blur_slicewise_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/blur.cl",
+                 "gaussian_blur_slicewise_image3d",
+                 parameters);
   }
 
-  public static boolean blurSliceBySlice(CLKernelExecutor clke,
-                                         ClearCLBuffer src,
-                                         ClearCLBuffer dst,
-                                         int kernelSizeX,
-                                         int kernelSizeY,
-                                         float sigmaX,
-                                         float sigmaY)
+  public static void blurSliceBySlice(CLKernelExecutor clke,
+                                      ClearCLBuffer src,
+                                      ClearCLBuffer dst,
+                                      int kernelSizeX,
+                                      int kernelSizeY,
+                                      float sigmaX,
+                                      float sigmaY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("Nx", kernelSizeX);
@@ -1000,10 +989,10 @@ public class Kernels
     parameters.put("sy", sigmaY);
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(OCLlib.class,
-                        "kernels/blur.cl",
-                        "gaussian_blur_slicewise_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/blur.cl",
+                 "gaussian_blur_slicewise_image3d",
+                 parameters);
   }
 
   /*
@@ -1061,22 +1050,22 @@ public class Kernels
   }
   */
 
-  public static boolean copy(CLKernelExecutor clke,
-                             ClearCLImage src,
-                             ClearCLBuffer dst)
+  public static void copy(CLKernelExecutor clke,
+                          ClearCLImage src,
+                          ClearCLBuffer dst) throws CLKernelException
   {
-    return copyInternal(clke,
-                        src,
-                        dst,
-                        src.getDimension(),
-                        dst.getDimension());
+    copyInternal(clke,
+                 src,
+                 dst,
+                 src.getDimension(),
+                 dst.getDimension());
   }
 
-  private static boolean copyInternal(CLKernelExecutor clke,
-                                      Object src,
-                                      Object dst,
-                                      long srcNumberOfDimensions,
-                                      long dstNumberOfDimensions)
+  private static void copyInternal(CLKernelExecutor clke,
+                                   Object src,
+                                   Object dst,
+                                   long srcNumberOfDimensions,
+                                   long dstNumberOfDimensions) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1086,49 +1075,49 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/duplication.cl",
-                        "copy_" + srcNumberOfDimensions + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/duplication.cl",
+                 "copy_" + srcNumberOfDimensions + "d",
+                 parameters);
   }
 
-  public static boolean copy(CLKernelExecutor clke,
-                             ClearCLBuffer src,
-                             ClearCLImage dst)
+  public static void copy(CLKernelExecutor clke,
+                          ClearCLBuffer src,
+                          ClearCLImage dst) throws CLKernelException
   {
-    return copyInternal(clke,
-                        src,
-                        dst,
-                        src.getDimension(),
-                        dst.getDimension());
+    copyInternal(clke,
+                 src,
+                 dst,
+                 src.getDimension(),
+                 dst.getDimension());
   }
 
-  public static boolean copy(CLKernelExecutor clke,
-                             ClearCLImage src,
-                             ClearCLImage dst)
+  public static void copy(CLKernelExecutor clke,
+                          ClearCLImage src,
+                          ClearCLImage dst) throws CLKernelException
   {
-    return copyInternal(clke,
-                        src,
-                        dst,
-                        src.getDimension(),
-                        dst.getDimension());
+    copyInternal(clke,
+                 src,
+                 dst,
+                 src.getDimension(),
+                 dst.getDimension());
   }
 
-  public static boolean copy(CLKernelExecutor clke,
-                             ClearCLBuffer src,
-                             ClearCLBuffer dst)
+  public static void copy(CLKernelExecutor clke,
+                          ClearCLBuffer src,
+                          ClearCLBuffer dst) throws CLKernelException
   {
-    return copyInternal(clke,
-                        src,
-                        dst,
-                        src.getDimension(),
-                        dst.getDimension());
+    copyInternal(clke,
+                 src,
+                 dst,
+                 src.getDimension(),
+                 dst.getDimension());
   }
 
-  public static boolean copySlice(CLKernelExecutor clke,
-                                  ClearCLImage src,
-                                  ClearCLImage dst,
-                                  Integer planeIndex)
+  public static void copySlice(CLKernelExecutor clke,
+                               ClearCLImage src,
+                               ClearCLImage dst,
+                               Integer planeIndex) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1136,17 +1125,17 @@ public class Kernels
     parameters.put("slice", planeIndex);
     if (src.getDimension() == 2 && dst.getDimension() == 3)
     {
-      return clke.execute(OCLlib.class,
-                          "kernels/duplication.cl",
-                          "putSliceInStack",
-                          parameters);
+      clke.execute(OCLlib.class,
+                   "kernels/duplication.cl",
+                   "putSliceInStack",
+                   parameters);
     }
     else if (src.getDimension() == 3 && dst.getDimension() == 2)
     {
-      return clke.execute(OCLlib.class,
-                          "kernels/duplication.cl",
-                          "copySlice",
-                          parameters);
+      clke.execute(OCLlib.class,
+                   "kernels/duplication.cl",
+                   "copySlice",
+                   parameters);
     }
     else
     {
@@ -1154,30 +1143,30 @@ public class Kernels
     }
   }
 
-  public static boolean copySlice(CLKernelExecutor clke,
-                                  ClearCLBuffer src,
-                                  ClearCLBuffer dst,
-                                  Integer planeIndex)
+  public static void copySlice(CLKernelExecutor clke,
+                               ClearCLBuffer src,
+                               ClearCLBuffer dst,
+                               Integer planeIndex) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("slice", planeIndex);
-    // return clke.execute(OCLlib.class, "duplication.cl", "copySlice",
+    // clke.execute(OCLlib.class, "duplication.cl", "copySlice",
     // parameters);
     if (src.getDimension() == 2 && dst.getDimension() == 3)
     {
-      return clke.execute(OCLlib.class,
-                          "kernels/duplication.cl",
-                          "putSliceInStack",
-                          parameters);
+      clke.execute(OCLlib.class,
+                   "kernels/duplication.cl",
+                   "putSliceInStack",
+                   parameters);
     }
     else if (src.getDimension() == 3 && dst.getDimension() == 2)
     {
-      return clke.execute(OCLlib.class,
-                          "kernels/duplication.cl",
-                          "copySlice",
-                          parameters);
+      clke.execute(OCLlib.class,
+                   "kernels/duplication.cl",
+                   "copySlice",
+                   parameters);
     }
     else
     {
@@ -1185,12 +1174,12 @@ public class Kernels
     }
   }
 
-  public static boolean crop(CLKernelExecutor clke,
-                             ClearCLImage src,
-                             ClearCLImage dst,
-                             Integer startX,
-                             Integer startY,
-                             Integer startZ)
+  public static void crop(CLKernelExecutor clke,
+                          ClearCLImage src,
+                          ClearCLImage dst,
+                          Integer startX,
+                          Integer startY,
+                          Integer startZ) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1198,35 +1187,35 @@ public class Kernels
     parameters.put("start_x", startX);
     parameters.put("start_y", startY);
     parameters.put("start_z", startZ);
-    return clke.execute(OCLlib.class,
-                        "kernels/duplication.cl",
-                        "crop_3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/duplication.cl",
+                 "crop_3d",
+                 parameters);
   }
 
-  public static boolean crop(CLKernelExecutor clke,
-                             ClearCLImage src,
-                             ClearCLImage dst,
-                             Integer startX,
-                             Integer startY)
+  public static void crop(CLKernelExecutor clke,
+                          ClearCLImage src,
+                          ClearCLImage dst,
+                          Integer startX,
+                          Integer startY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("start_x", startX);
     parameters.put("start_y", startY);
-    return clke.execute(OCLlib.class,
-                        "kernels/duplication.cl",
-                        "crop_2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/duplication.cl",
+                 "crop_2d",
+                 parameters);
   }
 
-  public static boolean crop(CLKernelExecutor clke,
-                             ClearCLBuffer src,
-                             ClearCLBuffer dst,
-                             Integer startX,
-                             Integer startY,
-                             Integer startZ)
+  public static void crop(CLKernelExecutor clke,
+                          ClearCLBuffer src,
+                          ClearCLBuffer dst,
+                          Integer startX,
+                          Integer startY,
+                          Integer startZ) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1234,38 +1223,38 @@ public class Kernels
     parameters.put("start_x", startX);
     parameters.put("start_y", startY);
     parameters.put("start_z", startZ);
-    return clke.execute(OCLlib.class,
-                        "kernels/duplication.cl",
-                        "crop_3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/duplication.cl",
+                 "crop_3d",
+                 parameters);
   }
 
-  public static boolean crop(CLKernelExecutor clke,
-                             ClearCLBuffer src,
-                             ClearCLBuffer dst,
-                             Integer startX,
-                             Integer startY)
+  public static void crop(CLKernelExecutor clke,
+                          ClearCLBuffer src,
+                          ClearCLBuffer dst,
+                          Integer startX,
+                          Integer startY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("start_x", startX);
     parameters.put("start_y", startY);
-    return clke.execute(OCLlib.class,
-                        "kernels/duplication.cl",
-                        "crop_2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/duplication.cl",
+                 "crop_2d",
+                 parameters);
   }
 
-  public static boolean crossCorrelation(CLKernelExecutor clke,
-                                         ClearCLBuffer src1,
-                                         ClearCLBuffer meanSrc1,
-                                         ClearCLBuffer src2,
-                                         ClearCLBuffer meanSrc2,
-                                         ClearCLBuffer dst,
-                                         int radius,
-                                         int deltaPos,
-                                         int dimension)
+  public static void crossCorrelation(CLKernelExecutor clke,
+                                      ClearCLBuffer src1,
+                                      ClearCLBuffer meanSrc1,
+                                      ClearCLBuffer src2,
+                                      ClearCLBuffer meanSrc2,
+                                      ClearCLBuffer dst,
+                                      int radius,
+                                      int deltaPos,
+                                      int dimension) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src1", src1);
@@ -1276,21 +1265,21 @@ public class Kernels
     parameters.put("radius", radius);
     parameters.put("i", deltaPos);
     parameters.put("dimension", dimension);
-    return clke.execute(OCLlib.class,
-                        "kernels/cross_correlation.cl",
-                        "cross_correlation_3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/cross_correlation.cl",
+                 "cross_correlation_3d",
+                 parameters);
   }
 
-  public static boolean crossCorrelation(CLKernelExecutor clke,
-                                         ClearCLImage src1,
-                                         ClearCLImage meanSrc1,
-                                         ClearCLImage src2,
-                                         ClearCLImage meanSrc2,
-                                         ClearCLImage dst,
-                                         int radius,
-                                         int deltaPos,
-                                         int dimension)
+  public static void crossCorrelation(CLKernelExecutor clke,
+                                      ClearCLImage src1,
+                                      ClearCLImage meanSrc1,
+                                      ClearCLImage src2,
+                                      ClearCLImage meanSrc2,
+                                      ClearCLImage dst,
+                                      int radius,
+                                      int deltaPos,
+                                      int dimension) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src1", src1);
@@ -1301,147 +1290,81 @@ public class Kernels
     parameters.put("radius", radius);
     parameters.put("i", deltaPos);
     parameters.put("dimension", dimension);
-    return clke.execute(OCLlib.class,
-                        "kernels/cross_correlation.cl",
-                        "cross_correlation_3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/cross_correlation.cl",
+                 "cross_correlation_3d",
+                 parameters);
   }
 
-  public static boolean detectMaximaBox(CLKernelExecutor clke,
-                                        ClearCLImage src,
-                                        ClearCLImage dst,
-                                        Integer radius)
-  {
-    return detectOptima(clke, src, dst, radius, true);
-  }
-
-  public static boolean detectMaximaBox(CLKernelExecutor clke,
-                                        ClearCLBuffer src,
-                                        ClearCLBuffer dst,
-                                        Integer radius)
-  {
-    return detectOptima(clke, src, dst, radius, true);
-  }
-
-  public static boolean detectMaximaSliceBySliceBox(CLKernelExecutor clke,
-                                                    ClearCLImage src,
-                                                    ClearCLImage dst,
-                                                    Integer radius)
-  {
-    return detectOptimaSliceBySlice(clke, src, dst, radius, true);
-  }
-
-  public static boolean detectMaximaSliceBySliceBox(CLKernelExecutor clke,
-                                                    ClearCLBuffer src,
-                                                    ClearCLBuffer dst,
-                                                    Integer radius)
-  {
-    return detectOptimaSliceBySlice(clke, src, dst, radius, true);
-  }
-
-  public static boolean detectMinimaBox(CLKernelExecutor clke,
-                                        ClearCLImage src,
-                                        ClearCLImage dst,
-                                        Integer radius)
-  {
-    return detectOptima(clke, src, dst, radius, false);
-  }
-
-  public static boolean detectMinimaBox(CLKernelExecutor clke,
-                                        ClearCLBuffer src,
-                                        ClearCLBuffer dst,
-                                        Integer radius)
-  {
-    return detectOptima(clke, src, dst, radius, false);
-  }
-
-  public static boolean detectMinimaSliceBySliceBox(CLKernelExecutor clke,
-                                                    ClearCLImage src,
-                                                    ClearCLImage dst,
-                                                    Integer radius)
-  {
-    return detectOptimaSliceBySlice(clke, src, dst, radius, false);
-  }
-
-  public static boolean detectMinimaSliceBySliceBox(CLKernelExecutor clke,
-                                                    ClearCLBuffer src,
-                                                    ClearCLBuffer dst,
-                                                    Integer radius)
-  {
-    return detectOptimaSliceBySlice(clke, src, dst, radius, false);
-  }
-
-  public static boolean detectOptima(CLKernelExecutor clke,
+  public static void detectMaximaBox(CLKernelExecutor clke,
                                      ClearCLImage src,
                                      ClearCLImage dst,
-                                     Integer radius,
-                                     Boolean detectMaxima)
+                                     Integer radius) throws CLKernelException
   {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("radius", radius);
-    parameters.put("detect_maxima", detectMaxima ? 1 : 0);
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (detectOptima)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/detection.cl",
-                        "detect_local_optima_" + src.getDimension()
-                                                + "d",
-                        parameters);
+    detectOptima(clke, src, dst, radius, true);
   }
 
-  public static boolean detectOptima(CLKernelExecutor clke,
+  public static void detectMaximaBox(CLKernelExecutor clke,
                                      ClearCLBuffer src,
                                      ClearCLBuffer dst,
-                                     Integer radius,
-                                     Boolean detectMaxima)
+                                     Integer radius) throws CLKernelException
   {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("radius", radius);
-    parameters.put("detect_maxima", detectMaxima ? 1 : 0);
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (detectOptima)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/detection.cl",
-                        "detect_local_optima_" + src.getDimension()
-                                                + "d",
-                        parameters);
+    detectOptima(clke, src, dst, radius, true);
   }
 
-  public static boolean detectOptimaSliceBySlice(CLKernelExecutor clke,
+  public static void detectMaximaSliceBySliceBox(CLKernelExecutor clke,
                                                  ClearCLImage src,
                                                  ClearCLImage dst,
-                                                 Integer radius,
-                                                 Boolean detectMaxima)
+                                                 Integer radius) throws CLKernelException
   {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("radius", radius);
-    parameters.put("detect_maxima", detectMaxima ? 1 : 0);
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (detectOptima)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/detection.cl",
-                        "detect_local_optima_" + src.getDimension()
-                                                + "d_slice_by_slice",
-                        parameters);
+    detectOptimaSliceBySlice(clke, src, dst, radius, true);
   }
 
-  public static boolean detectOptimaSliceBySlice(CLKernelExecutor clke,
+  public static void detectMaximaSliceBySliceBox(CLKernelExecutor clke,
                                                  ClearCLBuffer src,
                                                  ClearCLBuffer dst,
-                                                 Integer radius,
-                                                 Boolean detectMaxima)
+                                                 Integer radius) throws CLKernelException
+  {
+    detectOptimaSliceBySlice(clke, src, dst, radius, true);
+  }
+
+  public static void detectMinimaBox(CLKernelExecutor clke,
+                                     ClearCLImage src,
+                                     ClearCLImage dst,
+                                     Integer radius) throws CLKernelException
+  {
+    detectOptima(clke, src, dst, radius, false);
+  }
+
+  public static void detectMinimaBox(CLKernelExecutor clke,
+                                     ClearCLBuffer src,
+                                     ClearCLBuffer dst,
+                                     Integer radius) throws CLKernelException
+  {
+    detectOptima(clke, src, dst, radius, false);
+  }
+
+  public static void detectMinimaSliceBySliceBox(CLKernelExecutor clke,
+                                                 ClearCLImage src,
+                                                 ClearCLImage dst,
+                                                 Integer radius) throws CLKernelException
+  {
+    detectOptimaSliceBySlice(clke, src, dst, radius, false);
+  }
+
+  public static void detectMinimaSliceBySliceBox(CLKernelExecutor clke,
+                                                 ClearCLBuffer src,
+                                                 ClearCLBuffer dst,
+                                                 Integer radius) throws CLKernelException
+  {
+    detectOptimaSliceBySlice(clke, src, dst, radius, false);
+  }
+
+  public static void detectOptima(CLKernelExecutor clke,
+                                  ClearCLImage src,
+                                  ClearCLImage dst,
+                                  Integer radius,
+                                  Boolean detectMaxima) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1452,117 +1375,128 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (detectOptima)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/detection.cl",
-                        "detect_local_optima_" + src.getDimension()
-                                                + "d_slice_by_slice",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/detection.cl",
+                 "detect_local_optima_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean differenceOfGaussian(CLKernelExecutor clke,
-                                             ClearCLImage src,
-                                             ClearCLImage dst,
-                                             Integer radius,
-                                             Float sigmaMinuend,
-                                             Float sigmaSubtrahend)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("radius", radius);
-    parameters.put("sigma_minuend", sigmaMinuend);
-    parameters.put("sigma_subtrahend", sigmaSubtrahend);
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/differenceOfGaussian.cl",
-                        "subtract_convolved_images_" + src.getDimension()
-                                                           + "d_fast",
-                        parameters);
-  }
-
-  public static boolean differenceOfGaussianSliceBySlice(CLKernelExecutor clke,
-                                                         ClearCLImage src,
-                                                         ClearCLImage dst,
-                                                         Integer radius,
-                                                         Float sigmaMinuend,
-                                                         Float sigmaSubtrahend)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("radius", radius);
-    parameters.put("sigma_minuend", sigmaMinuend);
-    parameters.put("sigma_subtrahend", sigmaSubtrahend);
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/differenceOfGaussian.cl",
-                        "subtract_convolved_images_" + src.getDimension()
-                                                           + "d_slice_by_slice",
-                        parameters);
-  }
-
-  public static boolean dilateBox(CLKernelExecutor clke,
-                                  ClearCLImage src,
-                                  ClearCLImage dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "dilate_box_neighborhood_" + src.getDimension()
-                                                       + "d",
-                        parameters);
-  }
-
-  public static boolean dilateBox(CLKernelExecutor clke,
+  public static void detectOptima(CLKernelExecutor clke,
                                   ClearCLBuffer src,
-                                  ClearCLBuffer dst)
+                                  ClearCLBuffer dst,
+                                  Integer radius,
+                                  Boolean detectMaxima) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
+    parameters.put("radius", radius);
+    parameters.put("detect_maxima", detectMaxima ? 1 : 0);
     if (!checkDimensions(src.getDimension(), dst.getDimension()))
     {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (detectOptima)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "dilate_box_neighborhood_" + src.getDimension()
-                                                       + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/detection.cl",
+                 "detect_local_optima_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean dilateBoxSliceBySlice(CLKernelExecutor clke,
+  public static void detectOptimaSliceBySlice(CLKernelExecutor clke,
                                               ClearCLImage src,
-                                              ClearCLImage dst)
+                                              ClearCLImage dst,
+                                              Integer radius,
+                                              Boolean detectMaxima) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
+    parameters.put("radius", radius);
+    parameters.put("detect_maxima", detectMaxima ? 1 : 0);
     if (!checkDimensions(src.getDimension(), dst.getDimension()))
     {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (detectOptima)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "dilate_box_neighborhood_slice_by_slice",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/detection.cl",
+                 "detect_local_optima_" + src.getDimension()
+                                         + "d_slice_by_slice",
+                 parameters);
   }
 
-  public static boolean dilateBoxSliceBySlice(CLKernelExecutor clke,
+  public static void detectOptimaSliceBySlice(CLKernelExecutor clke,
                                               ClearCLBuffer src,
-                                              ClearCLBuffer dst)
+                                              ClearCLBuffer dst,
+                                              Integer radius,
+                                              Boolean detectMaxima) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    parameters.put("radius", radius);
+    parameters.put("detect_maxima", detectMaxima ? 1 : 0);
+    if (!checkDimensions(src.getDimension(), dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (detectOptima)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/detection.cl",
+                 "detect_local_optima_" + src.getDimension()
+                                         + "d_slice_by_slice",
+                 parameters);
+  }
+
+  public static void differenceOfGaussian(CLKernelExecutor clke,
+                                          ClearCLImage src,
+                                          ClearCLImage dst,
+                                          Integer radius,
+                                          Float sigmaMinuend,
+                                          Float sigmaSubtrahend) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    parameters.put("radius", radius);
+    parameters.put("sigma_minuend", sigmaMinuend);
+    parameters.put("sigma_subtrahend", sigmaSubtrahend);
+    if (!checkDimensions(src.getDimension(), dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/differenceOfGaussian.cl",
+                 "subtract_convolved_images_" + src.getDimension()
+                                                    + "d_fast",
+                 parameters);
+  }
+
+  public static void differenceOfGaussianSliceBySlice(CLKernelExecutor clke,
+                                                      ClearCLImage src,
+                                                      ClearCLImage dst,
+                                                      Integer radius,
+                                                      Float sigmaMinuend,
+                                                      Float sigmaSubtrahend) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    parameters.put("radius", radius);
+    parameters.put("sigma_minuend", sigmaMinuend);
+    parameters.put("sigma_subtrahend", sigmaSubtrahend);
+    if (!checkDimensions(src.getDimension(), dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/differenceOfGaussian.cl",
+                 "subtract_convolved_images_" + src.getDimension()
+                                                    + "d_slice_by_slice",
+                 parameters);
+  }
+
+  public static void dilateBox(CLKernelExecutor clke,
+                               ClearCLImage src,
+                               ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1571,15 +1505,16 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "dilate_box_neighborhood_slice_by_slice",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "dilate_box_neighborhood_" + src.getDimension()
+                                                + "d",
+                 parameters);
   }
 
-  public static boolean dilateSphere(CLKernelExecutor clke,
-                                     ClearCLImage src,
-                                     ClearCLImage dst)
+  public static void dilateBox(CLKernelExecutor clke,
+                               ClearCLBuffer src,
+                               ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1588,16 +1523,16 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "dilate_diamond_neighborhood_" + src.getDimension()
-                                                       + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "dilate_box_neighborhood_" + src.getDimension()
+                                                + "d",
+                 parameters);
   }
 
-  public static boolean dilateSphere(CLKernelExecutor clke,
-                                     ClearCLBuffer src,
-                                     ClearCLBuffer dst)
+  public static void dilateBoxSliceBySlice(CLKernelExecutor clke,
+                                           ClearCLImage src,
+                                           ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1606,16 +1541,15 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "dilate_diamond_neighborhood_" + src.getDimension()
-                                                       + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "dilate_box_neighborhood_slice_by_slice",
+                 parameters);
   }
 
-  public static boolean dilateSphereSliceBySlice(CLKernelExecutor clke,
-                                                 ClearCLImage src,
-                                                 ClearCLImage dst)
+  public static void dilateBoxSliceBySlice(CLKernelExecutor clke,
+                                           ClearCLBuffer src,
+                                           ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1624,15 +1558,15 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "dilate_diamond_neighborhood_slice_by_slice",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "dilate_box_neighborhood_slice_by_slice",
+                 parameters);
   }
 
-  public static boolean dilateSphereSliceBySlice(CLKernelExecutor clke,
-                                                 ClearCLBuffer src,
-                                                 ClearCLBuffer dst)
+  public static void dilateSphere(CLKernelExecutor clke,
+                                  ClearCLImage src,
+                                  ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1641,16 +1575,69 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "dilate_diamond_neighborhood_slice_by_slice",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "dilate_diamond_neighborhood_" + src.getDimension()
+                                                + "d",
+                 parameters);
   }
 
-  public static boolean divideImages(CLKernelExecutor clke,
-                                     ClearCLImage src,
-                                     ClearCLImage src1,
-                                     ClearCLImage dst)
+  public static void dilateSphere(CLKernelExecutor clke,
+                                  ClearCLBuffer src,
+                                  ClearCLBuffer dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    if (!checkDimensions(src.getDimension(), dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "dilate_diamond_neighborhood_" + src.getDimension()
+                                                + "d",
+                 parameters);
+  }
+
+  public static void dilateSphereSliceBySlice(CLKernelExecutor clke,
+                                              ClearCLImage src,
+                                              ClearCLImage dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    if (!checkDimensions(src.getDimension(), dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "dilate_diamond_neighborhood_slice_by_slice",
+                 parameters);
+  }
+
+  public static void dilateSphereSliceBySlice(CLKernelExecutor clke,
+                                              ClearCLBuffer src,
+                                              ClearCLBuffer dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    if (!checkDimensions(src.getDimension(), dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "dilate_diamond_neighborhood_slice_by_slice",
+                 parameters);
+  }
+
+  public static void divideImages(CLKernelExecutor clke,
+                                  ClearCLImage src,
+                                  ClearCLImage src1,
+                                  ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1664,16 +1651,16 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "dividePixelwise_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "dividePixelwise_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean divideImages(CLKernelExecutor clke,
-                                     ClearCLBuffer src,
-                                     ClearCLBuffer src1,
-                                     ClearCLBuffer dst)
+  public static void divideImages(CLKernelExecutor clke,
+                                  ClearCLBuffer src,
+                                  ClearCLBuffer src1,
+                                  ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1687,18 +1674,18 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "dividePixelwise_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "dividePixelwise_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean downsample(CLKernelExecutor clke,
-                                   ClearCLImage src,
-                                   ClearCLImage dst,
-                                   Float factorX,
-                                   Float factorY,
-                                   Float factorZ)
+  public static void downsample(CLKernelExecutor clke,
+                                ClearCLImage src,
+                                ClearCLImage dst,
+                                Float factorX,
+                                Float factorY,
+                                Float factorZ) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1706,18 +1693,18 @@ public class Kernels
     parameters.put("factor_x", 1.f / factorX);
     parameters.put("factor_y", 1.f / factorY);
     parameters.put("factor_z", 1.f / factorZ);
-    return clke.execute(OCLlib.class,
-                        "kernels/downsampling.cl",
-                        "downsample_3d_nearest",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/downsampling.cl",
+                 "downsample_3d_nearest",
+                 parameters);
   }
 
-  public static boolean downsample(CLKernelExecutor clke,
-                                   ClearCLBuffer src,
-                                   ClearCLBuffer dst,
-                                   Float factorX,
-                                   Float factorY,
-                                   Float factorZ)
+  public static void downsample(CLKernelExecutor clke,
+                                ClearCLBuffer src,
+                                ClearCLBuffer dst,
+                                Float factorX,
+                                Float factorY,
+                                Float factorZ) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1725,149 +1712,75 @@ public class Kernels
     parameters.put("factor_x", 1.f / factorX);
     parameters.put("factor_y", 1.f / factorY);
     parameters.put("factor_z", 1.f / factorZ);
-    return clke.execute(OCLlib.class,
-                        "kernels/downsampling.cl",
-                        "downsample_3d_nearest",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/downsampling.cl",
+                 "downsample_3d_nearest",
+                 parameters);
   }
 
-  public static boolean downsample(CLKernelExecutor clke,
-                                   ClearCLImage src,
-                                   ClearCLImage dst,
-                                   Float factorX,
-                                   Float factorY)
+  public static void downsample(CLKernelExecutor clke,
+                                ClearCLImage src,
+                                ClearCLImage dst,
+                                Float factorX,
+                                Float factorY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("factor_x", 1.f / factorX);
     parameters.put("factor_y", 1.f / factorY);
-    return clke.execute(OCLlib.class,
-                        "kernels/downsampling.cl",
-                        "downsample_2d_nearest",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/downsampling.cl",
+                 "downsample_2d_nearest",
+                 parameters);
   }
 
-  public static boolean downsample(CLKernelExecutor clke,
-                                   ClearCLBuffer src,
-                                   ClearCLBuffer dst,
-                                   Float factorX,
-                                   Float factorY)
+  public static void downsample(CLKernelExecutor clke,
+                                ClearCLBuffer src,
+                                ClearCLBuffer dst,
+                                Float factorX,
+                                Float factorY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("factor_x", 1.f / factorX);
     parameters.put("factor_y", 1.f / factorY);
-    return clke.execute(OCLlib.class,
-                        "kernels/downsampling.cl",
-                        "downsample_2d_nearest",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/downsampling.cl",
+                 "downsample_2d_nearest",
+                 parameters);
   }
 
-  public static boolean downsampleSliceBySliceHalfMedian(CLKernelExecutor clke,
-                                                         ClearCLImage src,
-                                                         ClearCLImage dst)
+  public static void downsampleSliceBySliceHalfMedian(CLKernelExecutor clke,
+                                                      ClearCLImage src,
+                                                      ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(OCLlib.class,
-                        "kernels/downsampling.cl",
-                        "downsample_xy_by_half_median",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/downsampling.cl",
+                 "downsample_xy_by_half_median",
+                 parameters);
   }
 
-  public static boolean downsampleSliceBySliceHalfMedian(CLKernelExecutor clke,
-                                                         ClearCLBuffer src,
-                                                         ClearCLBuffer dst)
+  public static void downsampleSliceBySliceHalfMedian(CLKernelExecutor clke,
+                                                      ClearCLBuffer src,
+                                                      ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
-    return clke.execute(OCLlib.class,
-                        "kernels/downsampling.cl",
-                        "downsample_xy_by_half_median",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/downsampling.cl",
+                 "downsample_xy_by_half_median",
+                 parameters);
   }
 
-  public static boolean erodeSphere(CLKernelExecutor clke,
-                                    ClearCLImage src,
-                                    ClearCLImage dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
-    }
-
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "erode_diamond_neighborhood_" + src.getDimension()
-                                                       + "d",
-                        parameters);
-  }
-
-  public static boolean erodeSphere(CLKernelExecutor clke,
-                                    ClearCLBuffer src,
-                                    ClearCLBuffer dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
-    }
-
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "erode_diamond_neighborhood_" + src.getDimension()
-                                                       + "d",
-                        parameters);
-  }
-
-  public static boolean erodeSphereSliceBySlice(CLKernelExecutor clke,
-                                                ClearCLImage src,
-                                                ClearCLImage dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
-    }
-
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "erode_diamond_neighborhood_slice_by_slice",
-                        parameters);
-  }
-
-  public static boolean erodeSphereSliceBySlice(CLKernelExecutor clke,
-                                                ClearCLBuffer src,
-                                                ClearCLBuffer dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
-    }
-
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "erode_diamond_neighborhood_slice_by_slice",
-                        parameters);
-  }
-
-  public static boolean erodeBox(CLKernelExecutor clke,
+  public static void erodeSphere(CLKernelExecutor clke,
                                  ClearCLImage src,
-                                 ClearCLImage dst)
+                                 ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1877,16 +1790,16 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "erode_box_neighborhood_" + src.getDimension()
-                                                       + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "erode_diamond_neighborhood_" + src.getDimension()
+                                                + "d",
+                 parameters);
   }
 
-  public static boolean erodeBox(CLKernelExecutor clke,
+  public static void erodeSphere(CLKernelExecutor clke,
                                  ClearCLBuffer src,
-                                 ClearCLBuffer dst)
+                                 ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1896,16 +1809,16 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "erode_box_neighborhood_" + src.getDimension()
-                                                       + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "erode_diamond_neighborhood_" + src.getDimension()
+                                                + "d",
+                 parameters);
   }
 
-  public static boolean erodeBoxSliceBySlice(CLKernelExecutor clke,
+  public static void erodeSphereSliceBySlice(CLKernelExecutor clke,
                                              ClearCLImage src,
-                                             ClearCLImage dst)
+                                             ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1915,15 +1828,15 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "erode_box_neighborhood_slice_by_slice",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "erode_diamond_neighborhood_slice_by_slice",
+                 parameters);
   }
 
-  public static boolean erodeBoxSliceBySlice(CLKernelExecutor clke,
+  public static void erodeSphereSliceBySlice(CLKernelExecutor clke,
                                              ClearCLBuffer src,
-                                             ClearCLBuffer dst)
+                                             ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -1933,17 +1846,89 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/binaryProcessing.cl",
-                        "erode_box_neighborhood_slice_by_slice",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "erode_diamond_neighborhood_slice_by_slice",
+                 parameters);
   }
 
-  public static boolean fillHistogram(CLKernelExecutor clke,
-                                      ClearCLBuffer src,
-                                      ClearCLBuffer dstHistogram,
-                                      Float minimumGreyValue,
-                                      Float maximumGreyValue)
+  public static void erodeBox(CLKernelExecutor clke,
+                              ClearCLImage src,
+                              ClearCLImage dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    if (!checkDimensions(src.getDimension(), dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
+    }
+
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "erode_box_neighborhood_" + src.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void erodeBox(CLKernelExecutor clke,
+                              ClearCLBuffer src,
+                              ClearCLBuffer dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    if (!checkDimensions(src.getDimension(), dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
+    }
+
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "erode_box_neighborhood_" + src.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void erodeBoxSliceBySlice(CLKernelExecutor clke,
+                                          ClearCLImage src,
+                                          ClearCLImage dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    if (!checkDimensions(src.getDimension(), dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
+    }
+
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "erode_box_neighborhood_slice_by_slice",
+                 parameters);
+  }
+
+  public static void erodeBoxSliceBySlice(CLKernelExecutor clke,
+                                          ClearCLBuffer src,
+                                          ClearCLBuffer dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    if (!checkDimensions(src.getDimension(), dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
+    }
+
+    clke.execute(OCLlib.class,
+                 "kernels/binaryProcessing.cl",
+                 "erode_box_neighborhood_slice_by_slice",
+                 parameters);
+  }
+
+  public static void fillHistogram(CLKernelExecutor clke,
+                                   ClearCLBuffer src,
+                                   ClearCLBuffer dstHistogram,
+                                   Float minimumGreyValue,
+                                   Float maximumGreyValue) throws CLKernelException
   {
 
     int stepSizeX = 1;
@@ -1988,12 +1973,11 @@ public class Kernels
     // timeStamp) + " msec");
 
     partialHistograms.close();
-    return true;
   }
 
-  public static boolean gradientX(CLKernelExecutor clke,
-                                  ClearCLBuffer src,
-                                  ClearCLBuffer dst)
+  public static void gradientX(CLKernelExecutor clke,
+                               ClearCLBuffer src,
+                               ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -2002,15 +1986,15 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/neighbors.cl",
-                        "gradientX_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/neighbors.cl",
+                 "gradientX_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean gradientY(CLKernelExecutor clke,
-                                  ClearCLBuffer src,
-                                  ClearCLBuffer dst)
+  public static void gradientY(CLKernelExecutor clke,
+                               ClearCLBuffer src,
+                               ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -2019,15 +2003,15 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/neighbors.cl",
-                        "gradientY_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/neighbors.cl",
+                 "gradientY_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean gradientZ(CLKernelExecutor clke,
-                                  ClearCLBuffer src,
-                                  ClearCLBuffer dst)
+  public static void gradientZ(CLKernelExecutor clke,
+                               ClearCLBuffer src,
+                               ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -2036,15 +2020,15 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/neighbors.cl",
-                        "gradientZ_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/neighbors.cl",
+                 "gradientZ_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean gradientX(CLKernelExecutor clke,
-                                  ClearCLImage src,
-                                  ClearCLImage dst)
+  public static void gradientX(CLKernelExecutor clke,
+                               ClearCLImage src,
+                               ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -2053,15 +2037,15 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/neighbors.cl",
-                        "gradientX_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/neighbors.cl",
+                 "gradientX_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean gradientY(CLKernelExecutor clke,
-                                  ClearCLImage src,
-                                  ClearCLImage dst)
+  public static void gradientY(CLKernelExecutor clke,
+                               ClearCLImage src,
+                               ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -2070,15 +2054,15 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/neighbors.cl",
-                        "gradientY_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/neighbors.cl",
+                 "gradientY_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean gradientZ(CLKernelExecutor clke,
-                                  ClearCLImage src,
-                                  ClearCLImage dst)
+  public static void gradientZ(CLKernelExecutor clke,
+                               ClearCLImage src,
+                               ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -2087,10 +2071,10 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (copy)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/neighbors.cl",
-                        "gradientZ_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/neighbors.cl",
+                 "gradientZ_" + src.getDimension() + "d",
+                 parameters);
   }
 
   /*
@@ -2110,16 +2094,16 @@ public class Kernels
       histogram.close();
   
       float[] determinedHistogram = (float[])(histogramImp.getProcessor().getPixels());
-      return determinedHistogram;
+      determinedHistogram;
   }
   */
 
-  public static boolean flip(CLKernelExecutor clke,
-                             ClearCLImage src,
-                             ClearCLImage dst,
-                             Boolean flipx,
-                             Boolean flipy,
-                             Boolean flipz)
+  public static void flip(CLKernelExecutor clke,
+                          ClearCLImage src,
+                          ClearCLImage dst,
+                          Boolean flipx,
+                          Boolean flipy,
+                          Boolean flipz) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -2127,35 +2111,35 @@ public class Kernels
     parameters.put("flipx", flipx ? 1 : 0);
     parameters.put("flipy", flipy ? 1 : 0);
     parameters.put("flipz", flipz ? 1 : 0);
-    return clke.execute(OCLlib.class,
-                        "kernels/flip.cl",
-                        "flip_3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/flip.cl",
+                 "flip_3d",
+                 parameters);
   }
 
-  public static boolean flip(CLKernelExecutor clke,
-                             ClearCLImage src,
-                             ClearCLImage dst,
-                             Boolean flipx,
-                             Boolean flipy)
+  public static void flip(CLKernelExecutor clke,
+                          ClearCLImage src,
+                          ClearCLImage dst,
+                          Boolean flipx,
+                          Boolean flipy) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("flipx", flipx ? 1 : 0);
     parameters.put("flipy", flipy ? 1 : 0);
-    return clke.execute(OCLlib.class,
-                        "kernels/flip.cl",
-                        "flip_2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/flip.cl",
+                 "flip_2d",
+                 parameters);
   }
 
-  public static boolean flip(CLKernelExecutor clke,
-                             ClearCLBuffer src,
-                             ClearCLBuffer dst,
-                             Boolean flipx,
-                             Boolean flipy,
-                             Boolean flipz)
+  public static void flip(CLKernelExecutor clke,
+                          ClearCLBuffer src,
+                          ClearCLBuffer dst,
+                          Boolean flipx,
+                          Boolean flipy,
+                          Boolean flipz) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -2163,47 +2147,47 @@ public class Kernels
     parameters.put("flipx", flipx ? 1 : 0);
     parameters.put("flipy", flipy ? 1 : 0);
     parameters.put("flipz", flipz ? 1 : 0);
-    return clke.execute(OCLlib.class,
-                        "kernels/flip.cl",
-                        "flip_3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/flip.cl",
+                 "flip_3d",
+                 parameters);
   }
 
-  public static boolean flip(CLKernelExecutor clke,
-                             ClearCLBuffer src,
-                             ClearCLBuffer dst,
-                             Boolean flipx,
-                             Boolean flipy)
+  public static void flip(CLKernelExecutor clke,
+                          ClearCLBuffer src,
+                          ClearCLBuffer dst,
+                          Boolean flipx,
+                          Boolean flipy) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("flipx", flipx ? 1 : 0);
     parameters.put("flipy", flipy ? 1 : 0);
-    return clke.execute(OCLlib.class,
-                        "kernels/flip.cl",
-                        "flip_2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/flip.cl",
+                 "flip_2d",
+                 parameters);
   }
 
-  public static boolean invert(CLKernelExecutor clke,
-                               ClearCLImage input3d,
-                               ClearCLImage output3d)
+  public static void invert(CLKernelExecutor clke,
+                            ClearCLImage input3d,
+                            ClearCLImage output3d) throws CLKernelException
   {
-    return multiplyImageAndScalar(clke, input3d, output3d, -1f);
+    multiplyImageAndScalar(clke, input3d, output3d, -1f);
   }
 
-  public static boolean invert(CLKernelExecutor clke,
-                               ClearCLBuffer input3d,
-                               ClearCLBuffer output3d)
+  public static void invert(CLKernelExecutor clke,
+                            ClearCLBuffer input3d,
+                            ClearCLBuffer output3d) throws CLKernelException
   {
-    return multiplyImageAndScalar(clke, input3d, output3d, -1f);
+    multiplyImageAndScalar(clke, input3d, output3d, -1f);
   }
 
-  public static boolean localThreshold(CLKernelExecutor clke,
-                                       ClearCLImage src,
-                                       ClearCLImage dst,
-                                       ClearCLImage threshold)
+  public static void localThreshold(CLKernelExecutor clke,
+                                    ClearCLImage src,
+                                    ClearCLImage dst,
+                                    ClearCLImage threshold) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
 
@@ -2217,17 +2201,16 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/thresholding.cl",
-                        "apply_local_threshold_" + src.getDimension()
-                                                   + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/thresholding.cl",
+                 "apply_local_threshold_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean localThreshold(CLKernelExecutor clke,
-                                       ClearCLBuffer src,
-                                       ClearCLBuffer dst,
-                                       ClearCLBuffer threshold)
+  public static void localThreshold(CLKernelExecutor clke,
+                                    ClearCLBuffer src,
+                                    ClearCLBuffer dst,
+                                    ClearCLBuffer threshold) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
 
@@ -2241,17 +2224,16 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/thresholding.cl",
-                        "apply_local_threshold_" + src.getDimension()
-                                                   + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/thresholding.cl",
+                 "apply_local_threshold_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean mask(CLKernelExecutor clke,
-                             ClearCLImage src,
-                             ClearCLImage mask,
-                             ClearCLImage dst)
+  public static void mask(CLKernelExecutor clke,
+                          ClearCLImage src,
+                          ClearCLImage mask,
+                          ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -2262,16 +2244,16 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (mask)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/mask.cl",
-                        "mask_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/mask.cl",
+                 "mask_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean mask(CLKernelExecutor clke,
-                             ClearCLBuffer src,
-                             ClearCLBuffer mask,
-                             ClearCLBuffer dst)
+  public static void mask(CLKernelExecutor clke,
+                          ClearCLBuffer src,
+                          ClearCLBuffer mask,
+                          ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -2282,559 +2264,49 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (mask)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/mask.cl",
-                        "mask_" + src.getDimension() + "d",
-                        parameters);
-  }
-
-  public static boolean maskStackWithPlane(CLKernelExecutor clke,
-                                           ClearCLImage src,
-                                           ClearCLImage mask,
-                                           ClearCLImage dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("mask", mask);
-    parameters.put("dst", dst);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/mask.cl",
-                        "maskStackWithPlane",
-                        parameters);
-  }
-
-  public static boolean maskStackWithPlane(CLKernelExecutor clke,
-                                           ClearCLBuffer src,
-                                           ClearCLBuffer mask,
-                                           ClearCLBuffer dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("mask", mask);
-    parameters.put("dst", dst);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/mask.cl",
-                        "maskStackWithPlane",
-                        parameters);
-  }
-
-  public static boolean maximumSphere(CLKernelExecutor clke,
-                                      ClearCLImage src,
-                                      ClearCLImage dst,
-                                      Integer kernelSizeX,
-                                      Integer kernelSizeY)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("Nx", kernelSizeX);
-    parameters.put("Ny", kernelSizeY);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "maximum_image2d",
-                        parameters);
-  }
-
-  public static boolean maximumSphere(CLKernelExecutor clke,
-                                      ClearCLBuffer src,
-                                      ClearCLBuffer dst,
-                                      Integer kernelSizeX,
-                                      Integer kernelSizeY)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("Nx", kernelSizeX);
-    parameters.put("Ny", kernelSizeY);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "maximum_image2d",
-                        parameters);
-  }
-
-  public static boolean maximumSphere(CLKernelExecutor clke,
-                                      ClearCLImage src,
-                                      ClearCLImage dst,
-                                      Integer kernelSizeX,
-                                      Integer kernelSizeY,
-                                      Integer kernelSizeZ)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("Nx", kernelSizeX);
-    parameters.put("Ny", kernelSizeY);
-    parameters.put("Nz", kernelSizeZ);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "maximum_image3d",
-                        parameters);
-  }
-
-  public static boolean maximumSphere(CLKernelExecutor clke,
-                                      ClearCLBuffer src,
-                                      ClearCLBuffer dst,
-                                      Integer kernelSizeX,
-                                      Integer kernelSizeY,
-                                      Integer kernelSizeZ)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("Nx", kernelSizeX);
-    parameters.put("Ny", kernelSizeY);
-    parameters.put("Nz", kernelSizeZ);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "maximum_image3d",
-                        parameters);
-  }
-
-  @Deprecated
-  public static boolean maximumIJ(CLKernelExecutor clke,
-                                  ClearCLImage src,
-                                  ClearCLImage dst,
-                                  Integer radius)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("radius", radius);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "maximum_image2d_ij",
-                        parameters);
-  }
-
-  @Deprecated
-  public static boolean maximumIJ(CLKernelExecutor clke,
-                                  ClearCLBuffer src,
-                                  ClearCLBuffer dst,
-                                  Integer radius)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("radius", radius);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "maximum_image2d_ij",
-                        parameters);
-  }
-
-  public static boolean maximumSliceBySliceSphere(CLKernelExecutor clke,
-                                                  ClearCLImage src,
-                                                  ClearCLImage dst,
-                                                  Integer kernelSizeX,
-                                                  Integer kernelSizeY)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("Nx", kernelSizeX);
-    parameters.put("Ny", kernelSizeY);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "maximum_slicewise_image3d",
-                        parameters);
-  }
-
-  public static boolean maximumBox(CLKernelExecutor clke,
-                                   ClearCLImage src,
-                                   ClearCLImage dst,
-                                   int radiusX,
-                                   int radiusY,
-                                   int radiusZ)
-  {
-    return executeSeparableKernel(clke,
-                                  src,
-                                  dst,
-                                  "filtering.cl",
-                                  "max_sep_image" + src.getDimension()
-                                                  + "d",
-                                  radiusToKernelSize(radiusX),
-                                  radiusToKernelSize(radiusY),
-                                  radiusToKernelSize(radiusZ),
-                                  radiusX,
-                                  radiusY,
-                                  radiusZ,
-                                  src.getDimension());
-  }
-
-  public static boolean maximumBox(CLKernelExecutor clke,
-                                   ClearCLBuffer src,
-                                   ClearCLBuffer dst,
-                                   int radiusX,
-                                   int radiusY,
-                                   int radiusZ)
-  {
-    return executeSeparableKernel(clke,
-                                  src,
-                                  dst,
-                                  "filtering.cl",
-                                  "max_sep_image" + src.getDimension()
-                                                  + "d",
-                                  radiusToKernelSize(radiusX),
-                                  radiusToKernelSize(radiusY),
-                                  radiusToKernelSize(radiusZ),
-                                  radiusX,
-                                  radiusY,
-                                  radiusZ,
-                                  src.getDimension());
-  }
-
-  public static boolean maximumSliceBySliceSphere(CLKernelExecutor clke,
-                                                  ClearCLBuffer src,
-                                                  ClearCLBuffer dst,
-                                                  Integer kernelSizeX,
-                                                  Integer kernelSizeY)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("Nx", kernelSizeX);
-    parameters.put("Ny", kernelSizeY);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "maximum_slicewise_image3d",
-                        parameters);
-  }
-
-  public static boolean maximumImages(CLKernelExecutor clke,
-                                      ClearCLImage src,
-                                      ClearCLImage src1,
-                                      ClearCLImage dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("src1", src1);
-    parameters.put("dst", dst);
-
-    if (!checkDimensions(src.getDimension(),
-                         src1.getDimension(),
-                         dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (maximumImages)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "maxPixelwise_" + src.getDimension() + "d",
-                        parameters);
-  }
-
-  public static boolean maximumImages(CLKernelExecutor clke,
-                                      ClearCLBuffer src,
-                                      ClearCLBuffer src1,
-                                      ClearCLBuffer dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("src1", src1);
-    parameters.put("dst", dst);
-
-    if (!checkDimensions(src.getDimension(),
-                         src1.getDimension(),
-                         dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (maximumImages)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "maxPixelwise_" + src.getDimension() + "d",
-                        parameters);
-  }
-
-  public static boolean maximumImageAndScalar(CLKernelExecutor clke,
-                                              ClearCLImage src,
-                                              ClearCLImage dst,
-                                              Float valueB)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("valueB", valueB);
-    parameters.put("dst", dst);
-
-    if (!checkDimensions(src.getDimension(),
-                         src.getDimension(),
-                         dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (maximumImages)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "maxPixelwiseScalar_" + src.getDimension()
-                                           + "d",
-                        parameters);
-  }
-
-  public static boolean maximumImageAndScalar(CLKernelExecutor clke,
-                                              ClearCLBuffer src,
-                                              ClearCLBuffer dst,
-                                              Float valueB)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("valueB", valueB);
-    parameters.put("dst", dst);
-
-    if (!checkDimensions(src.getDimension(),
-                         src.getDimension(),
-                         dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (maximumImages)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "maxPixelwiseScalar_" + src.getDimension()
-                                           + "d",
-                        parameters);
-  }
-
-  public static boolean minimumImages(CLKernelExecutor clke,
-                                      ClearCLImage src,
-                                      ClearCLImage src1,
-                                      ClearCLImage dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("src1", src1);
-    parameters.put("dst", dst);
-
-    if (!checkDimensions(src.getDimension(),
-                         src1.getDimension(),
-                         dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (minimumImages)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "minPixelwise_" + src.getDimension() + "d",
-                        parameters);
-  }
-
-  public static boolean minimumImages(CLKernelExecutor clke,
-                                      ClearCLBuffer src,
-                                      ClearCLBuffer src1,
-                                      ClearCLBuffer dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("src1", src1);
-    parameters.put("dst", dst);
-
-    if (!checkDimensions(src.getDimension(),
-                         src1.getDimension(),
-                         dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (minimumImages)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "minPixelwise_" + src.getDimension() + "d",
-                        parameters);
-  }
-
-  public static boolean minimumImageAndScalar(CLKernelExecutor clke,
-                                              ClearCLImage src,
-                                              ClearCLImage dst,
-                                              Float valueB)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("valueB", valueB);
-    parameters.put("dst", dst);
-
-    if (!checkDimensions(src.getDimension(),
-                         src.getDimension(),
-                         dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (minimumImageAndScalar)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "minPixelwiseScalar_" + src.getDimension()
-                                           + "d",
-                        parameters);
-  }
-
-  public static boolean minimumImageAndScalar(CLKernelExecutor clke,
-                                              ClearCLBuffer src,
-                                              ClearCLBuffer dst,
-                                              Float valueB)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("valueB", valueB);
-    parameters.put("dst", dst);
-
-    if (!checkDimensions(src.getDimension(),
-                         src.getDimension(),
-                         dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (minimumImageAndScalar)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "minPixelwiseScalar_" + src.getDimension()
-                                           + "d",
-                        parameters);
-  }
-
-  public static boolean maximumZProjection(CLKernelExecutor clke,
-                                           ClearCLImage src,
-                                           ClearCLImage dst_max)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst_max", dst_max);
-
     clke.execute(OCLlib.class,
-                 "kernels/projections.cl",
-                 "max_project_3d_2d",
+                 "kernels/mask.cl",
+                 "mask_" + src.getDimension() + "d",
                  parameters);
-
-    return true;
   }
 
-  public static boolean maximumZProjection(CLKernelExecutor clke,
-                                           ClearCLBuffer src,
-                                           ClearCLBuffer dst_max)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst_max", dst_max);
-
-    clke.execute(OCLlib.class,
-                 "kernels/projections.cl",
-                 "max_project_3d_2d",
-                 parameters);
-
-    return true;
-  }
-
-  public static boolean minimumZProjection(CLKernelExecutor clke,
-                                           ClearCLImage src,
-                                           ClearCLImage dst_min)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst_min", dst_min);
-
-    clke.execute(OCLlib.class,
-                 "kernels/projections.cl",
-                 "min_project_3d_2d",
-                 parameters);
-
-    return true;
-  }
-
-  public static boolean minimumZProjection(CLKernelExecutor clke,
-                                           ClearCLBuffer src,
-                                           ClearCLBuffer dst_min)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst_min", dst_min);
-
-    clke.execute(OCLlib.class,
-                 "kernels/projections.cl",
-                 "min_project_3d_2d",
-                 parameters);
-
-    return true;
-  }
-
-  public static boolean meanZProjection(CLKernelExecutor clke,
+  public static void maskStackWithPlane(CLKernelExecutor clke,
                                         ClearCLImage src,
-                                        ClearCLImage dst)
+                                        ClearCLImage mask,
+                                        ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
+    parameters.put("mask", mask);
     parameters.put("dst", dst);
 
     clke.execute(OCLlib.class,
-                 "kernels/projections.cl",
-                 "mean_project_3d_2d",
+                 "kernels/mask.cl",
+                 "maskStackWithPlane",
                  parameters);
-
-    return true;
   }
 
-  public static boolean meanZProjection(CLKernelExecutor clke,
+  public static void maskStackWithPlane(CLKernelExecutor clke,
                                         ClearCLBuffer src,
-                                        ClearCLBuffer dst)
+                                        ClearCLBuffer mask,
+                                        ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
+    parameters.put("mask", mask);
     parameters.put("dst", dst);
 
     clke.execute(OCLlib.class,
-                 "kernels/projections.cl",
-                 "mean_project_3d_2d",
+                 "kernels/mask.cl",
+                 "maskStackWithPlane",
                  parameters);
-
-    return true;
   }
 
-  public static boolean maximumXYZProjection(CLKernelExecutor clke,
-                                             ClearCLImage src,
-                                             ClearCLImage dst_max,
-                                             Integer projectedDimensionX,
-                                             Integer projectedDimensionY,
-                                             Integer projectedDimension)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst_max", dst_max);
-    parameters.put("projection_x", projectedDimensionX);
-    parameters.put("projection_y", projectedDimensionY);
-    parameters.put("projection_dim", projectedDimension);
-
-    clke.execute(OCLlib.class,
-                 "kernels/projections.cl",
-                 "max_project_dim_select_3d_2d",
-                 parameters);
-
-    return true;
-  }
-
-  public static boolean maximumXYZProjection(CLKernelExecutor clke,
-                                             ClearCLBuffer src,
-                                             ClearCLBuffer dst_max,
-                                             Integer projectedDimensionX,
-                                             Integer projectedDimensionY,
-                                             Integer projectedDimension)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst_max", dst_max);
-    parameters.put("projection_x", projectedDimensionX);
-    parameters.put("projection_y", projectedDimensionY);
-    parameters.put("projection_dim", projectedDimension);
-
-    clke.execute(OCLlib.class,
-                 "kernels/projections.cl",
-                 "max_project_dim_select_3d_2d",
-                 parameters);
-
-    return true;
-  }
-
-  public static boolean meanSphere(CLKernelExecutor clke,
+  public static void maximumSphere(CLKernelExecutor clke,
                                    ClearCLImage src,
                                    ClearCLImage dst,
                                    Integer kernelSizeX,
-                                   Integer kernelSizeY)
+                                   Integer kernelSizeY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -2842,17 +2314,17 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "mean_image2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "maximum_image2d",
+                 parameters);
   }
 
-  public static boolean meanSphere(CLKernelExecutor clke,
+  public static void maximumSphere(CLKernelExecutor clke,
                                    ClearCLBuffer src,
                                    ClearCLBuffer dst,
                                    Integer kernelSizeX,
-                                   Integer kernelSizeY)
+                                   Integer kernelSizeY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -2860,153 +2332,151 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "mean_image2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "maximum_image2d",
+                 parameters);
+  }
+
+  public static void maximumSphere(CLKernelExecutor clke,
+                                   ClearCLImage src,
+                                   ClearCLImage dst,
+                                   Integer kernelSizeX,
+                                   Integer kernelSizeY,
+                                   Integer kernelSizeZ) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    parameters.put("Nx", kernelSizeX);
+    parameters.put("Ny", kernelSizeY);
+    parameters.put("Nz", kernelSizeZ);
+
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "maximum_image3d",
+                 parameters);
+  }
+
+  public static void maximumSphere(CLKernelExecutor clke,
+                                   ClearCLBuffer src,
+                                   ClearCLBuffer dst,
+                                   Integer kernelSizeX,
+                                   Integer kernelSizeY,
+                                   Integer kernelSizeZ) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    parameters.put("Nx", kernelSizeX);
+    parameters.put("Ny", kernelSizeY);
+    parameters.put("Nz", kernelSizeZ);
+
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "maximum_image3d",
+                 parameters);
   }
 
   @Deprecated
-  public static boolean meanIJ(CLKernelExecutor clke,
+  public static void maximumIJ(CLKernelExecutor clke,
                                ClearCLImage src,
                                ClearCLImage dst,
-                               Integer radius)
+                               Integer radius) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("radius", radius);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "mean_image2d_ij",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "maximum_image2d_ij",
+                 parameters);
   }
 
   @Deprecated
-  public static boolean meanIJ(CLKernelExecutor clke,
+  public static void maximumIJ(CLKernelExecutor clke,
                                ClearCLBuffer src,
                                ClearCLBuffer dst,
-                               Integer radius)
+                               Integer radius) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("radius", radius);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "mean_image2d_ij",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "maximum_image2d_ij",
+                 parameters);
   }
 
-  public static boolean meanSphere(CLKernelExecutor clke,
-                                   ClearCLImage src,
-                                   ClearCLImage dst,
-                                   Integer kernelSizeX,
-                                   Integer kernelSizeY,
-                                   Integer kernelSizeZ)
+  public static void maximumSliceBySliceSphere(CLKernelExecutor clke,
+                                               ClearCLImage src,
+                                               ClearCLImage dst,
+                                               Integer kernelSizeX,
+                                               Integer kernelSizeY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
-    parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "mean_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "maximum_slicewise_image3d",
+                 parameters);
   }
 
-  public static boolean meanSphere(CLKernelExecutor clke,
-                                   ClearCLBuffer src,
-                                   ClearCLBuffer dst,
-                                   Integer kernelSizeX,
-                                   Integer kernelSizeY,
-                                   Integer kernelSizeZ)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("Nx", kernelSizeX);
-    parameters.put("Ny", kernelSizeY);
-    parameters.put("Nz", kernelSizeZ);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "mean_image3d",
-                        parameters);
-  }
-
-  public static boolean meanBox(CLKernelExecutor clke,
+  public static void maximumBox(CLKernelExecutor clke,
                                 ClearCLImage src,
                                 ClearCLImage dst,
                                 int radiusX,
                                 int radiusY,
-                                int radiusZ)
+                                int radiusZ) throws CLKernelException
   {
-    return executeSeparableKernel(clke,
-                                  src,
-                                  dst,
-                                  "filtering.cl",
-                                  "mean_sep_image" + src.getDimension()
-                                                  + "d",
-                                  radiusToKernelSize(radiusX),
-                                  radiusToKernelSize(radiusY),
-                                  radiusToKernelSize(radiusZ),
-                                  radiusX,
-                                  radiusY,
-                                  radiusZ,
-                                  src.getDimension());
+    executeSeparableKernel(clke,
+                           src,
+                           dst,
+                           "filtering.cl",
+                           "max_sep_image" + src.getDimension() + "d",
+                           radiusToKernelSize(radiusX),
+                           radiusToKernelSize(radiusY),
+                           radiusToKernelSize(radiusZ),
+                           radiusX,
+                           radiusY,
+                           radiusZ,
+                           src.getDimension());
   }
 
-  public static boolean meanBox(CLKernelExecutor clke,
+  public static void maximumBox(CLKernelExecutor clke,
                                 ClearCLBuffer src,
                                 ClearCLBuffer dst,
                                 int radiusX,
                                 int radiusY,
-                                int radiusZ)
+                                int radiusZ) throws CLKernelException
   {
-    return executeSeparableKernel(clke,
-                                  src,
-                                  dst,
-                                  "filtering.cl",
-                                  "mean_sep_image" + src.getDimension()
-                                                  + "d",
-                                  radiusToKernelSize(radiusX),
-                                  radiusToKernelSize(radiusY),
-                                  radiusToKernelSize(radiusZ),
-                                  radiusX,
-                                  radiusY,
-                                  radiusZ,
-                                  src.getDimension());
+    executeSeparableKernel(clke,
+                           src,
+                           dst,
+                           "filtering.cl",
+                           "max_sep_image" + src.getDimension() + "d",
+                           radiusToKernelSize(radiusX),
+                           radiusToKernelSize(radiusY),
+                           radiusToKernelSize(radiusZ),
+                           radiusX,
+                           radiusY,
+                           radiusZ,
+                           src.getDimension());
   }
 
-  public static boolean meanSliceBySliceSphere(CLKernelExecutor clke,
-                                               ClearCLImage src,
-                                               ClearCLImage dst,
-                                               Integer kernelSizeX,
-                                               Integer kernelSizeY)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("Nx", kernelSizeX);
-    parameters.put("Ny", kernelSizeY);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "mean_slicewise_image3d",
-                        parameters);
-  }
-
-  public static boolean meanSliceBySliceSphere(CLKernelExecutor clke,
+  public static void maximumSliceBySliceSphere(CLKernelExecutor clke,
                                                ClearCLBuffer src,
                                                ClearCLBuffer dst,
                                                Integer kernelSizeX,
-                                               Integer kernelSizeY)
+                                               Integer kernelSizeY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -3014,68 +2484,390 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "mean_slicewise_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "maximum_slicewise_image3d",
+                 parameters);
   }
 
-  public static boolean medianSphere(CLKernelExecutor clke,
-                                     ClearCLImage src,
-                                     ClearCLImage dst,
-                                     Integer kernelSizeX,
-                                     Integer kernelSizeY)
+  public static void maximumImages(CLKernelExecutor clke,
+                                   ClearCLImage src,
+                                   ClearCLImage src1,
+                                   ClearCLImage dst) throws CLKernelException
   {
-    if (kernelSizeX * kernelSizeY > CLKernelExecutor.MAX_ARRAY_SIZE)
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("src1", src1);
+    parameters.put("dst", dst);
+
+    if (!checkDimensions(src.getDimension(),
+                         src1.getDimension(),
+                         dst.getDimension()))
     {
-      throw new IllegalArgumentException("Error: kernels of the medianSphere filter is too big. Consider increasing MAX_ARRAY_SIZE.");
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (maximumImages)");
     }
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "maxPixelwise_" + src.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void maximumImages(CLKernelExecutor clke,
+                                   ClearCLBuffer src,
+                                   ClearCLBuffer src1,
+                                   ClearCLBuffer dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("src1", src1);
+    parameters.put("dst", dst);
+
+    if (!checkDimensions(src.getDimension(),
+                         src1.getDimension(),
+                         dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (maximumImages)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "maxPixelwise_" + src.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void maximumImageAndScalar(CLKernelExecutor clke,
+                                           ClearCLImage src,
+                                           ClearCLImage dst,
+                                           Float valueB) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("valueB", valueB);
+    parameters.put("dst", dst);
+
+    if (!checkDimensions(src.getDimension(),
+                         src.getDimension(),
+                         dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (maximumImages)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "maxPixelwiseScalar_" + src.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void maximumImageAndScalar(CLKernelExecutor clke,
+                                           ClearCLBuffer src,
+                                           ClearCLBuffer dst,
+                                           Float valueB) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("valueB", valueB);
+    parameters.put("dst", dst);
+
+    if (!checkDimensions(src.getDimension(),
+                         src.getDimension(),
+                         dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (maximumImages)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "maxPixelwiseScalar_" + src.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void minimumImages(CLKernelExecutor clke,
+                                   ClearCLImage src,
+                                   ClearCLImage src1,
+                                   ClearCLImage dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("src1", src1);
+    parameters.put("dst", dst);
+
+    if (!checkDimensions(src.getDimension(),
+                         src1.getDimension(),
+                         dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (minimumImages)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "minPixelwise_" + src.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void minimumImages(CLKernelExecutor clke,
+                                   ClearCLBuffer src,
+                                   ClearCLBuffer src1,
+                                   ClearCLBuffer dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("src1", src1);
+    parameters.put("dst", dst);
+
+    if (!checkDimensions(src.getDimension(),
+                         src1.getDimension(),
+                         dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (minimumImages)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "minPixelwise_" + src.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void minimumImageAndScalar(CLKernelExecutor clke,
+                                           ClearCLImage src,
+                                           ClearCLImage dst,
+                                           Float valueB) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("valueB", valueB);
+    parameters.put("dst", dst);
+
+    if (!checkDimensions(src.getDimension(),
+                         src.getDimension(),
+                         dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (minimumImageAndScalar)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "minPixelwiseScalar_" + src.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void minimumImageAndScalar(CLKernelExecutor clke,
+                                           ClearCLBuffer src,
+                                           ClearCLBuffer dst,
+                                           Float valueB) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("valueB", valueB);
+    parameters.put("dst", dst);
+
+    if (!checkDimensions(src.getDimension(),
+                         src.getDimension(),
+                         dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (minimumImageAndScalar)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "minPixelwiseScalar_" + src.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void maximumZProjection(CLKernelExecutor clke,
+                                        ClearCLImage src,
+                                        ClearCLImage dst_max) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst_max", dst_max);
+
+    clke.execute(OCLlib.class,
+                 "kernels/projections.cl",
+                 "max_project_3d_2d",
+                 parameters);
+
+  }
+
+  public static void maximumZProjection(CLKernelExecutor clke,
+                                        ClearCLBuffer src,
+                                        ClearCLBuffer dst_max) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst_max", dst_max);
+
+    clke.execute(OCLlib.class,
+                 "kernels/projections.cl",
+                 "max_project_3d_2d",
+                 parameters);
+  }
+
+  public static void minimumZProjection(CLKernelExecutor clke,
+                                        ClearCLImage src,
+                                        ClearCLImage dst_min) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst_min", dst_min);
+
+    clke.execute(OCLlib.class,
+                 "kernels/projections.cl",
+                 "min_project_3d_2d",
+                 parameters);
+  }
+
+  public static void minimumZProjection(CLKernelExecutor clke,
+                                        ClearCLBuffer src,
+                                        ClearCLBuffer dst_min) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst_min", dst_min);
+
+    clke.execute(OCLlib.class,
+                 "kernels/projections.cl",
+                 "min_project_3d_2d",
+                 parameters);
+  }
+
+  public static void meanZProjection(CLKernelExecutor clke,
+                                     ClearCLImage src,
+                                     ClearCLImage dst) throws CLKernelException
+  {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
-    parameters.put("Nx", kernelSizeX);
-    parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "median_image2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/projections.cl",
+                 "mean_project_3d_2d",
+                 parameters);
   }
 
-  public static boolean medianSphere(CLKernelExecutor clke,
+  public static void meanZProjection(CLKernelExecutor clke,
                                      ClearCLBuffer src,
-                                     ClearCLBuffer dst,
-                                     Integer kernelSizeX,
-                                     Integer kernelSizeY)
+                                     ClearCLBuffer dst) throws CLKernelException
   {
-    if (kernelSizeX * kernelSizeY > CLKernelExecutor.MAX_ARRAY_SIZE)
-    {
-      throw new IllegalArgumentException("Error: kernels of the medianSphere filter is too big. Consider increasing MAX_ARRAY_SIZE.");
-    }
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+
+    clke.execute(OCLlib.class,
+                 "kernels/projections.cl",
+                 "mean_project_3d_2d",
+                 parameters);
+  }
+
+  public static void maximumXYZProjection(CLKernelExecutor clke,
+                                          ClearCLImage src,
+                                          ClearCLImage dst_max,
+                                          Integer projectedDimensionX,
+                                          Integer projectedDimensionY,
+                                          Integer projectedDimension) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst_max", dst_max);
+    parameters.put("projection_x", projectedDimensionX);
+    parameters.put("projection_y", projectedDimensionY);
+    parameters.put("projection_dim", projectedDimension);
+
+    clke.execute(OCLlib.class,
+                 "kernels/projections.cl",
+                 "max_project_dim_select_3d_2d",
+                 parameters);
+  }
+
+  public static void maximumXYZProjection(CLKernelExecutor clke,
+                                          ClearCLBuffer src,
+                                          ClearCLBuffer dst_max,
+                                          Integer projectedDimensionX,
+                                          Integer projectedDimensionY,
+                                          Integer projectedDimension) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst_max", dst_max);
+    parameters.put("projection_x", projectedDimensionX);
+    parameters.put("projection_y", projectedDimensionY);
+    parameters.put("projection_dim", projectedDimension);
+
+    clke.execute(OCLlib.class,
+                 "kernels/projections.cl",
+                 "max_project_dim_select_3d_2d",
+                 parameters);
+  }
+
+  public static void meanSphere(CLKernelExecutor clke,
+                                ClearCLImage src,
+                                ClearCLImage dst,
+                                Integer kernelSizeX,
+                                Integer kernelSizeY) throws CLKernelException
+  {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "median_image2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "mean_image2d",
+                 parameters);
   }
 
-  public static boolean medianSphere(CLKernelExecutor clke,
-                                     ClearCLImage src,
-                                     ClearCLImage dst,
-                                     Integer kernelSizeX,
-                                     Integer kernelSizeY,
-                                     Integer kernelSizeZ)
+  public static void meanSphere(CLKernelExecutor clke,
+                                ClearCLBuffer src,
+                                ClearCLBuffer dst,
+                                Integer kernelSizeX,
+                                Integer kernelSizeY) throws CLKernelException
   {
-    if (kernelSizeX * kernelSizeY
-        * kernelSizeZ > CLKernelExecutor.MAX_ARRAY_SIZE)
-    {
-      throw new IllegalArgumentException("Error: kernels of the medianSphere filter is too big. Consider increasing MAX_ARRAY_SIZE.");
-    }
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    parameters.put("Nx", kernelSizeX);
+    parameters.put("Ny", kernelSizeY);
+
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "mean_image2d",
+                 parameters);
+  }
+
+  @Deprecated
+  public static void meanIJ(CLKernelExecutor clke,
+                            ClearCLImage src,
+                            ClearCLImage dst,
+                            Integer radius) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    parameters.put("radius", radius);
+
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "mean_image2d_ij",
+                 parameters);
+  }
+
+  @Deprecated
+  public static void meanIJ(CLKernelExecutor clke,
+                            ClearCLBuffer src,
+                            ClearCLBuffer dst,
+                            Integer radius) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    parameters.put("radius", radius);
+
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "mean_image2d_ij",
+                 parameters);
+  }
+
+  public static void meanSphere(CLKernelExecutor clke,
+                                ClearCLImage src,
+                                ClearCLImage dst,
+                                Integer kernelSizeX,
+                                Integer kernelSizeY,
+                                Integer kernelSizeZ) throws CLKernelException
+  {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
@@ -3083,24 +2875,19 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "median_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "mean_image3d",
+                 parameters);
   }
 
-  public static boolean medianSphere(CLKernelExecutor clke,
-                                     ClearCLBuffer src,
-                                     ClearCLBuffer dst,
-                                     Integer kernelSizeX,
-                                     Integer kernelSizeY,
-                                     Integer kernelSizeZ)
+  public static void meanSphere(CLKernelExecutor clke,
+                                ClearCLBuffer src,
+                                ClearCLBuffer dst,
+                                Integer kernelSizeX,
+                                Integer kernelSizeY,
+                                Integer kernelSizeZ) throws CLKernelException
   {
-    if (kernelSizeX * kernelSizeY
-        * kernelSizeZ > CLKernelExecutor.MAX_ARRAY_SIZE)
-    {
-      throw new IllegalArgumentException("Error: kernels of the medianSphere filter is too big. Consider increasing MAX_ARRAY_SIZE.");
-    }
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
@@ -3108,61 +2895,97 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "median_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "mean_image3d",
+                 parameters);
   }
 
-  public static boolean medianSliceBySliceSphere(CLKernelExecutor clke,
-                                                 ClearCLImage src,
-                                                 ClearCLImage dst,
-                                                 Integer kernelSizeX,
-                                                 Integer kernelSizeY)
+  public static void meanBox(CLKernelExecutor clke,
+                             ClearCLImage src,
+                             ClearCLImage dst,
+                             int radiusX,
+                             int radiusY,
+                             int radiusZ) throws CLKernelException
   {
-    if (kernelSizeX * kernelSizeY > CLKernelExecutor.MAX_ARRAY_SIZE)
-    {
-      throw new IllegalArgumentException("Error: kernels of the medianSphere filter is too big. Consider increasing MAX_ARRAY_SIZE.");
-    }
+    executeSeparableKernel(clke,
+                           src,
+                           dst,
+                           "filtering.cl",
+                           "mean_sep_image" + src.getDimension()
+                                           + "d",
+                           radiusToKernelSize(radiusX),
+                           radiusToKernelSize(radiusY),
+                           radiusToKernelSize(radiusZ),
+                           radiusX,
+                           radiusY,
+                           radiusZ,
+                           src.getDimension());
+  }
+
+  public static void meanBox(CLKernelExecutor clke,
+                             ClearCLBuffer src,
+                             ClearCLBuffer dst,
+                             int radiusX,
+                             int radiusY,
+                             int radiusZ) throws CLKernelException
+  {
+    executeSeparableKernel(clke,
+                           src,
+                           dst,
+                           "filtering.cl",
+                           "mean_sep_image" + src.getDimension()
+                                           + "d",
+                           radiusToKernelSize(radiusX),
+                           radiusToKernelSize(radiusY),
+                           radiusToKernelSize(radiusZ),
+                           radiusX,
+                           radiusY,
+                           radiusZ,
+                           src.getDimension());
+  }
+
+  public static void meanSliceBySliceSphere(CLKernelExecutor clke,
+                                            ClearCLImage src,
+                                            ClearCLImage dst,
+                                            Integer kernelSizeX,
+                                            Integer kernelSizeY) throws CLKernelException
+  {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "median_slicewise_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "mean_slicewise_image3d",
+                 parameters);
   }
 
-  public static boolean medianSliceBySliceSphere(CLKernelExecutor clke,
-                                                 ClearCLBuffer src,
-                                                 ClearCLBuffer dst,
-                                                 Integer kernelSizeX,
-                                                 Integer kernelSizeY)
+  public static void meanSliceBySliceSphere(CLKernelExecutor clke,
+                                            ClearCLBuffer src,
+                                            ClearCLBuffer dst,
+                                            Integer kernelSizeX,
+                                            Integer kernelSizeY) throws CLKernelException
   {
-    if (kernelSizeX * kernelSizeY > CLKernelExecutor.MAX_ARRAY_SIZE)
-    {
-      throw new IllegalArgumentException("Error: kernels of the medianSphere filter is too big. Consider increasing MAX_ARRAY_SIZE.");
-    }
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "median_slicewise_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "mean_slicewise_image3d",
+                 parameters);
   }
 
-  public static boolean medianBox(CLKernelExecutor clke,
+  public static void medianSphere(CLKernelExecutor clke,
                                   ClearCLImage src,
                                   ClearCLImage dst,
                                   Integer kernelSizeX,
-                                  Integer kernelSizeY)
+                                  Integer kernelSizeY) throws CLKernelException
   {
     if (kernelSizeX * kernelSizeY > CLKernelExecutor.MAX_ARRAY_SIZE)
     {
@@ -3174,17 +2997,17 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "median_box_image2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "median_image2d",
+                 parameters);
   }
 
-  public static boolean medianBox(CLKernelExecutor clke,
+  public static void medianSphere(CLKernelExecutor clke,
                                   ClearCLBuffer src,
                                   ClearCLBuffer dst,
                                   Integer kernelSizeX,
-                                  Integer kernelSizeY)
+                                  Integer kernelSizeY) throws CLKernelException
   {
     if (kernelSizeX * kernelSizeY > CLKernelExecutor.MAX_ARRAY_SIZE)
     {
@@ -3196,18 +3019,18 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "median_box_image2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "median_image2d",
+                 parameters);
   }
 
-  public static boolean medianBox(CLKernelExecutor clke,
+  public static void medianSphere(CLKernelExecutor clke,
                                   ClearCLImage src,
                                   ClearCLImage dst,
                                   Integer kernelSizeX,
                                   Integer kernelSizeY,
-                                  Integer kernelSizeZ)
+                                  Integer kernelSizeZ) throws CLKernelException
   {
     if (kernelSizeX * kernelSizeY
         * kernelSizeZ > CLKernelExecutor.MAX_ARRAY_SIZE)
@@ -3221,18 +3044,18 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "median_box_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "median_image3d",
+                 parameters);
   }
 
-  public static boolean medianBox(CLKernelExecutor clke,
+  public static void medianSphere(CLKernelExecutor clke,
                                   ClearCLBuffer src,
                                   ClearCLBuffer dst,
                                   Integer kernelSizeX,
                                   Integer kernelSizeY,
-                                  Integer kernelSizeZ)
+                                  Integer kernelSizeZ) throws CLKernelException
   {
     if (kernelSizeX * kernelSizeY
         * kernelSizeZ > CLKernelExecutor.MAX_ARRAY_SIZE)
@@ -3246,17 +3069,17 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "median_box_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "median_image3d",
+                 parameters);
   }
 
-  public static boolean medianSliceBySliceBox(CLKernelExecutor clke,
+  public static void medianSliceBySliceSphere(CLKernelExecutor clke,
                                               ClearCLImage src,
                                               ClearCLImage dst,
                                               Integer kernelSizeX,
-                                              Integer kernelSizeY)
+                                              Integer kernelSizeY) throws CLKernelException
   {
     if (kernelSizeX * kernelSizeY > CLKernelExecutor.MAX_ARRAY_SIZE)
     {
@@ -3268,17 +3091,17 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "median_box_slicewise_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "median_slicewise_image3d",
+                 parameters);
   }
 
-  public static boolean medianSliceBySliceBox(CLKernelExecutor clke,
+  public static void medianSliceBySliceSphere(CLKernelExecutor clke,
                                               ClearCLBuffer src,
                                               ClearCLBuffer dst,
                                               Integer kernelSizeX,
-                                              Integer kernelSizeY)
+                                              Integer kernelSizeY) throws CLKernelException
   {
     if (kernelSizeX * kernelSizeY > CLKernelExecutor.MAX_ARRAY_SIZE)
     {
@@ -3290,75 +3113,68 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "median_box_slicewise_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "median_slicewise_image3d",
+                 parameters);
   }
 
-  public static boolean minimumSphere(CLKernelExecutor clke,
-                                      ClearCLImage src,
-                                      ClearCLImage dst,
-                                      Integer kernelSizeX,
-                                      Integer kernelSizeY)
+  public static void medianBox(CLKernelExecutor clke,
+                               ClearCLImage src,
+                               ClearCLImage dst,
+                               Integer kernelSizeX,
+                               Integer kernelSizeY) throws CLKernelException
   {
+    if (kernelSizeX * kernelSizeY > CLKernelExecutor.MAX_ARRAY_SIZE)
+    {
+      throw new IllegalArgumentException("Error: kernels of the medianSphere filter is too big. Consider increasing MAX_ARRAY_SIZE.");
+    }
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "minimum_image2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "median_box_image2d",
+                 parameters);
   }
 
-  public static boolean minimumSphere(CLKernelExecutor clke,
-                                      ClearCLBuffer src,
-                                      ClearCLBuffer dst,
-                                      Integer kernelSizeX,
-                                      Integer kernelSizeY)
+  public static void medianBox(CLKernelExecutor clke,
+                               ClearCLBuffer src,
+                               ClearCLBuffer dst,
+                               Integer kernelSizeX,
+                               Integer kernelSizeY) throws CLKernelException
   {
+    if (kernelSizeX * kernelSizeY > CLKernelExecutor.MAX_ARRAY_SIZE)
+    {
+      throw new IllegalArgumentException("Error: kernels of the medianSphere filter is too big. Consider increasing MAX_ARRAY_SIZE.");
+    }
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "minimum_image2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "median_box_image2d",
+                 parameters);
   }
 
-  public static boolean minimumSphere(CLKernelExecutor clke,
-                                      ClearCLImage src,
-                                      ClearCLImage dst,
-                                      Integer kernelSizeX,
-                                      Integer kernelSizeY,
-                                      Integer kernelSizeZ)
+  public static void medianBox(CLKernelExecutor clke,
+                               ClearCLImage src,
+                               ClearCLImage dst,
+                               Integer kernelSizeX,
+                               Integer kernelSizeY,
+                               Integer kernelSizeZ) throws CLKernelException
   {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("Nx", kernelSizeX);
-    parameters.put("Ny", kernelSizeY);
-    parameters.put("Nz", kernelSizeZ);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "minimum_image3d",
-                        parameters);
-  }
-
-  public static boolean minimumSphere(CLKernelExecutor clke,
-                                      ClearCLBuffer src,
-                                      ClearCLBuffer dst,
-                                      Integer kernelSizeX,
-                                      Integer kernelSizeY,
-                                      Integer kernelSizeZ)
-  {
+    if (kernelSizeX * kernelSizeY
+        * kernelSizeZ > CLKernelExecutor.MAX_ARRAY_SIZE)
+    {
+      throw new IllegalArgumentException("Error: kernels of the medianSphere filter is too big. Consider increasing MAX_ARRAY_SIZE.");
+    }
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
@@ -3366,95 +3182,104 @@ public class Kernels
     parameters.put("Ny", kernelSizeY);
     parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "minimum_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "median_box_image3d",
+                 parameters);
   }
 
-  @Deprecated
-  public static boolean minimumIJ(CLKernelExecutor clke,
-                                  ClearCLImage src,
-                                  ClearCLImage dst,
-                                  Integer radius)
+  public static void medianBox(CLKernelExecutor clke,
+                               ClearCLBuffer src,
+                               ClearCLBuffer dst,
+                               Integer kernelSizeX,
+                               Integer kernelSizeY,
+                               Integer kernelSizeZ) throws CLKernelException
   {
+    if (kernelSizeX * kernelSizeY
+        * kernelSizeZ > CLKernelExecutor.MAX_ARRAY_SIZE)
+    {
+      throw new IllegalArgumentException("Error: kernels of the medianSphere filter is too big. Consider increasing MAX_ARRAY_SIZE.");
+    }
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
-    parameters.put("radius", radius);
+    parameters.put("Nx", kernelSizeX);
+    parameters.put("Ny", kernelSizeY);
+    parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "minimum_image2d_ij",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "median_box_image3d",
+                 parameters);
   }
 
-  @Deprecated
-  public static boolean minimumIJ(CLKernelExecutor clke,
-                                  ClearCLBuffer src,
-                                  ClearCLBuffer dst,
-                                  Integer radius)
+  public static void medianSliceBySliceBox(CLKernelExecutor clke,
+                                           ClearCLImage src,
+                                           ClearCLImage dst,
+                                           Integer kernelSizeX,
+                                           Integer kernelSizeY) throws CLKernelException
   {
+    if (kernelSizeX * kernelSizeY > CLKernelExecutor.MAX_ARRAY_SIZE)
+    {
+      throw new IllegalArgumentException("Error: kernels of the medianSphere filter is too big. Consider increasing MAX_ARRAY_SIZE.");
+    }
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
-    parameters.put("radius", radius);
+    parameters.put("Nx", kernelSizeX);
+    parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "minimum_image2d_ij",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "median_box_slicewise_image3d",
+                 parameters);
   }
 
-  public static boolean minimumBox(CLKernelExecutor clke,
+  public static void medianSliceBySliceBox(CLKernelExecutor clke,
+                                           ClearCLBuffer src,
+                                           ClearCLBuffer dst,
+                                           Integer kernelSizeX,
+                                           Integer kernelSizeY) throws CLKernelException
+  {
+    if (kernelSizeX * kernelSizeY > CLKernelExecutor.MAX_ARRAY_SIZE)
+    {
+      throw new IllegalArgumentException("Error: kernels of the medianSphere filter is too big. Consider increasing MAX_ARRAY_SIZE.");
+    }
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    parameters.put("Nx", kernelSizeX);
+    parameters.put("Ny", kernelSizeY);
+
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "median_box_slicewise_image3d",
+                 parameters);
+  }
+
+  public static void minimumSphere(CLKernelExecutor clke,
                                    ClearCLImage src,
                                    ClearCLImage dst,
-                                   int radiusX,
-                                   int radiusY,
-                                   int radiusZ)
+                                   Integer kernelSizeX,
+                                   Integer kernelSizeY) throws CLKernelException
   {
-    return executeSeparableKernel(clke,
-                                  src,
-                                  dst,
-                                  "filtering.cl",
-                                  "min_sep_image" + src.getDimension()
-                                                  + "d",
-                                  radiusToKernelSize(radiusX),
-                                  radiusToKernelSize(radiusY),
-                                  radiusToKernelSize(radiusZ),
-                                  radiusX,
-                                  radiusY,
-                                  radiusZ,
-                                  src.getDimension());
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    parameters.put("Nx", kernelSizeX);
+    parameters.put("Ny", kernelSizeY);
+
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "minimum_image2d",
+                 parameters);
   }
 
-  public static boolean minimumBox(CLKernelExecutor clke,
+  public static void minimumSphere(CLKernelExecutor clke,
                                    ClearCLBuffer src,
                                    ClearCLBuffer dst,
-                                   int radiusX,
-                                   int radiusY,
-                                   int radiusZ)
-  {
-    return executeSeparableKernel(clke,
-                                  src,
-                                  dst,
-                                  "filtering.cl",
-                                  "min_sep_image" + src.getDimension()
-                                                  + "d",
-                                  radiusToKernelSize(radiusX),
-                                  radiusToKernelSize(radiusY),
-                                  radiusToKernelSize(radiusZ),
-                                  radiusX,
-                                  radiusY,
-                                  radiusZ,
-                                  src.getDimension());
-  }
-
-  public static boolean minimumSliceBySliceSphere(CLKernelExecutor clke,
-                                                  ClearCLImage src,
-                                                  ClearCLImage dst,
-                                                  Integer kernelSizeX,
-                                                  Integer kernelSizeY)
+                                   Integer kernelSizeX,
+                                   Integer kernelSizeY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -3462,139 +3287,251 @@ public class Kernels
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "minimum_slicewise_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "minimum_image2d",
+                 parameters);
   }
 
-  public static boolean minimumSliceBySliceSphere(CLKernelExecutor clke,
-                                                  ClearCLBuffer src,
-                                                  ClearCLBuffer dst,
-                                                  Integer kernelSizeX,
-                                                  Integer kernelSizeY)
+  public static void minimumSphere(CLKernelExecutor clke,
+                                   ClearCLImage src,
+                                   ClearCLImage dst,
+                                   Integer kernelSizeX,
+                                   Integer kernelSizeY,
+                                   Integer kernelSizeZ) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("Nx", kernelSizeX);
     parameters.put("Ny", kernelSizeY);
+    parameters.put("Nz", kernelSizeZ);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/filtering.cl",
-                        "minimum_slicewise_image3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "minimum_image3d",
+                 parameters);
   }
 
-  public static boolean multiplyImages(CLKernelExecutor clke,
-                                       ClearCLImage src,
-                                       ClearCLImage src1,
-                                       ClearCLImage dst)
+  public static void minimumSphere(CLKernelExecutor clke,
+                                   ClearCLBuffer src,
+                                   ClearCLBuffer dst,
+                                   Integer kernelSizeX,
+                                   Integer kernelSizeY,
+                                   Integer kernelSizeZ) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
-    parameters.put("src1", src1);
     parameters.put("dst", dst);
+    parameters.put("Nx", kernelSizeX);
+    parameters.put("Ny", kernelSizeY);
+    parameters.put("Nz", kernelSizeZ);
 
-    if (!checkDimensions(src.getDimension(),
-                         src1.getDimension(),
-                         dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
-    }
-
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "multiplyPixelwise_" + src.getDimension()
-                                           + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "minimum_image3d",
+                 parameters);
   }
 
-  public static boolean multiplyImages(CLKernelExecutor clke,
-                                       ClearCLBuffer src,
-                                       ClearCLBuffer src1,
-                                       ClearCLBuffer dst)
+  @Deprecated
+  public static void minimumIJ(CLKernelExecutor clke,
+                               ClearCLImage src,
+                               ClearCLImage dst,
+                               Integer radius) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
-    parameters.put("src1", src1);
     parameters.put("dst", dst);
+    parameters.put("radius", radius);
 
-    if (!checkDimensions(src.getDimension(),
-                         src1.getDimension(),
-                         dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "multiplyPixelwise_" + src.getDimension()
-                                           + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "minimum_image2d_ij",
+                 parameters);
   }
 
-  public static boolean multiplyImageAndCoordinate(CLKernelExecutor clke,
-                                                   ClearCLImage src,
-                                                   ClearCLImage dst,
-                                                   Integer dimension)
+  @Deprecated
+  public static void minimumIJ(CLKernelExecutor clke,
+                               ClearCLBuffer src,
+                               ClearCLBuffer dst,
+                               Integer radius) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
-    parameters.put("dimension", dimension);
     parameters.put("dst", dst);
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (multiplyImageAndCoordinate)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "multiply_pixelwise_with_coordinate_3d",
-                        parameters);
+    parameters.put("radius", radius);
+
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "minimum_image2d_ij",
+                 parameters);
   }
 
-  public static boolean multiplyImageAndCoordinate(CLKernelExecutor clke,
-                                                   ClearCLBuffer src,
-                                                   ClearCLBuffer dst,
-                                                   Integer dimension)
+  public static void minimumBox(CLKernelExecutor clke,
+                                ClearCLImage src,
+                                ClearCLImage dst,
+                                int radiusX,
+                                int radiusY,
+                                int radiusZ) throws CLKernelException
   {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dimension", dimension);
-    parameters.put("dst", dst);
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (multiplyImageAndCoordinate)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "multiply_pixelwise_with_coordinate_3d",
-                        parameters);
+    executeSeparableKernel(clke,
+                           src,
+                           dst,
+                           "filtering.cl",
+                           "min_sep_image" + src.getDimension() + "d",
+                           radiusToKernelSize(radiusX),
+                           radiusToKernelSize(radiusY),
+                           radiusToKernelSize(radiusZ),
+                           radiusX,
+                           radiusY,
+                           radiusZ,
+                           src.getDimension());
   }
 
-  public static boolean multiplyImageAndScalar(CLKernelExecutor clke,
+  public static void minimumBox(CLKernelExecutor clke,
+                                ClearCLBuffer src,
+                                ClearCLBuffer dst,
+                                int radiusX,
+                                int radiusY,
+                                int radiusZ) throws CLKernelException
+  {
+    executeSeparableKernel(clke,
+                           src,
+                           dst,
+                           "filtering.cl",
+                           "min_sep_image" + src.getDimension() + "d",
+                           radiusToKernelSize(radiusX),
+                           radiusToKernelSize(radiusY),
+                           radiusToKernelSize(radiusZ),
+                           radiusX,
+                           radiusY,
+                           radiusZ,
+                           src.getDimension());
+  }
+
+  public static void minimumSliceBySliceSphere(CLKernelExecutor clke,
                                                ClearCLImage src,
                                                ClearCLImage dst,
-                                               Float scalar)
+                                               Integer kernelSizeX,
+                                               Integer kernelSizeY) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
-    parameters.put("scalar", scalar);
     parameters.put("dst", dst);
+    parameters.put("Nx", kernelSizeX);
+    parameters.put("Ny", kernelSizeY);
 
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
-    }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "multiplyScalar_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "minimum_slicewise_image3d",
+                 parameters);
   }
 
-  public static boolean multiplyImageAndScalar(CLKernelExecutor clke,
+  public static void minimumSliceBySliceSphere(CLKernelExecutor clke,
                                                ClearCLBuffer src,
                                                ClearCLBuffer dst,
-                                               Float scalar)
+                                               Integer kernelSizeX,
+                                               Integer kernelSizeY) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    parameters.put("Nx", kernelSizeX);
+    parameters.put("Ny", kernelSizeY);
+
+    clke.execute(OCLlib.class,
+                 "kernels/filtering.cl",
+                 "minimum_slicewise_image3d",
+                 parameters);
+  }
+
+  public static void multiplyImages(CLKernelExecutor clke,
+                                    ClearCLImage src,
+                                    ClearCLImage src1,
+                                    ClearCLImage dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("src1", src1);
+    parameters.put("dst", dst);
+
+    if (!checkDimensions(src.getDimension(),
+                         src1.getDimension(),
+                         dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
+    }
+
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "multiplyPixelwise_" + src.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void multiplyImages(CLKernelExecutor clke,
+                                    ClearCLBuffer src,
+                                    ClearCLBuffer src1,
+                                    ClearCLBuffer dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("src1", src1);
+    parameters.put("dst", dst);
+
+    if (!checkDimensions(src.getDimension(),
+                         src1.getDimension(),
+                         dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "multiplyPixelwise_" + src.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void multiplyImageAndCoordinate(CLKernelExecutor clke,
+                                                ClearCLImage src,
+                                                ClearCLImage dst,
+                                                Integer dimension) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dimension", dimension);
+    parameters.put("dst", dst);
+    if (!checkDimensions(src.getDimension(), dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (multiplyImageAndCoordinate)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "multiply_pixelwise_with_coordinate_3d",
+                 parameters);
+  }
+
+  public static void multiplyImageAndCoordinate(CLKernelExecutor clke,
+                                                ClearCLBuffer src,
+                                                ClearCLBuffer dst,
+                                                Integer dimension) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dimension", dimension);
+    parameters.put("dst", dst);
+    if (!checkDimensions(src.getDimension(), dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (multiplyImageAndCoordinate)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "multiply_pixelwise_with_coordinate_3d",
+                 parameters);
+  }
+
+  public static void multiplyImageAndScalar(CLKernelExecutor clke,
+                                            ClearCLImage src,
+                                            ClearCLImage dst,
+                                            Float scalar) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -3605,16 +3542,75 @@ public class Kernels
     {
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "multiplyScalar_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "multiplyScalar_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean multiplySliceBySliceWithScalars(CLKernelExecutor clke,
-                                                        ClearCLImage src,
-                                                        ClearCLImage dst,
-                                                        float[] scalars)
+  public static void multiplyImageAndScalar(CLKernelExecutor clke,
+                                            ClearCLBuffer src,
+                                            ClearCLBuffer dst,
+                                            Float scalar) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("scalar", scalar);
+    parameters.put("dst", dst);
+
+    if (!checkDimensions(src.getDimension(), dst.getDimension()))
+    {
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
+    }
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "multiplyScalar_" + src.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void multiplySliceBySliceWithScalars(CLKernelExecutor clke,
+                                                     ClearCLImage src,
+                                                     ClearCLImage dst,
+                                                     float[] scalars) throws CLKernelException
+  {
+    if (dst.getDimensions()[2] != scalars.length)
+    {
+      throw new IllegalArgumentException("Error: Wrong number of scalars in array.");
+    }
+
+    FloatBuffer buffer = FloatBuffer.allocate(scalars.length);
+    buffer.put(scalars);
+
+    ClearCLBuffer clBuffer = clke.createCLBuffer(new long[]
+    { scalars.length }, NativeTypeEnum.Float);
+    clBuffer.readFrom(buffer, true);
+    buffer.clear();
+
+    Map<String, Object> map = new HashMap<>();
+    map.put("src", src);
+    map.put("scalars", clBuffer);
+    map.put("dst", dst);
+    try
+    {
+      clke.execute(OCLlib.class,
+                   "kernels/math.cl",
+                   "multiplySliceBySliceWithScalars",
+                   map);
+    }
+    catch (CLKernelException clkExc)
+    {
+      throw clkExc;
+    }
+    finally
+    {
+      clBuffer.close();
+    }
+  }
+
+  public static void multiplySliceBySliceWithScalars(CLKernelExecutor clke,
+                                                     ClearCLBuffer src,
+                                                     ClearCLBuffer dst,
+                                                     float[] scalars) throws CLKernelException
   {
     if (dst.getDimensions()[2] != scalars.length)
     {
@@ -3633,97 +3629,72 @@ public class Kernels
     map.put("src", src);
     map.put("scalars", clBuffer);
     map.put("dst", dst);
-    boolean result = clke.execute(OCLlib.class,
-                                  "kernels/math.cl",
-                                  "multiplySliceBySliceWithScalars",
-                                  map);
-
-    clBuffer.close();
-
-    return result;
-  }
-
-  public static boolean multiplySliceBySliceWithScalars(CLKernelExecutor clke,
-                                                        ClearCLBuffer src,
-                                                        ClearCLBuffer dst,
-                                                        float[] scalars)
-  {
-    if (dst.getDimensions()[2] != scalars.length)
+    try
     {
-      throw new IllegalArgumentException("Error: Wrong number of scalars in array.");
+      clke.execute(OCLlib.class,
+                   "kernels/math.cl",
+                   "multiplySliceBySliceWithScalars",
+                   map);
     }
-
-    FloatBuffer buffer = FloatBuffer.allocate(scalars.length);
-    buffer.put(scalars);
-
-    ClearCLBuffer clBuffer = clke.createCLBuffer(new long[]
-    { scalars.length }, NativeTypeEnum.Float);
-    clBuffer.readFrom(buffer, true);
-    buffer.clear();
-
-    HashMap<String, Object> map = new HashMap<String, Object>();
-    map.put("src", src);
-    map.put("scalars", clBuffer);
-    map.put("dst", dst);
-    boolean result = clke.execute(OCLlib.class,
-                                  "kernels/math.cl",
-                                  "multiplySliceBySliceWithScalars",
-                                  map);
-
-    clBuffer.close();
-
-    return result;
+    catch (CLKernelException clkExc)
+    {
+      throw clkExc;
+    }
+    finally
+    {
+      clBuffer.close();
+    }
   }
 
-  public static boolean multiplyStackWithPlane(CLKernelExecutor clke,
-                                               ClearCLImage input3d,
-                                               ClearCLImage input2d,
-                                               ClearCLImage output3d)
+  public static void multiplyStackWithPlane(CLKernelExecutor clke,
+                                            ClearCLImage input3d,
+                                            ClearCLImage input2d,
+                                            ClearCLImage output3d) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", input3d);
     parameters.put("src1", input2d);
     parameters.put("dst", output3d);
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "multiplyStackWithPlanePixelwise",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "multiplyStackWithPlanePixelwise",
+                 parameters);
   }
 
-  public static boolean multiplyStackWithPlane(CLKernelExecutor clke,
-                                               ClearCLBuffer input3d,
-                                               ClearCLBuffer input2d,
-                                               ClearCLBuffer output3d)
+  public static void multiplyStackWithPlane(CLKernelExecutor clke,
+                                            ClearCLBuffer input3d,
+                                            ClearCLBuffer input2d,
+                                            ClearCLBuffer output3d) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", input3d);
     parameters.put("src1", input2d);
     parameters.put("dst", output3d);
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "multiplyStackWithPlanePixelwise",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "multiplyStackWithPlanePixelwise",
+                 parameters);
   }
 
-  public static boolean power(CLKernelExecutor clke,
-                              ClearCLImage src,
-                              ClearCLImage dst,
-                              Float exponent)
+  public static void power(CLKernelExecutor clke,
+                           ClearCLImage src,
+                           ClearCLImage dst,
+                           Float exponent) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
     parameters.put("exponent", exponent);
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "power_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "power_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean power(CLKernelExecutor clke,
-                              ClearCLBuffer src,
-                              ClearCLBuffer dst,
-                              Float exponent)
+  public static void power(CLKernelExecutor clke,
+                           ClearCLBuffer src,
+                           ClearCLBuffer dst,
+                           Float exponent) throws CLKernelException
   {
 
     HashMap<String, Object> parameters = new HashMap<>();
@@ -3731,67 +3702,51 @@ public class Kernels
     parameters.put("dst", dst);
     parameters.put("exponent", exponent);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/math.cl",
-                        "power_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/math.cl",
+                 "power_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean radialProjection(CLKernelExecutor clke,
-                                         ClearCLImage src,
-                                         ClearCLImage dst,
-                                         Float deltaAngle)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-
-    parameters.clear();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("deltaAngle", deltaAngle);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/projections.cl",
-                        "radialProjection3d",
-                        parameters);
-  }
-
-  public static boolean radialProjection(CLKernelExecutor clke,
-                                         ClearCLBuffer src,
-                                         ClearCLBuffer dst,
-                                         Float deltaAngle)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-
-    parameters.clear();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-    parameters.put("deltaAngle", deltaAngle);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/projections.cl",
-                        "radialProjection3d",
-                        parameters);
-  }
-
-  public static boolean resliceBottom(CLKernelExecutor clke,
+  public static void radialProjection(CLKernelExecutor clke,
                                       ClearCLImage src,
-                                      ClearCLImage dst)
+                                      ClearCLImage dst,
+                                      Float deltaAngle) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
 
     parameters.clear();
     parameters.put("src", src);
     parameters.put("dst", dst);
+    parameters.put("deltaAngle", deltaAngle);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/reslicing.cl",
-                        "reslice_bottom_3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/projections.cl",
+                 "radialProjection3d",
+                 parameters);
   }
 
-  public static boolean resliceBottom(CLKernelExecutor clke,
+  public static void radialProjection(CLKernelExecutor clke,
                                       ClearCLBuffer src,
-                                      ClearCLBuffer dst)
+                                      ClearCLBuffer dst,
+                                      Float deltaAngle) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+
+    parameters.clear();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+    parameters.put("deltaAngle", deltaAngle);
+
+    clke.execute(OCLlib.class,
+                 "kernels/projections.cl",
+                 "radialProjection3d",
+                 parameters);
+  }
+
+  public static void resliceBottom(CLKernelExecutor clke,
+                                   ClearCLImage src,
+                                   ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
 
@@ -3799,183 +3754,199 @@ public class Kernels
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/reslicing.cl",
-                        "reslice_bottom_3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/reslicing.cl",
+                 "reslice_bottom_3d",
+                 parameters);
   }
 
-  public static boolean resliceLeft(CLKernelExecutor clke,
-                                    ClearCLImage src,
-                                    ClearCLImage dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/reslicing.cl",
-                        "reslice_left_3d",
-                        parameters);
-  }
-
-  public static boolean resliceLeft(CLKernelExecutor clke,
-                                    ClearCLBuffer src,
-                                    ClearCLBuffer dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/reslicing.cl",
-                        "reslice_left_3d",
-                        parameters);
-  }
-
-  public static boolean resliceRight(CLKernelExecutor clke,
-                                     ClearCLImage src,
-                                     ClearCLImage dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/reslicing.cl",
-                        "reslice_right_3d",
-                        parameters);
-  }
-
-  public static boolean resliceRight(CLKernelExecutor clke,
-                                     ClearCLBuffer src,
-                                     ClearCLBuffer dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/reslicing.cl",
-                        "reslice_right_3d",
-                        parameters);
-  }
-
-  public static boolean resliceTop(CLKernelExecutor clke,
-                                   ClearCLImage src,
-                                   ClearCLImage dst)
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-
-    return clke.execute(OCLlib.class,
-                        "kernels/reslicing.cl",
-                        "reslice_top_3d",
-                        parameters);
-  }
-
-  public static boolean resliceTop(CLKernelExecutor clke,
+  public static void resliceBottom(CLKernelExecutor clke,
                                    ClearCLBuffer src,
-                                   ClearCLBuffer dst)
+                                   ClearCLBuffer dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+
+    parameters.clear();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+
+    clke.execute(OCLlib.class,
+                 "kernels/reslicing.cl",
+                 "reslice_bottom_3d",
+                 parameters);
+  }
+
+  public static void resliceLeft(CLKernelExecutor clke,
+                                 ClearCLImage src,
+                                 ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/reslicing.cl",
-                        "reslice_top_3d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/reslicing.cl",
+                 "reslice_left_3d",
+                 parameters);
   }
 
-  public static boolean rotateLeft(CLKernelExecutor clke,
-                                   ClearCLBuffer src,
-                                   ClearCLBuffer dst)
+  public static void resliceLeft(CLKernelExecutor clke,
+                                 ClearCLBuffer src,
+                                 ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/rotate.cl",
-                        "rotate_left_" + dst.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/reslicing.cl",
+                 "reslice_left_3d",
+                 parameters);
   }
 
-  public static boolean rotateLeft(CLKernelExecutor clke,
-                                   ClearCLImage src,
-                                   ClearCLImage dst)
+  public static void resliceRight(CLKernelExecutor clke,
+                                  ClearCLImage src,
+                                  ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/rotate.cl",
-                        "rotate_left_" + dst.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/reslicing.cl",
+                 "reslice_right_3d",
+                 parameters);
   }
 
-  public static boolean rotateRight(CLKernelExecutor clke,
-                                    ClearCLBuffer src,
-                                    ClearCLBuffer dst)
+  public static void resliceRight(CLKernelExecutor clke,
+                                  ClearCLBuffer src,
+                                  ClearCLBuffer dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/rotate.cl",
-                        "rotate_right_" + dst.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/reslicing.cl",
+                 "reslice_right_3d",
+                 parameters);
   }
 
-  public static boolean rotateRight(CLKernelExecutor clke,
-                                    ClearCLImage src,
-                                    ClearCLImage dst)
+  public static void resliceTop(CLKernelExecutor clke,
+                                ClearCLImage src,
+                                ClearCLImage dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", dst);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/rotate.cl",
-                        "rotate_right_" + dst.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/reslicing.cl",
+                 "reslice_top_3d",
+                 parameters);
   }
 
-  public static boolean set(CLKernelExecutor clke,
-                            ClearCLImage clImage,
-                            Float value)
+  public static void resliceTop(CLKernelExecutor clke,
+                                ClearCLBuffer src,
+                                ClearCLBuffer dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+
+    clke.execute(OCLlib.class,
+                 "kernels/reslicing.cl",
+                 "reslice_top_3d",
+                 parameters);
+  }
+
+  public static void rotateLeft(CLKernelExecutor clke,
+                                ClearCLBuffer src,
+                                ClearCLBuffer dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+
+    clke.execute(OCLlib.class,
+                 "kernels/rotate.cl",
+                 "rotate_left_" + dst.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void rotateLeft(CLKernelExecutor clke,
+                                ClearCLImage src,
+                                ClearCLImage dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+
+    clke.execute(OCLlib.class,
+                 "kernels/rotate.cl",
+                 "rotate_left_" + dst.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void rotateRight(CLKernelExecutor clke,
+                                 ClearCLBuffer src,
+                                 ClearCLBuffer dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+
+    clke.execute(OCLlib.class,
+                 "kernels/rotate.cl",
+                 "rotate_right_" + dst.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void rotateRight(CLKernelExecutor clke,
+                                 ClearCLImage src,
+                                 ClearCLImage dst) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", dst);
+
+    clke.execute(OCLlib.class,
+                 "kernels/rotate.cl",
+                 "rotate_right_" + dst.getDimension() + "d",
+                 parameters);
+  }
+
+  public static void set(CLKernelExecutor clke,
+                         ClearCLImage clImage,
+                         Float value) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("dst", clImage);
     parameters.put("value", value);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/set.cl",
-                        "set_" + clImage.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/set.cl",
+                 "set_" + clImage.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean set(CLKernelExecutor clke,
-                            ClearCLBuffer clImage,
-                            Float value)
+  public static void set(CLKernelExecutor clke,
+                         ClearCLBuffer clImage,
+                         Float value) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("dst", clImage);
     parameters.put("value", value);
 
-    return clke.execute(OCLlib.class,
-                        "kernels/set.cl",
-                        "set_" + clImage.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/set.cl",
+                 "set_" + clImage.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean splitStack(CLKernelExecutor clke,
-                                   ClearCLImage clImageIn,
-                                   ClearCLImage... clImagesOut)
+  public static void splitStack(CLKernelExecutor clke,
+                                ClearCLImage clImageIn,
+                                ClearCLImage... clImagesOut) throws CLKernelException
   {
     if (clImagesOut.length > 12)
     {
@@ -3983,7 +3954,7 @@ public class Kernels
     }
     if (clImagesOut.length == 1)
     {
-      return copy(clke, clImageIn, clImagesOut[0]);
+      copy(clke, clImageIn, clImagesOut[0]);
     }
     if (clImagesOut.length == 0)
     {
@@ -3997,15 +3968,15 @@ public class Kernels
       parameters.put("dst" + i, clImagesOut[i]);
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/stacksplitting.cl",
-                        "split_" + clImagesOut.length + "_stacks",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/stacksplitting.cl",
+                 "split_" + clImagesOut.length + "_stacks",
+                 parameters);
   }
 
-  public static boolean splitStack(CLKernelExecutor clke,
-                                   ClearCLBuffer clImageIn,
-                                   ClearCLBuffer... clImagesOut)
+  public static void splitStack(CLKernelExecutor clke,
+                                ClearCLBuffer clImageIn,
+                                ClearCLBuffer... clImagesOut) throws CLKernelException
   {
     if (clImagesOut.length > 12)
     {
@@ -4013,7 +3984,7 @@ public class Kernels
     }
     if (clImagesOut.length == 1)
     {
-      return copy(clke, clImageIn, clImagesOut[0]);
+      copy(clke, clImageIn, clImagesOut[0]);
     }
     if (clImagesOut.length == 0)
     {
@@ -4027,36 +3998,36 @@ public class Kernels
       parameters.put("dst" + i, clImagesOut[i]);
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/stacksplitting.cl",
-                        "split_" + clImagesOut.length + "_stacks",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/stacksplitting.cl",
+                 "split_" + clImagesOut.length + "_stacks",
+                 parameters);
   }
 
-  public static boolean subtractImages(CLKernelExecutor clke,
-                                       ClearCLImage subtrahend,
-                                       ClearCLImage minuend,
-                                       ClearCLImage destination)
+  public static void subtractImages(CLKernelExecutor clke,
+                                    ClearCLImage subtrahend,
+                                    ClearCLImage minuend,
+                                    ClearCLImage destination) throws CLKernelException
   {
-    return addImagesWeighted(clke,
-                             subtrahend,
-                             minuend,
-                             destination,
-                             1f,
-                             -1f);
+    addImagesWeighted(clke,
+                      subtrahend,
+                      minuend,
+                      destination,
+                      1f,
+                      -1f);
   }
 
-  public static boolean subtractImages(CLKernelExecutor clke,
-                                       ClearCLBuffer subtrahend,
-                                       ClearCLBuffer minuend,
-                                       ClearCLBuffer destination)
+  public static void subtractImages(CLKernelExecutor clke,
+                                    ClearCLBuffer subtrahend,
+                                    ClearCLBuffer minuend,
+                                    ClearCLBuffer destination) throws CLKernelException
   {
-    return addImagesWeighted(clke,
-                             subtrahend,
-                             minuend,
-                             destination,
-                             1f,
-                             -1f);
+    addImagesWeighted(clke,
+                      subtrahend,
+                      minuend,
+                      destination,
+                      1f,
+                      -1f);
   }
 
   /*
@@ -4084,7 +4055,7 @@ public class Kernels
         if (clImage != clReducedImage) {
             clReducedImage.close();
         }
-        return maximumGreyValue;
+        maximumGreyValue;
     }
   */
 
@@ -4113,7 +4084,7 @@ public class Kernels
       if (clImage != clReducedImage) {
           clReducedImage.close();
       }
-      return maximumGreyValue;
+      maximumGreyValue;
   }
   
   
@@ -4141,7 +4112,7 @@ public class Kernels
       if (clImage != clReducedImage) {
           clReducedImage.close();
       }
-      return minimumGreyValue;
+      minimumGreyValue;
   }
   
   
@@ -4256,62 +4227,58 @@ public class Kernels
   }
   */
 
-  public static boolean sumZProjection(CLKernelExecutor clke,
-                                       ClearCLImage clImage,
-                                       ClearCLImage clReducedImage)
+  public static void sumZProjection(CLKernelExecutor clke,
+                                    ClearCLImage clImage,
+                                    ClearCLImage clReducedImage) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", clImage);
     parameters.put("dst", clReducedImage);
-    return clke.execute(OCLlib.class,
-                        "kernels/projections.cl",
-                        "sum_project_3d_2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/projections.cl",
+                 "sum_project_3d_2d",
+                 parameters);
   }
 
-  public static boolean sumZProjection(CLKernelExecutor clke,
-                                       ClearCLBuffer clImage,
-                                       ClearCLBuffer clReducedImage)
+  public static void sumZProjection(CLKernelExecutor clke,
+                                    ClearCLBuffer clImage,
+                                    ClearCLBuffer clReducedImage) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", clImage);
     parameters.put("dst", clReducedImage);
-    return clke.execute(OCLlib.class,
-                        "kernels/projections.cl",
-                        "sum_project_3d_2d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/projections.cl",
+                 "sum_project_3d_2d",
+                 parameters);
   }
 
-  public static boolean tenengradWeightsSliceBySlice(CLKernelExecutor clke,
-                                                     ClearCLImage clImageOut,
-                                                     ClearCLImage clImageIn)
+  public static void tenengradWeightsSliceBySlice(CLKernelExecutor clke,
+                                                  ClearCLImage clImageOut,
+                                                  ClearCLImage clImageIn) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", clImageIn);
     parameters.put("dst", clImageOut);
-    return clke.execute(OCLlib.class,
-                        "kernels/tenengradFusion.cl",
-                        "tenengrad_weight_unnormalized_slice_wise",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/tenengradFusion.cl",
+                 "tenengrad_weight_unnormalized_slice_wise",
+                 parameters);
   }
 
-  public static boolean tenengradFusion(CLKernelExecutor clke,
-                                        ClearCLImage clImageOut,
-                                        float[] blurSigmas,
-                                        ClearCLImage... clImagesIn)
+  public static void tenengradFusion(CLKernelExecutor clke,
+                                     ClearCLImage clImageOut,
+                                     float[] blurSigmas,
+                                     ClearCLImage... clImagesIn) throws CLKernelException
   {
-    return tenengradFusion(clke,
-                           clImageOut,
-                           blurSigmas,
-                           1.0f,
-                           clImagesIn);
+    tenengradFusion(clke, clImageOut, blurSigmas, 1.0f, clImagesIn);
   }
 
-  public static boolean tenengradFusion(CLKernelExecutor clke,
-                                        ClearCLImage clImageOut,
-                                        float[] blurSigmas,
-                                        float exponent,
-                                        ClearCLImage... clImagesIn)
+  public static void tenengradFusion(CLKernelExecutor clke,
+                                     ClearCLImage clImageOut,
+                                     float[] blurSigmas,
+                                     float exponent,
+                                     ClearCLImage... clImagesIn) throws CLKernelException
   {
     if (clImagesIn.length > 12)
     {
@@ -4319,7 +4286,7 @@ public class Kernels
     }
     if (clImagesIn.length == 1)
     {
-      return copy(clke, clImagesIn[0], clImageOut);
+      copy(clke, clImagesIn[0], clImageOut);
     }
     if (clImagesIn.length == 0)
     {
@@ -4330,82 +4297,100 @@ public class Kernels
       System.out.println("Warning: tenengradFusion may only work on float images!");
     }
 
-    HashMap<String, Object> lFusionParameters = new HashMap<>();
-
-    ClearCLImage temporaryImage = clke.createCLImage(clImagesIn[0]);
+    ClearCLImage temporaryImage = null;
     ClearCLImage temporaryImage2 = null;
-    if (Math.abs(exponent - 1.0f) > 0.0001)
+    ClearCLImage[] temporaryImages = null;
+    try
     {
-      temporaryImage2 = clke.createCLImage(clImagesIn[0]);
-    }
+      HashMap<String, Object> lFusionParameters = new HashMap<>();
+      temporaryImage = clke.createCLImage(clImagesIn[0]);
+      if (Math.abs(exponent - 1.0f) > 0.0001)
+      {
+        temporaryImage2 = clke.createCLImage(clImagesIn[0]);
+      }
 
-    ClearCLImage[] temporaryImages =
-                                   new ClearCLImage[clImagesIn.length];
-    for (int i = 0; i < clImagesIn.length; i++)
-    {
-      HashMap<String, Object> parameters = new HashMap<>();
-      temporaryImages[i] = clke.createCLImage(clImagesIn[i]);
-      parameters.put("src", clImagesIn[i]);
-      parameters.put("dst", temporaryImage);
+      temporaryImages = new ClearCLImage[clImagesIn.length];
+      for (int i = 0; i < clImagesIn.length; i++)
+      {
+        HashMap<String, Object> parameters = new HashMap<>();
+        temporaryImages[i] = clke.createCLImage(clImagesIn[i]);
+        parameters.put("src", clImagesIn[i]);
+        parameters.put("dst", temporaryImage);
+
+        clke.execute(OCLlib.class,
+                     "kernels/tenengradFusion.cl",
+                     "tenengrad_weight_unnormalized",
+                     parameters);
+
+        if (temporaryImage2 != null)
+        {
+          power(clke, temporaryImage, temporaryImage2, exponent);
+          blur(clke,
+               temporaryImage2,
+               temporaryImages[i],
+               blurSigmas[0],
+               blurSigmas[1],
+               blurSigmas[2]);
+        }
+        else
+        {
+          blur(clke,
+               temporaryImage,
+               temporaryImages[i],
+               blurSigmas[0],
+               blurSigmas[1],
+               blurSigmas[2]);
+        }
+
+        lFusionParameters.put("src" + i, clImagesIn[i]);
+        lFusionParameters.put("weight" + i, temporaryImages[i]);
+      }
+
+      lFusionParameters.put("dst", clImageOut);
+      lFusionParameters.put("factor",
+                            (int) (clImagesIn[0].getWidth()
+                                   / temporaryImages[0].getWidth()));
 
       clke.execute(OCLlib.class,
                    "kernels/tenengradFusion.cl",
-                   "tenengrad_weight_unnormalized",
-                   parameters);
+                   String.format("tenengrad_fusion_with_provided_weights_%d_images",
+                                 clImagesIn.length),
+                   lFusionParameters);
+    }
+    catch (CLKernelException clkExc)
+    {
+      throw clkExc;
+    }
+    finally
+    {
+      if (temporaryImage != null)
+      {
+        temporaryImage.close();
+      }
+      if (temporaryImages != null)
+      {
+        for (ClearCLImage tmpImg : temporaryImages)
+        {
+          if (tmpImg != null)
+          {
+
+            tmpImg.close();
+          }
+        }
+      }
 
       if (temporaryImage2 != null)
       {
-        power(clke, temporaryImage, temporaryImage2, exponent);
-        blur(clke,
-             temporaryImage2,
-             temporaryImages[i],
-             blurSigmas[0],
-             blurSigmas[1],
-             blurSigmas[2]);
-      }
-      else
-      {
-        blur(clke,
-             temporaryImage,
-             temporaryImages[i],
-             blurSigmas[0],
-             blurSigmas[1],
-             blurSigmas[2]);
+        temporaryImage2.close();
       }
 
-      lFusionParameters.put("src" + i, clImagesIn[i]);
-      lFusionParameters.put("weight" + i, temporaryImages[i]);
     }
-
-    lFusionParameters.put("dst", clImageOut);
-    lFusionParameters.put("factor",
-                          (int) (clImagesIn[0].getWidth()
-                                 / temporaryImages[0].getWidth()));
-
-    boolean success = clke.execute(OCLlib.class,
-                                   "kernels/tenengradFusion.cl",
-                                   String.format("tenengrad_fusion_with_provided_weights_%d_images",
-                                                 clImagesIn.length),
-                                   lFusionParameters);
-
-    temporaryImage.close();
-    for (int i = 0; i < temporaryImages.length; i++)
-    {
-      temporaryImages[i].close();
-    }
-
-    if (temporaryImage2 != null)
-    {
-      temporaryImage2.close();
-    }
-
-    return success;
   }
 
-  public static boolean threshold(CLKernelExecutor clke,
-                                  ClearCLImage src,
-                                  ClearCLImage dst,
-                                  Float threshold)
+  public static void threshold(CLKernelExecutor clke,
+                               ClearCLImage src,
+                               ClearCLImage dst,
+                               Float threshold) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
 
@@ -4419,16 +4404,16 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/thresholding.cl",
-                        "apply_threshold_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/thresholding.cl",
+                 "apply_threshold_" + src.getDimension() + "d",
+                 parameters);
   }
 
-  public static boolean threshold(CLKernelExecutor clke,
-                                  ClearCLBuffer src,
-                                  ClearCLBuffer dst,
-                                  Float threshold)
+  public static void threshold(CLKernelExecutor clke,
+                               ClearCLBuffer src,
+                               ClearCLBuffer dst,
+                               Float threshold) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
 
@@ -4442,10 +4427,10 @@ public class Kernels
       throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
     }
 
-    return clke.execute(OCLlib.class,
-                        "kernels/thresholding.cl",
-                        "apply_threshold_" + src.getDimension() + "d",
-                        parameters);
+    clke.execute(OCLlib.class,
+                 "kernels/thresholding.cl",
+                 "apply_threshold_" + src.getDimension() + "d",
+                 parameters);
   }
 
   private static boolean checkDimensions(long... numberOfDimensions)
