@@ -590,7 +590,7 @@ public class Kernels
     return executeSeparableKernel(clke,
                                   src,
                                   dst,
-                                  "blur.cl",
+                                  "kernels/blur.cl",
                                   "gaussian_blur_sep_image"
                                              + src.getDimension()
                                              + "d",
@@ -612,7 +612,7 @@ public class Kernels
     return executeSeparableKernel(clke,
                                   src,
                                   dst,
-                                  "blur.cl",
+                                  "kernels/blur.cl",
                                   "gaussian_blur_sep_image"
                                              + src.getDimension()
                                              + "d",
@@ -634,7 +634,7 @@ public class Kernels
     return executeSeparableKernel(clke,
                                   src,
                                   dst,
-                                  "blur.cl",
+                                  "kernels/blur.cl",
                                   "gaussian_blur_sep_image"
                                              + src.getDimension()
                                              + "d",
@@ -657,7 +657,7 @@ public class Kernels
     return executeSeparableKernel(clke,
                                   src,
                                   dst,
-                                  "blur.cl",
+                                  "kernels/blur.cl",
                                   "gaussian_blur_sep_image"
                                              + src.getDimension()
                                              + "d",
@@ -680,7 +680,7 @@ public class Kernels
     return executeSeparableKernel(clke,
                                   src,
                                   dst,
-                                  "blur.cl",
+                                  "kernels/blur.cl",
                                   "gaussian_blur_sep_image"
                                              + src.getDimension()
                                              + "d",
@@ -703,7 +703,7 @@ public class Kernels
     return executeSeparableKernel(clke,
                                   src,
                                   dst,
-                                  "blur.cl",
+                                  "kernels/blur.cl",
                                   "gaussian_blur_sep_image"
                                              + src.getDimension()
                                              + "d",
@@ -835,6 +835,7 @@ public class Kernels
                                                 float blurSigmaZ,
                                                 long dimensions)
   {
+     boolean result = true;
     int[] n = new int[]
     { kernelSizeX, kernelSizeY, kernelSizeZ };
     float[] blurSigma = new float[]
@@ -871,7 +872,9 @@ public class Kernels
       {
         parameters.put("dst", dst);
       }
-      clke.execute(OCLlib.class, clFilename, kernelname, parameters);
+      if (!clke.execute(OCLlib.class, clFilename, kernelname, parameters)) {
+         result = false;
+      }
     }
     else
     {
@@ -901,7 +904,9 @@ public class Kernels
         parameters.put("src", dst);
         parameters.put("dst", temp);
       }
-      clke.execute(OCLlib.class, clFilename, kernelname, parameters);
+      if (!clke.execute(OCLlib.class, clFilename, kernelname, parameters)) {
+         result = false;
+      }
     }
     else
     {
@@ -925,10 +930,12 @@ public class Kernels
         parameters.put("dim", 2);
         parameters.put("src", temp);
         parameters.put("dst", dst);
-        clke.execute(OCLlib.class,
+        if (!clke.execute(OCLlib.class,
                      clFilename,
                      kernelname,
-                     parameters);
+                     parameters)) {
+           result = false;
+        }
       }
       else
       {
@@ -945,7 +952,7 @@ public class Kernels
       ((ClearCLImage) temp).close();
     }
 
-    return true;
+    return result;
   }
 
   public static boolean blurSliceBySlice(CLKernelExecutor clke,
