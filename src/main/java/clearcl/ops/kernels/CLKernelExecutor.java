@@ -28,37 +28,25 @@ import coremem.enums.NativeTypeEnum;
  */
 public class CLKernelExecutor
 {
+  private static final boolean DEBUG = false;
   public static int MAX_ARRAY_SIZE = 1000;
+
   private final ClearCLContext context;
   private Class anchorClass;
-  String programFilename;
-  String kernelName;
-  Map<String, Object> parameterMap;
-  long[] globalSizes;
 
   private final HashMap<String, ClearCLProgram> programCacheMap =
                                                                 new HashMap<>();
-  ClearCLProgram currentProgram = null;
-
-  private static final boolean DEBUG = false;
-
   private final HashMap<String, ArrayList<String>> variableListMap =
                                                                    new HashMap<>();
   private final HashMap<String, String> sourceCodeCache =
                                                         new HashMap<>();
 
   public CLKernelExecutor(ClearCLContext context,
-                          Class anchorClass,
-                          String programFilename,
-                          String kernelName,
-                          long[] globalSizes) throws IOException
+                          Class anchorClass) throws IOException
   {
     super();
     this.context = context;
     this.anchorClass = anchorClass;
-    this.programFilename = programFilename;
-    this.kernelName = kernelName;
-    this.globalSizes = globalSizes;
   }
 
   public static void getOpenCLDefines(Map<String, Object> defines,
@@ -272,28 +260,36 @@ public class CLKernelExecutor
       }
     }
 
-    this.setProgramFilename(pProgramFilename);
-    this.setKernelName(pKernelname);
     this.setAnchorClass(pAnchorClass);
-    this.setParameterMap(pParameterMap);
-    this.setGlobalSizes(pGlobalsizes);
-
-    this.setParameterMap(pParameterMap);
-    this.enqueue(true);
+    this.enqueue(true,
+                 pProgramFilename,
+                 pKernelname,
+                 pParameterMap,
+                 pGlobalsizes);
   }
 
   /**
-   * Map of all parameters. It is recommended that input and output images are
-   * given with the names "src" and "dst", respectively.
-   *
+   * Function that does the actual work
+   * 
+   * @param waitToFinish
+   *          Synchronous or asynchronous execution
+   * @param programFilename
+   *          Name of the file containing the kernel code
+   * 
+   * @param kernelName
+   *          Name of the kernel inside the programFile
    * @param parameterMap
+   *          Map of all parameters. It is recommended that input and output
+   *          images are given with the names "src" and "dst", respectively.
+   * @param globalSizes
+   *          Dimensions of the input image
+   * @throws CLKernelException
    */
-  public void setParameterMap(Map<String, Object> parameterMap)
-  {
-    this.parameterMap = parameterMap;
-  }
-
-  public void enqueue(boolean waitToFinish) throws CLKernelException
+  public void enqueue(boolean waitToFinish,
+                      String programFilename,
+                      String kernelName,
+                      Map<String, Object> parameterMap,
+                      long[] globalSizes) throws CLKernelException
   {
     if (DEBUG)
     {
@@ -440,7 +436,8 @@ public class CLKernelExecutor
                       "IMAGE_SIZE_ ## image_key ## _DEPTH");
 
     // add undefined parameters to define list
-    ArrayList<String> variableNames = getImageVariablesFromSource();
+    ArrayList<String> variableNames =
+                                    getImageVariablesFromSource(programFilename);
     for (String variableName : variableNames)
     {
 
@@ -475,7 +472,10 @@ public class CLKernelExecutor
 
     try
     {
-      clearCLKernel = getKernel(context, kernelName, openCLDefines);
+      clearCLKernel = getKernel(context,
+                                programFilename,
+                                kernelName,
+                                openCLDefines);
     }
     catch (IOException e1)
     {
@@ -549,7 +549,7 @@ public class CLKernelExecutor
 
   }
 
-  private ArrayList<String> getImageVariablesFromSource()
+  private ArrayList<String> getImageVariablesFromSource(String programFilename)
   {
     String key = anchorClass.getName() + "_" + programFilename;
 
@@ -559,7 +559,7 @@ public class CLKernelExecutor
     }
     ArrayList<String> variableList = new ArrayList<>();
 
-    String sourceCode = getProgramSource();
+    String sourceCode = getProgramSource(programFilename);
     String[] kernels = sourceCode.split("__kernel");
 
     kernels[0] = "";
@@ -595,7 +595,7 @@ public class CLKernelExecutor
     return variableList;
   }
 
-  protected String getProgramSource()
+  protected String getProgramSource(String programFilename)
   {
     String key = anchorClass.getName() + "_" + programFilename;
 
@@ -607,7 +607,7 @@ public class CLKernelExecutor
     {
       ClearCLProgram program = context.createProgram(this.anchorClass,
                                                      new String[]
-                                                     { this.programFilename });
+                                                     { programFilename });
       String source = program.getSourceCode();
       sourceCodeCache.put(key, source);
       return source;
@@ -616,7 +616,7 @@ public class CLKernelExecutor
     {
       // e.printStackTrace();
       System.out.println("IOException creating program: "
-                         + this.programFilename);
+                         + programFilename);
     }
     return "";
   }
@@ -626,22 +626,8 @@ public class CLKernelExecutor
     this.anchorClass = anchorClass;
   }
 
-  public void setProgramFilename(String programFilename)
-  {
-    this.programFilename = programFilename;
-  }
-
-  public void setKernelName(String kernelName)
-  {
-    this.kernelName = kernelName;
-  }
-
-  public void setGlobalSizes(long[] globalSizes)
-  {
-    this.globalSizes = globalSizes;
-  }
-
   protected ClearCLKernel getKernel(ClearCLContext context,
+                                    String programFilename,
                                     String kernelName,
                                     Map<String, Object> defines) throws IOException,
                                                                  NullPointerException
@@ -659,11 +645,10 @@ public class CLKernelExecutor
     }
     ClearCLProgram clProgram =
                              this.programCacheMap.get(programCacheKey);
-    currentProgram = clProgram;
     if (clProgram == null)
     {
       clProgram = context.createProgram(this.anchorClass, new String[]
-      { this.programFilename });
+      { programFilename });
       for (Map.Entry<String, Object> entry : defines.entrySet())
       {
         if (entry.getValue() instanceof String)

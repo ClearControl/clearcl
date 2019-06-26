@@ -46,12 +46,8 @@ public class KernelsTests
 
     lCLContext = lBestGPUDevice.createContext();
 
-    lCLKE =
-          new CLKernelExecutor(lCLContext,
-                               clearcl.ocllib.OCLlib.class,
-                               "kernels/blur.cl",
-                               "gaussian_blur_image2d",
-                               dimensions2D);
+    lCLKE = new CLKernelExecutor(lCLContext,
+                                 clearcl.ocllib.OCLlib.class);
   }
 
   @After
