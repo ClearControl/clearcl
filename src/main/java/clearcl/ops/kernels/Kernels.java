@@ -18,10 +18,25 @@ import coremem.enums.NativeTypeEnum;
  * <p>
  * Author: Robert Haase (http://haesleinhuepf.net) at MPI CBG
  * (http://mpi-cbg.de) March 2018
+ * 
+ * For documentation, see: https://clij.github.io/clij-docs/referenceJava Please
+ * copy into javadoc here whenever you have a chance!
  */
 public class Kernels
 {
 
+  /**
+   * Computes the absolute value of every individual pixel x in a given image.
+   * f(x) = |x|
+   * 
+   * @param clke
+   *          - Executor that holds ClearCL context instance
+   * @param src
+   *          - src image
+   * @param dst
+   *          - output image
+   * @throws CLKernelException
+   */
   public static void absolute(CLKernelExecutor clke,
                               ClearCLImage src,
                               ClearCLImage dst) throws CLKernelException
@@ -41,6 +56,18 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Computes the absolute value of every individual pixel x in a given image.
+   * f(x) = |x|
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          src buffer
+   * @param dst
+   *          output buffer
+   * @throws CLKernelException
+   */
   public static void absolute(CLKernelExecutor clke,
                               ClearCLBuffer src,
                               ClearCLBuffer dst) throws CLKernelException
@@ -60,6 +87,20 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Calculates the sum of pairs of pixels x and y of two images X and Y. f(x,
+   * y) = x + y
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          src image
+   * @param src1
+   *          second source image
+   * @param dst
+   *          output image
+   * @throws CLKernelException
+   */
   public static void addImages(CLKernelExecutor clke,
                                ClearCLImage src,
                                ClearCLImage src1,
@@ -82,6 +123,20 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Calculates the sum of pairs of pixels x and y of two buffers X and Y. f(x,
+   * y) = x + y
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          src buffer
+   * @param src1
+   *          second source buffer
+   * @param dst
+   *          output buffer
+   * @throws CLKernelException
+   */
   public static void addImages(CLKernelExecutor clke,
                                ClearCLBuffer src,
                                ClearCLBuffer src1,
@@ -146,6 +201,24 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Calculates the sum of pairs of pixels x and y from images X and Y weighted
+   * with factors a and b. f(x, y, a, b) = x * a + y * b
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          src image
+   * @param src1
+   *          second source image
+   * @param dst
+   *          output image
+   * @param factor
+   *          first factor (a)
+   * @param factor1
+   *          second factor (b)
+   * @throws CLKernelException
+   */
   public static void addImagesWeighted(CLKernelExecutor clke,
                                        ClearCLImage src,
                                        ClearCLImage src1,
@@ -172,6 +245,24 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Calculates the sum of pairs of pixels x and y from buffers X and Y weighted
+   * with factors a and b. f(x, y, a, b) = x * a + y * b
+   * 
+   * @param clke
+   *          - Executor that holds ClearCL context instance
+   * @param src
+   *          - src buffer
+   * @param src1
+   *          - second source buffer
+   * @param dst
+   *          - output buffer
+   * @param factor
+   *          first factor (a)
+   * @param factor1
+   *          second factor (b)
+   * @throws CLKernelException
+   */
   public static void addImagesWeighted(CLKernelExecutor clke,
                                        ClearCLBuffer src,
                                        ClearCLBuffer src1,
