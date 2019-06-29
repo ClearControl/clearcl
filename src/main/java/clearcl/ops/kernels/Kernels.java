@@ -434,76 +434,76 @@ public class Kernels
 
   /*
   public static void automaticThreshold(CLKernelExecutor clke, ClearCLBuffer src, ClearCLBuffer dst, String userSelectedMethod) {
-      Float minimumGreyValue = 0f;
-      Float maximumGreyValue = 0f;
-      Integer numberOfBins = 256;
+     Float minimumGreyValue = 0f;
+     Float maximumGreyValue = 0f;
+     Integer numberOfBins = 256;
   
-      if (src.getNativeType() == NativeTypeEnum.UnsignedByte) {
-          minimumGreyValue = 0f;
-          maximumGreyValue = 255f;
-      } else {
-          minimumGreyValue = null;
-          maximumGreyValue = null;
-      }
+     if (src.getNativeType() == NativeTypeEnum.UnsignedByte) {
+         minimumGreyValue = 0f;
+         maximumGreyValue = 255f;
+     } else {
+         minimumGreyValue = null;
+         maximumGreyValue = null;
+     }
   
-      return automaticThreshold(clke, src, dst, userSelectedMethod, minimumGreyValue, maximumGreyValue, 256);
+     return automaticThreshold(clke, src, dst, userSelectedMethod, minimumGreyValue, maximumGreyValue, 256);
   }
   
   
   public static void automaticThreshold(CLKernelExecutor clke, ClearCLBuffer src, ClearCLBuffer dst, String userSelectedMethod, Float minimumGreyValue, Float maximumGreyValue, Integer numberOfBins) {
   
-      if (minimumGreyValue == null)
-      {
-          minimumGreyValue = new Double(Kernels.minimumOfAllPixels(clke, src)).floatValue();
-      }
+     if (minimumGreyValue == null)
+     {
+         minimumGreyValue = new Double(Kernels.minimumOfAllPixels(clke, src)).floatValue();
+     }
   
-      if (maximumGreyValue == null)
-      {
-          maximumGreyValue = new Double(Kernels.maximumOfAllPixels(clke, src)).floatValue();
-      }
-  
-  
-      ClearCLBuffer histogram = clke.createCLBuffer(new long[]{numberOfBins,1,1}, NativeTypeEnum.Float);
-      Kernels.fillHistogram(clke, src, histogram, minimumGreyValue, maximumGreyValue);
-      //releaseBuffers(args);
-  
-      //System.out.println("CL sum " + clke.op().sumPixels(histogram));
-  
-      // the histogram is written in args[1] which is supposed to be a one-dimensional image
-      ImagePlus histogramImp = clke.convert(histogram, ImagePlus.class);
-      histogram.close();
-  
-      // convert histogram
-      float[] determinedHistogram = (float[])(histogramImp.getProcessor().getPixels());
-      int[] convertedHistogram = new int[determinedHistogram.length];
-  
-      long sum = 0;
-      for (int i = 0; i < determinedHistogram.length; i++) {
-          convertedHistogram[i] = (int)determinedHistogram[i];
-          sum += convertedHistogram[i];
-      }
-      //System.out.println("Sum: " + sum);
+     if (maximumGreyValue == null)
+     {
+         maximumGreyValue = new Double(Kernels.maximumOfAllPixels(clke, src)).floatValue();
+     }
   
   
-      String method = "Default";
+     ClearCLBuffer histogram = clke.createCLBuffer(new long[]{numberOfBins,1,1}, NativeTypeEnum.Float);
+     Kernels.fillHistogram(clke, src, histogram, minimumGreyValue, maximumGreyValue);
+     //releaseBuffers(args);
   
-      for (String choice : AutoThresholder.getMethods()) {
-          if (choice.toLowerCase().compareTo(userSelectedMethod.toLowerCase()) == 0) {
-              method = choice;
-          }
-      }
-      //System.out.println("Method: " + method);
+     //System.out.println("CL sum " + clke.op().sumPixels(histogram));
   
-      float threshold = new AutoThresholder().getThreshold(method, convertedHistogram);
+     // the histogram is written in args[1] which is supposed to be a one-dimensional image
+     ImagePlus histogramImp = clke.convert(histogram, ImagePlus.class);
+     histogram.close();
   
-      // math source https://github.com/imagej/ImageJA/blob/master/src/main/java/ij/process/ImageProcessor.java#L692
-      threshold = minimumGreyValue + ((threshold + 1.0f)/255.0f)*(maximumGreyValue-minimumGreyValue);
+     // convert histogram
+     float[] determinedHistogram = (float[])(histogramImp.getProcessor().getPixels());
+     int[] convertedHistogram = new int[determinedHistogram.length];
   
-      //System.out.println("Threshold: " + threshold);
+     long sum = 0;
+     for (int i = 0; i < determinedHistogram.length; i++) {
+         convertedHistogram[i] = (int)determinedHistogram[i];
+         sum += convertedHistogram[i];
+     }
+     //System.out.println("Sum: " + sum);
   
-      Kernels.threshold(clke, src, dst, threshold);
   
-      return true;
+     String method = "Default";
+  
+     for (String choice : AutoThresholder.getMethods()) {
+         if (choice.toLowerCase().compareTo(userSelectedMethod.toLowerCase()) == 0) {
+             method = choice;
+         }
+     }
+     //System.out.println("Method: " + method);
+  
+     float threshold = new AutoThresholder().getThreshold(method, convertedHistogram);
+  
+     // math source https://github.com/imagej/ImageJA/blob/master/src/main/java/ij/process/ImageProcessor.java#L692
+     threshold = minimumGreyValue + ((threshold + 1.0f)/255.0f)*(maximumGreyValue-minimumGreyValue);
+  
+     //System.out.println("Threshold: " + threshold);
+  
+     Kernels.threshold(clke, src, dst, threshold);
+  
+     return true;
   }
   */
 
@@ -2015,6 +2015,24 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Calculates a histogram from the input Buffer, and places the histogram
+   * value in the dstHistogra, Create the dstHistogram as follows: ClearCLBuffer
+   * histogram = clke.createCLBuffer(new long[]{numberOfBins,1,1},
+   * NativeTypeEnum.Float);
+   * 
+   * @param clke
+   *          CLKernelExecutor instance *
+   * @param src
+   *          Input CLBuffer
+   * @param dstHistogram
+   *          output histogram
+   * @param minimumGreyValue
+   *          minimum value of the input image
+   * @param maximumGreyValue
+   *          maximum valuye of the input image
+   * @throws CLKernelException
+   */
   public static void fillHistogram(CLKernelExecutor clke,
                                    ClearCLBuffer src,
                                    ClearCLBuffer dstHistogram,
@@ -2033,8 +2051,6 @@ public class Kernels
                                      * globalSizes[2];
     long[] histogramBufferSize = new long[]
     { dstHistogram.getWidth(), 1, numberOfPartialHistograms };
-
-    long timeStamp = System.currentTimeMillis();
 
     // allocate memory for partial histograms
     ClearCLBuffer partialHistograms =
