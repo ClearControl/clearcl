@@ -206,7 +206,10 @@ public class ClearCLDevice extends ClearCLBase
   {
     if (getPeerPointer() != null)
     {
-      getBackend().releaseDevice(getPeerPointer());
+      // not needed as the device was not created through clCreateSubDevices
+      // for details, see
+      // https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/clReleaseDevice.html
+      // getBackend().releaseDevice(getPeerPointer());
       setPeerPointer(null);
     }
   }
