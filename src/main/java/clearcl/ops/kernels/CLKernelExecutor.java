@@ -250,7 +250,14 @@ public class CLKernelExecutor
                       long[] pGlobalsizes,
                       Map<String, Object> pParameterMap) throws CLKernelException
   {
-    final boolean[] result = new boolean[1];
+    // TODO: How efficient is it to construct a new instance everytime?
+    // Use a single instance, and set the parameterMap? That would need
+    // locking..
+    // Use static function?
+    TypeFixer inputTypeFixer = new TypeFixer(this, pParameterMap);
+    // TODO: this function solely relies on side effects. Give it input and
+    // output
+    inputTypeFixer.fix();
 
     if (DEBUG)
     {
