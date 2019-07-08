@@ -686,8 +686,7 @@ public class CLKernelExecutor
     }
     catch (OpenCLException e)
     {
-      System.out.println("Error when trying to create kernel "
-                         + kernelName);
+      System.out.println("Error creating kernel: " + kernelName);
       // e.printStackTrace();
       return null;
     }

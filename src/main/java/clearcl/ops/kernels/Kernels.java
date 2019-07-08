@@ -8,8 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import clearcl.ClearCLBuffer;
+import clearcl.ClearCLHostImageBuffer;
 import clearcl.ClearCLImage;
 import clearcl.ocllib.OCLlib;
+import coremem.buffers.ContiguousBuffer;
 import coremem.enums.NativeTypeEnum;
 
 /**
@@ -2017,8 +2019,8 @@ public class Kernels
 
   /**
    * Calculates a histogram from the input Buffer, and places the histogram
-   * value in the dstHistogra, Create the dstHistogram as follows: ClearCLBuffer
-   * histogram = clke.createCLBuffer(new long[]{numberOfBins,1,1},
+   * values in the dstHistogram, Create the dstHistogram as follows:
+   * ClearCLBuffer histogram = clke.createCLBuffer(new long[]{numberOfBins,1,1},
    * NativeTypeEnum.Float);
    * 
    * @param clke
@@ -2828,6 +2830,50 @@ public class Kernels
                  "kernels/projections.cl",
                  "min_project_3d_2d",
                  parameters);
+  }
+
+  public static float[] minMax(CLKernelExecutor clke,
+                               ClearCLBuffer src,
+                               int nrReductions) throws CLKernelException
+  {
+
+    ClearCLBuffer mScratchBuffer = clke.createCLBuffer(new long[]
+    { 2 * nrReductions }, NativeTypeEnum.Float);
+
+    ClearCLHostImageBuffer mScratchHostBuffer =
+                                              ClearCLHostImageBuffer.allocateSameAs(mScratchBuffer);
+
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", mScratchBuffer);
+    parameters.put("length",
+                   src.getLength() * src.getNumberOfChannels());
+
+    clke.execute(OCLlib.class,
+                 "kernels/reductions.cl",
+                 "reduce_min_buffer",
+                 new long[]
+                 { Math.min(src.getLength() * src.getNumberOfChannels(), nrReductions) }, parameters);
+
+    mScratchBuffer.copyTo(mScratchHostBuffer, true);
+
+    ContiguousBuffer lContiguousBuffer =
+                                       ContiguousBuffer.wrap(mScratchHostBuffer.getContiguousMemory());
+
+    float lMin = Float.POSITIVE_INFINITY;
+    float lMax = Float.NEGATIVE_INFINITY;
+    lContiguousBuffer.rewind();
+    while (lContiguousBuffer.hasRemainingFloat())
+    {
+      float lMinValue = lContiguousBuffer.readFloat();
+      lMin = Math.min(lMin, lMinValue);
+      float lMaxValue = lContiguousBuffer.readFloat();
+      lMax = Math.max(lMax, lMaxValue);
+    }
+
+    return new float[]
+    { lMin, lMax };
+
   }
 
   public static void meanZProjection(CLKernelExecutor clke,

@@ -1,5 +1,7 @@
 package clearcl.ops.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 
 import clearcl.ClearCL;
@@ -15,6 +17,7 @@ import clearcl.ops.kernels.CLKernelException;
 import clearcl.ops.kernels.CLKernelExecutor;
 import clearcl.ops.kernels.Kernels;
 import coremem.enums.NativeTypeEnum;
+import coremem.offheap.OffHeapMemory;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -27,8 +30,8 @@ import org.junit.Test;
  */
 public class KernelsTests
 {
-  private ClearCLContext lCLContext;
-  private CLKernelExecutor lCLKE;
+  private ClearCLContext gCLContext;
+  private CLKernelExecutor gCLKE;
   final long xSize = 1024;
   final long ySize = 1024;
   long[] dimensions2D =
@@ -44,9 +47,9 @@ public class KernelsTests
 
     ClearCLDevice lBestGPUDevice = lClearCL.getBestGPUDevice();
 
-    lCLContext = lBestGPUDevice.createContext();
+    gCLContext = lBestGPUDevice.createContext();
 
-    lCLKE = new CLKernelExecutor(lCLContext,
+    gCLKE = new CLKernelExecutor(gCLContext,
                                  clearcl.ocllib.OCLlib.class);
   }
 
@@ -54,9 +57,9 @@ public class KernelsTests
   public void cleanupKernelTests() throws IOException
   {
 
-    lCLKE.close();
+    gCLKE.close();
 
-    lCLContext.close();
+    gCLContext.close();
   }
 
   @Test
@@ -64,24 +67,62 @@ public class KernelsTests
   {
 
     ClearCLBuffer lCLsrcBuffer =
-                               lCLContext.createBuffer(MemAllocMode.Best,
+                               gCLContext.createBuffer(MemAllocMode.Best,
                                                        HostAccessType.ReadWrite,
                                                        KernelAccessType.ReadWrite,
                                                        1,
                                                        NativeTypeEnum.UnsignedShort,
                                                        dimensions2D);
 
-    ClearCLBuffer lCldstBuffer = lCLKE.createCLBuffer(lCLsrcBuffer);
+    ClearCLBuffer lCldstBuffer = gCLKE.createCLBuffer(lCLsrcBuffer);
 
     try
     {
-      Kernels.blur(lCLKE, lCLsrcBuffer, lCldstBuffer, 4.0f, 4.0f);
+      Kernels.blur(gCLKE, lCLsrcBuffer, lCldstBuffer, 4.0f, 4.0f);
     }
     catch (CLKernelException clkExc)
     {
       Assert.fail(clkExc.getMessage());
     }
 
+  }
+
+  @Test
+  public void testMinMaxBuffer()
+  {
+    ClearCLBuffer lCLBuffer = gCLKE.createCLBuffer(new long[]
+    { 2048 * 2048 + 1 }, NativeTypeEnum.Float);
+
+    OffHeapMemory lBuffer =
+                          OffHeapMemory.allocateFloats(lCLBuffer.getLength());
+
+    float lJavaMin = Float.POSITIVE_INFINITY;
+    float lJavaMax = Float.NEGATIVE_INFINITY;
+    for (int i = 0; i < lCLBuffer.getLength(); i++)
+    {
+      float lValue = 1f / (1f + i);
+      lJavaMin = Math.min(lJavaMin, lValue);
+      lJavaMax = Math.max(lJavaMax, lValue);
+      lBuffer.setFloatAligned(i, lValue);
+    }
+
+    // System.out.println("lJavaMin=" + lJavaMin);
+    // System.out.println("lJavaMax=" + lJavaMax);
+
+    lCLBuffer.readFrom(lBuffer, true);
+    try
+    {
+      float[] lOpenCLMinMax = Kernels.minMax(gCLKE, lCLBuffer, 128);
+      assertEquals(lJavaMin, lOpenCLMinMax[0], 0.0001);
+      assertEquals(lJavaMax, lOpenCLMinMax[1], 0.0001);
+
+    }
+    catch (CLKernelException clkExc)
+    {
+      Assert.fail(clkExc.getMessage());
+    }
+
+    lCLBuffer.close();
   }
 
 }
