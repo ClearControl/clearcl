@@ -637,7 +637,8 @@ public class CLKernelExecutor
                                     String programFilename,
                                     String kernelName,
                                     Map<String, Object> defines) throws IOException,
-                                                                 NullPointerException
+                                                                 NullPointerException,
+                                                                 CLKernelException
   {
     String programCacheKey = anchorClass.getCanonicalName() + " "
                              + programFilename;
@@ -686,9 +687,7 @@ public class CLKernelExecutor
     }
     catch (OpenCLException e)
     {
-      System.out.println("Error creating kernel: " + kernelName);
-      // e.printStackTrace();
-      return null;
+      throw new CLKernelException("Error creating kernel: " + kernelName);
     }
   }
 

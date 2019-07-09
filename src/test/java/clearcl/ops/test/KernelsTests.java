@@ -37,10 +37,14 @@ public class KernelsTests
   final long xSize = 1024;
   final long ySize = 1024;
   final long zSize = 4;
-  long[] dimensions2D =
+  final long[] dimensions1D = 
+  {xSize * ySize};
+  final long[] dimensions2D =
   { xSize, ySize };
-  long[] dimesnions3D =
+  final long[] dimensions3D =
   { xSize, ySize, zSize };
+  final long[][] allDimensions =
+  {dimensions1D, dimensions2D, dimensions3D};
 
   @Before
   public void initKernelTests() throws IOException
@@ -70,7 +74,7 @@ public class KernelsTests
   @Test
   public void testBlurImage() throws IOException
   {
-
+    
     ClearCLBuffer lCLsrcBuffer =
                                gCLContext.createBuffer(MemAllocMode.Best,
                                                        HostAccessType.ReadWrite,
@@ -93,15 +97,15 @@ public class KernelsTests
 
   @Test
   public void testMinMaxBuffer()
-  {
+  { 
+    for (long[] lDimensions : allDimensions) {
     ClearCLBuffer lCLBuffer =
                             gCLContext.createBuffer(MemAllocMode.Best,
                                                     HostAccessType.ReadWrite,
                                                     KernelAccessType.ReadWrite,
                                                     1,
                                                     NativeTypeEnum.Float,
-                                                    dimensions2D);
-
+                                                    lDimensions);
     OffHeapMemory lBuffer =
                           OffHeapMemory.allocateFloats(lCLBuffer.getLength());
 
@@ -132,11 +136,14 @@ public class KernelsTests
     }
 
     lCLBuffer.close();
+    }
+    
   }
 
   @Test
   public void testMinMaxImage()
   {
+
     ClearCLImage lCLImage =
                           gCLKE.createCLImage(dimensions2D,
                                               ImageChannelDataType.Float);
