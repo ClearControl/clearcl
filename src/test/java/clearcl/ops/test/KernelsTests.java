@@ -8,9 +8,11 @@ import clearcl.ClearCL;
 import clearcl.ClearCLBuffer;
 import clearcl.ClearCLContext;
 import clearcl.ClearCLDevice;
+import clearcl.ClearCLImage;
 import clearcl.backend.ClearCLBackendInterface;
 import clearcl.backend.ClearCLBackends;
 import clearcl.enums.HostAccessType;
+import clearcl.enums.ImageChannelDataType;
 import clearcl.enums.KernelAccessType;
 import clearcl.enums.MemAllocMode;
 import clearcl.ops.kernels.CLKernelException;
@@ -84,9 +86,8 @@ public class KernelsTests
     {
       Assert.fail(clkExc.getMessage());
     }
-
   }
-
+  
   @Test
   public void testMinMaxBuffer()
   {
@@ -125,4 +126,44 @@ public class KernelsTests
     lCLBuffer.close();
   }
 
+
+  @Test
+  public void testMinMaxImage()
+  {
+    ClearCLImage lCLImage = gCLKE.createCLImage(dimensions2D, ImageChannelDataType.Float);
+    
+    long size = lCLImage.getWidth() * lCLImage.getHeight();
+    OffHeapMemory lBuffer =
+                          OffHeapMemory.allocateFloats(size);
+
+    float lJavaMin = Float.POSITIVE_INFINITY;
+    float lJavaMax = Float.NEGATIVE_INFINITY;
+    for (int i = 0; i < size; i++)
+    {
+      float lValue = 1f / (1f + i);
+      lJavaMin = Math.min(lJavaMin, lValue);
+      lJavaMax = Math.max(lJavaMax, lValue);
+      lBuffer.setFloatAligned(i, lValue);
+    }
+
+    // System.out.println("lJavaMin=" + lJavaMin);
+    // System.out.println("lJavaMax=" + lJavaMax);
+
+    lCLImage.readFrom(lBuffer, true);
+    try
+    {
+      float[] lOpenCLMinMax = Kernels.minMax(gCLKE, lCLImage, 128);
+      assertEquals(lJavaMin, lOpenCLMinMax[0], 0.0001);
+      assertEquals(lJavaMax, lOpenCLMinMax[1], 0.0001);
+
+    }
+    catch (CLKernelException clkExc)
+    {
+      Assert.fail(clkExc.getMessage());
+    }
+
+    lCLImage.close();
+  }
+  
+  
 }

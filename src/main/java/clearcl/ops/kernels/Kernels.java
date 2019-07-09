@@ -2851,9 +2851,53 @@ public class Kernels
 
     clke.execute(OCLlib.class,
                  "kernels/reductions.cl",
-                 "reduce_min_buffer",
+                 "reduce_minmax_1d",
                  new long[]
                  { Math.min(src.getLength() * src.getNumberOfChannels(), nrReductions) }, parameters);
+
+    mScratchBuffer.copyTo(mScratchHostBuffer, true);
+
+    ContiguousBuffer lContiguousBuffer =
+                                       ContiguousBuffer.wrap(mScratchHostBuffer.getContiguousMemory());
+
+    float lMin = Float.POSITIVE_INFINITY;
+    float lMax = Float.NEGATIVE_INFINITY;
+    lContiguousBuffer.rewind();
+    while (lContiguousBuffer.hasRemainingFloat())
+    {
+      float lMinValue = lContiguousBuffer.readFloat();
+      lMin = Math.min(lMin, lMinValue);
+      float lMaxValue = lContiguousBuffer.readFloat();
+      lMax = Math.max(lMax, lMaxValue);
+    }
+
+    return new float[]
+    { lMin, lMax };
+
+  }
+  
+  public static float[] minMax(CLKernelExecutor clke,
+                               ClearCLImage src,
+                               int nrReductions) throws CLKernelException
+  {
+
+    ClearCLBuffer mScratchBuffer = clke.createCLBuffer(new long[]
+    { 2 * nrReductions }, NativeTypeEnum.Float);
+
+    ClearCLHostImageBuffer mScratchHostBuffer =
+                                              ClearCLHostImageBuffer.allocateSameAs(mScratchBuffer);
+
+    long size = src.getWidth() * src.getHeight() * src.getNumberOfChannels();
+    HashMap<String, Object> parameters = new HashMap<>();
+    parameters.put("src", src);
+    parameters.put("dst", mScratchBuffer);
+    parameters.put("length", size);
+
+    clke.execute(OCLlib.class,
+                 "kernels/reductions.cl",
+                 "reduce_minmax_2d",
+                 new long[]
+                 { Math.min(size, nrReductions) }, parameters);
 
     mScratchBuffer.copyTo(mScratchHostBuffer, true);
 
