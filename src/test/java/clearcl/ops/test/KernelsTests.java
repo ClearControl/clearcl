@@ -36,8 +36,11 @@ public class KernelsTests
   private CLKernelExecutor gCLKE;
   final long xSize = 1024;
   final long ySize = 1024;
+  final long zSize = 4;
   long[] dimensions2D =
   { xSize, ySize };
+  long[] dimesnions3D =
+  { xSize, ySize, zSize };
 
   @Before
   public void initKernelTests() throws IOException
@@ -87,12 +90,17 @@ public class KernelsTests
       Assert.fail(clkExc.getMessage());
     }
   }
-  
+
   @Test
   public void testMinMaxBuffer()
   {
-    ClearCLBuffer lCLBuffer = gCLKE.createCLBuffer(new long[]
-    { 2048 * 2048 + 1 }, NativeTypeEnum.Float);
+    ClearCLBuffer lCLBuffer =
+                            gCLContext.createBuffer(MemAllocMode.Best,
+                                                    HostAccessType.ReadWrite,
+                                                    KernelAccessType.ReadWrite,
+                                                    1,
+                                                    NativeTypeEnum.Float,
+                                                    dimensions2D);
 
     OffHeapMemory lBuffer =
                           OffHeapMemory.allocateFloats(lCLBuffer.getLength());
@@ -126,15 +134,15 @@ public class KernelsTests
     lCLBuffer.close();
   }
 
-
   @Test
   public void testMinMaxImage()
   {
-    ClearCLImage lCLImage = gCLKE.createCLImage(dimensions2D, ImageChannelDataType.Float);
-    
+    ClearCLImage lCLImage =
+                          gCLKE.createCLImage(dimensions2D,
+                                              ImageChannelDataType.Float);
+
     long size = lCLImage.getWidth() * lCLImage.getHeight();
-    OffHeapMemory lBuffer =
-                          OffHeapMemory.allocateFloats(size);
+    OffHeapMemory lBuffer = OffHeapMemory.allocateFloats(size);
 
     float lJavaMin = Float.POSITIVE_INFINITY;
     float lJavaMax = Float.NEGATIVE_INFINITY;
@@ -164,6 +172,5 @@ public class KernelsTests
 
     lCLImage.close();
   }
-  
-  
+
 }

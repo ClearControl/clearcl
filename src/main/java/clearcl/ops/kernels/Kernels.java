@@ -2851,7 +2851,7 @@ public class Kernels
 
     clke.execute(OCLlib.class,
                  "kernels/reductions.cl",
-                 "reduce_minmax_1d",
+                 "reduce_minmax_" + src.getDimension() + "d",
                  new long[]
                  { Math.min(src.getLength() * src.getNumberOfChannels(), nrReductions) }, parameters);
 
@@ -2875,7 +2875,7 @@ public class Kernels
     { lMin, lMax };
 
   }
-  
+
   public static float[] minMax(CLKernelExecutor clke,
                                ClearCLImage src,
                                int nrReductions) throws CLKernelException
@@ -2887,7 +2887,8 @@ public class Kernels
     ClearCLHostImageBuffer mScratchHostBuffer =
                                               ClearCLHostImageBuffer.allocateSameAs(mScratchBuffer);
 
-    long size = src.getWidth() * src.getHeight() * src.getNumberOfChannels();
+    long size = src.getWidth() * src.getHeight()
+                * src.getNumberOfChannels();
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
     parameters.put("dst", mScratchBuffer);
@@ -2895,7 +2896,7 @@ public class Kernels
 
     clke.execute(OCLlib.class,
                  "kernels/reductions.cl",
-                 "reduce_minmax_2d",
+                 "reduce_minmax_" + src.getDimension() + "d",
                  new long[]
                  { Math.min(size, nrReductions) }, parameters);
 
