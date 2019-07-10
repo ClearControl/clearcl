@@ -2882,7 +2882,7 @@ public class Kernels
   {
 
     ClearCLBuffer mScratchBuffer = clke.createCLBuffer(new long[]
-    { 2 * nrReductions }, NativeTypeEnum.Float);
+    { 2 * nrReductions }, src.getNativeType());
 
     ClearCLHostImageBuffer mScratchHostBuffer =
                                               ClearCLHostImageBuffer.allocateSameAs(mScratchBuffer);

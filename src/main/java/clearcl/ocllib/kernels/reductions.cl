@@ -15,7 +15,7 @@ __kernel void reduce_minmax_1d( DTYPE_IMAGE_IN_2D src, DTYPE_IMAGE_OUT_2D dst,
   for(int lx=x; lx<width; lx+=stridex)
   {
     const int2 pos = lx;
-    const DTYPE_OUT value = READ_IMAGE_2D(src, sampler, pos).x;
+    const DTYPE_IN value = READ_IMAGE_2D(src, sampler, pos).x;
   
     min = fmin(min, value);
     max = fmax(max, value);
@@ -45,7 +45,7 @@ __kernel void reduce_minmax_2d( DTYPE_IMAGE_IN_2D src, DTYPE_IMAGE_OUT_2D dst,
     for(int lx=x; lx<width; lx+=stridex)
     {
       const int2 pos = {lx,ly};
-      const DTYPE_OUT value = READ_IMAGE_2D(src, sampler, pos).x;
+      const DTYPE_IN value = READ_IMAGE_2D(src, sampler, pos).x;
   
       min = fmin(min, value);
       max = fmax(max, value);
@@ -79,7 +79,7 @@ __kernel void reduce_minmax_3d( DTYPE_IMAGE_IN_3D src, DTYPE_IMAGE_OUT_3D dst,
     {
       for (int lz=z; lz<depth; lz+=stridez) {
         const int4 pos = (int4){lx,ly,lz,0};
-        const DTYPE_OUT value = READ_IMAGE_3D(src, sampler, pos).x;
+        const DTYPE_IN value = READ_IMAGE_3D(src, sampler, pos).x;
   
         min = fmin(min, value);
         max = fmax(max, value);

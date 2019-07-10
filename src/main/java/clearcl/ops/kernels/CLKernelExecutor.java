@@ -687,7 +687,8 @@ public class CLKernelExecutor
     }
     catch (OpenCLException e)
     {
-      throw new CLKernelException("Error creating kernel: " + kernelName);
+      throw new CLKernelException("Error creating kernel: "
+                                  + kernelName);
     }
   }
 
