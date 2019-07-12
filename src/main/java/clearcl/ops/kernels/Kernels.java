@@ -2908,12 +2908,20 @@ public class Kernels
     float lMin = Float.POSITIVE_INFINITY;
     float lMax = Float.NEGATIVE_INFINITY;
     lContiguousBuffer.rewind();
-    while (lContiguousBuffer.hasRemainingFloat())
-    {
-      float lMinValue = lContiguousBuffer.readFloat();
-      lMin = Math.min(lMin, lMinValue);
-      float lMaxValue = lContiguousBuffer.readFloat();
-      lMax = Math.max(lMax, lMaxValue);
+    if (src.isFloat()) {
+      while (lContiguousBuffer.hasRemainingFloat()) {
+        float lMinValue = lContiguousBuffer.readFloat();
+        lMin = Math.min(lMin, lMinValue);
+        float lMaxValue = lContiguousBuffer.readFloat();
+        lMax = Math.max(lMax, lMaxValue);
+      }
+    } else if (src.getNativeType() == NativeTypeEnum.UnsignedShort) {
+      while (lContiguousBuffer.hasRemainingShort()) {
+        short lMinValue = lContiguousBuffer.readShort();
+        lMin = Math.min ( (short) (0xFF & (int) lMinValue), lMin);
+        short lMaxValue = lContiguousBuffer.readShort();
+        lMax = Math.max ( (short) (0xFF & (int) lMaxValue), lMax);
+      }
     }
 
     return new float[]

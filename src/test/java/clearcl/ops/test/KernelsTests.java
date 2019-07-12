@@ -140,7 +140,7 @@ public class KernelsTests
     }
 
   }
-
+/*
   @Test
   public void testMinMaxImageFloat()
   {
@@ -180,8 +180,8 @@ public class KernelsTests
 
     lCLImage.close();
   }
-
-  /*
+*/
+  
   @Test
   public void testMinMaxImageUI16()
   {
@@ -221,7 +221,6 @@ public class KernelsTests
   
     lCLImage.close();
   }
-  */
 
   @Test
   public void TestMinimumImages()
