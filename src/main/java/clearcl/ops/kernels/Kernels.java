@@ -10,6 +10,7 @@ import java.util.Map;
 import clearcl.ClearCLBuffer;
 import clearcl.ClearCLHostImageBuffer;
 import clearcl.ClearCLImage;
+import clearcl.interfaces.ClearCLImageInterface;
 import clearcl.ocllib.OCLlib;
 import coremem.buffers.ContiguousBuffer;
 import coremem.enums.NativeTypeEnum;
@@ -2035,11 +2036,11 @@ public class Kernels
    *          maximum valuye of the input image
    * @throws CLKernelException
    */
-  public static void fillHistogram(CLKernelExecutor clke,
-                                   ClearCLBuffer src,
-                                   ClearCLBuffer dstHistogram,
-                                   Float minimumGreyValue,
-                                   Float maximumGreyValue) throws CLKernelException
+  public static void histogram(CLKernelExecutor clke,
+                               ClearCLBuffer src,
+                               ClearCLBuffer dstHistogram,
+                               Float minimumGreyValue,
+                               Float maximumGreyValue) throws CLKernelException
   {
 
     int stepSizeX = 1;
@@ -2877,7 +2878,7 @@ public class Kernels
   }
 
   public static float[] minMax(CLKernelExecutor clke,
-                               ClearCLImage src,
+                               ClearCLImageInterface src,
                                int nrReductions) throws CLKernelException
   {
 
