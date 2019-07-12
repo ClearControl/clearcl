@@ -59,14 +59,17 @@ public class CLKernelExecutor
       defines.put("DTYPE_IMAGE_IN_2D", "__read_only image2d_t");
       if (imageChannelDataType.isInteger())
       {
-        if (imageChannelDataType == ImageChannelDataType.UnsignedInt8
-            || imageChannelDataType == ImageChannelDataType.SignedInt8)
+        switch (imageChannelDataType)
         {
+        case UnsignedInt8:
+          defines.put("DTYPE_IN", "uchar");
+          break;
+        case SignedInt8:
           defines.put("DTYPE_IN", "char");
-        }
-        else
-        {
+          break;
+        default: // UnsignedInt16, TODO: throw exception if different
           defines.put("DTYPE_IN", "ushort");
+          break;
         }
       }
       else
@@ -86,14 +89,17 @@ public class CLKernelExecutor
       defines.put("DTYPE_IMAGE_OUT_2D", "__write_only image2d_t");
       if (imageChannelDataType.isInteger())
       {
-        if (imageChannelDataType == ImageChannelDataType.UnsignedInt8
-            || imageChannelDataType == ImageChannelDataType.SignedInt8)
+        switch (imageChannelDataType)
         {
+        case UnsignedInt8:
+          defines.put("DTYPE_OUT", "uchar");
+          break;
+        case SignedInt8:
           defines.put("DTYPE_OUT", "char");
-        }
-        else
-        {
+          break;
+        default: // UnsignedInt16, TODO: throw exception if different
           defines.put("DTYPE_OUT", "ushort");
+          break;
         }
       }
       else

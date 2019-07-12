@@ -2908,21 +2908,43 @@ public class Kernels
     float lMin = Float.POSITIVE_INFINITY;
     float lMax = Float.NEGATIVE_INFINITY;
     lContiguousBuffer.rewind();
-    if (src.isFloat()) {
-      while (lContiguousBuffer.hasRemainingFloat()) {
-        float lMinValue = lContiguousBuffer.readFloat();
-        lMin = Math.min(lMin, lMinValue);
-        float lMaxValue = lContiguousBuffer.readFloat();
-        lMax = Math.max(lMax, lMaxValue);
-      }
-    } else if (src.getNativeType() == NativeTypeEnum.UnsignedShort) {
-      while (lContiguousBuffer.hasRemainingShort()) {
-        short lMinValue = lContiguousBuffer.readShort();
-        lMin = Math.min ( (short) (0xFF & (int) lMinValue), lMin);
-        short lMaxValue = lContiguousBuffer.readShort();
-        lMax = Math.max ( (short) (0xFF & (int) lMaxValue), lMax);
-      }
+    if (null == src.getNativeType())
+    {
+      throw new CLKernelException("minmax only support data of type float, unsigned short, and unsigned byte");
     }
+    else
+      switch (src.getNativeType())
+      {
+      case Float:
+        while (lContiguousBuffer.hasRemainingFloat())
+        {
+          float lMinValue = lContiguousBuffer.readFloat();
+          lMin = Math.min(lMin, lMinValue);
+          float lMaxValue = lContiguousBuffer.readFloat();
+          lMax = Math.max(lMax, lMaxValue);
+        }
+        break;
+      case UnsignedShort:
+        while (lContiguousBuffer.hasRemainingShort())
+        {
+          int lMinValue = lContiguousBuffer.readShort();
+          lMin = Math.min(0xFFFF & (short) lMinValue, lMin);
+          int lMaxValue = lContiguousBuffer.readShort();
+          lMax = Math.max(0xFFFF & (short) lMaxValue, lMax);
+        }
+        break;
+      case UnsignedByte:
+        while (lContiguousBuffer.hasRemainingByte())
+        {
+          int lMinValue = lContiguousBuffer.readByte();
+          lMin = Math.min(0xFF & (byte) lMinValue, lMin);
+          int lMaxValue = lContiguousBuffer.readByte();
+          lMax = Math.max(0xFF & (byte) lMaxValue, lMax);
+        }
+        break;
+      default:
+        throw new CLKernelException("minmax only support data of type float, unsigned short, and unsigned byte");
+      }
 
     return new float[]
     { lMin, lMax };
