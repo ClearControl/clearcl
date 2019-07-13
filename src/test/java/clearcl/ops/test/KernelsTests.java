@@ -311,20 +311,48 @@ public class KernelsTests
     lCLImage.readFrom(lBuffer, true);
     try
     {
-      float[] lOpenCLMinMax = Kernels.minMax(gCLKE, lCLImage, 128);
-      int[] histogram = new int[256];
-      Kernels.histogram(gCLKE,
-                        lCLImage,
-                        histogram,
-                        lOpenCLMinMax[0],
-                        lOpenCLMinMax[1]);
-      long sum = 0;
-      for (int i = 0; i < histogram.length; i++)
+      // OpenCL uses uShort to index the histogram
+      // however, other limits - possibly hardware related - are reached
+      // at smaller size already. For now, just be sure that sizes other
+      // than 256 actually work
+      int[] histLengths =
+      { 256, 2048 };
+      for (int histLength : histLengths)
       {
-        sum += histogram[i];
+        // CPU histogram calculation
+        int[] cpuHist = new int[histLength];
+        int min = (int) lJavaMin;
+        int max = (int) lJavaMax;
+        int range = max - min;
+        int maxIndex = histLength - 1;
+        float histLengthDivRange = (float) histLength / (float) range;
+
+        for (long i = 0; i < size; i++)
+        {
+          short val = lBuffer.getShortAligned(i);
+          int iVal = 0xFFFF & val;
+          int index = (int) ((iVal - min) * histLengthDivRange);
+          index = index > maxIndex ? maxIndex : index;
+          cpuHist[index]++;
+        }
+        // GPU histogram calculation
+        float[] lOpenCLMinMax = Kernels.minMax(gCLKE, lCLImage, 128);
+        int[] gpuHist = new int[histLength];
+        Kernels.histogram(gCLKE,
+                          lCLImage,
+                          gpuHist,
+                          lOpenCLMinMax[0],
+                          lOpenCLMinMax[1]);
+        long sum = 0;
+        for (int i = 0; i < gpuHist.length; i++)
+        {
+          sum += gpuHist[i];
+          // System.out.println(" " + i + ": " + " CPU: " + cpuHist[i] + ", GPU:
+          // " + gpuHist[i]);
+          assertEquals(gpuHist[i], cpuHist[i]);
+        }
+        assertEquals(size, sum);
       }
-      assertEquals(size, sum); // TODO: check that the histogram is actually
-                               // correct
     }
     catch (CLKernelException clkExc)
     {

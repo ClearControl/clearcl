@@ -41,16 +41,20 @@ void histogram_image_2d(DTYPE_IMAGE_IN_2D src, DTYPE_IMAGE_OUT_3D dst_histogram,
     int     image_height = GET_IMAGE_HEIGHT(src);
     int     y = get_global_id(0) * step_size_y;
     float range = maximum - minimum;
-
+    float fHistWidth = (float) GET_IMAGE_WIDTH(dst_histogram);
+    float fHistWidthDivRange = fHistWidth / range;
+    ushort usHistWidth = (ushort) GET_IMAGE_WIDTH(dst_histogram);
     uint tmp_histogram[GET_IMAGE_WIDTH(dst_histogram)];
-    for (int i = 0; i < GET_IMAGE_WIDTH(dst_histogram); i++) {
+    ushort usHistMaxIndex = usHistWidth - 1;
+
+    for (int i = 0; i < usHistWidth; i++) {
         tmp_histogram[i] = 0;
     }
 
     for (int x = 0; x < image_width; x+= step_size_x) {
         float clr = READ_IMAGE_2D(src, sampler, (int2)(x, y)).x;
-        uchar   indx_x;
-        indx_x = convert_uchar_sat( (clr - minimum) * (float)(GET_IMAGE_WIDTH(dst_histogram)) / range );
+        ushort indx_x = convert_ushort_sat( (clr - minimum) * fHistWidthDivRange );
+        indx_x = min(indx_x, usHistMaxIndex);
         tmp_histogram[indx_x]++;
     }
 
@@ -67,9 +71,13 @@ void histogram_image_3d(DTYPE_IMAGE_IN_3D src, DTYPE_IMAGE_OUT_3D dst_histogram,
     int     image_height = GET_IMAGE_HEIGHT(src);
     int     image_depth = GET_IMAGE_DEPTH(src);
     int     y = get_global_id(0);
-    float range = maximum - minimum;
-
+    float range = maximum - minimum;    
+    float fHistWidth = (float) GET_IMAGE_WIDTH(dst_histogram);
+    float fHistWidthDivRange = fHistWidth / range;
+    ushort usHistWidth = (ushort) GET_IMAGE_WIDTH(dst_histogram);
     uint tmp_histogram[GET_IMAGE_WIDTH(dst_histogram)];
+    ushort usHistMaxIndex = usHistWidth - 1;
+
     for (int i = 0; i < GET_IMAGE_WIDTH(dst_histogram); i++) {
         tmp_histogram[i] = 0;
     }
@@ -77,8 +85,8 @@ void histogram_image_3d(DTYPE_IMAGE_IN_3D src, DTYPE_IMAGE_OUT_3D dst_histogram,
     for (int z = 0; z < image_depth; z+= step_size_z) {
         for (int x = 0; x < image_width; x+= step_size_x) {
             float clr = READ_IMAGE_3D(src, sampler, (int4)(x, y, z, 0)).x;
-            uchar   indx_x;
-            indx_x = convert_uchar_sat( (clr - minimum) * (float)(GET_IMAGE_WIDTH(dst_histogram)) / range );
+            ushort indx_x = convert_ushort_sat( (clr - minimum) * fHistWidthDivRange );
+            indx_x = min(indx_x, usHistMaxIndex);
             tmp_histogram[indx_x]++;
         }
     }
