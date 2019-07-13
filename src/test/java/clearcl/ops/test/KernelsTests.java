@@ -287,4 +287,51 @@ public class KernelsTests
     }
   }
 
+  @Test
+  public void TestHistogram()
+  {
+    ClearCLImage lCLImage =
+                          gCLKE.createCLImage(dimensions2D,
+                                              ImageChannelDataType.UnsignedInt16);
+
+    long size = lCLImage.getWidth() * lCLImage.getHeight();
+    OffHeapMemory lBuffer = OffHeapMemory.allocateShorts(size);
+
+    float lJavaMin = Float.POSITIVE_INFINITY;
+    float lJavaMax = Float.NEGATIVE_INFINITY;
+    for (int i = 0; i < size; i++)
+    {
+      float lValue = 23000f / (1f + i) + 129.0f;
+      lJavaMin = (int) Math.min(lJavaMin, lValue);
+      lJavaMax = (int) Math.max(lJavaMax, lValue);
+      short sv = (short) (0xFFFF & (int) lValue);
+      lBuffer.setShortAligned(i, sv);
+    }
+
+    lCLImage.readFrom(lBuffer, true);
+    try
+    {
+      float[] lOpenCLMinMax = Kernels.minMax(gCLKE, lCLImage, 128);
+      int[] histogram = new int[256];
+      Kernels.histogram(gCLKE,
+                        lCLImage,
+                        histogram,
+                        lOpenCLMinMax[0],
+                        lOpenCLMinMax[1]);
+      long sum = 0;
+      for (int i = 0; i < histogram.length; i++)
+      {
+        sum += histogram[i];
+      }
+      assertEquals(size, sum); // TODO: check that the histogram is actually
+                               // correct
+    }
+    catch (CLKernelException clkExc)
+    {
+      Assert.fail(clkExc.getMessage());
+    }
+
+    lCLImage.close();
+  }
+
 }

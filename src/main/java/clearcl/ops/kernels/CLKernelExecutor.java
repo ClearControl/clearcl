@@ -67,6 +67,9 @@ public class CLKernelExecutor
         case SignedInt8:
           defines.put("DTYPE_IN", "char");
           break;
+        case SignedInt32:
+          defines.put("DTYPE_IN", "int");
+          break;
         default: // UnsignedInt16, TODO: throw exception if different
           defines.put("DTYPE_IN", "ushort");
           break;
@@ -96,6 +99,9 @@ public class CLKernelExecutor
           break;
         case SignedInt8:
           defines.put("DTYPE_OUT", "char");
+          break;
+        case SignedInt32:
+          defines.put("DTYPE_OUT", "int");
           break;
         default: // UnsignedInt16, TODO: throw exception if different
           defines.put("DTYPE_OUT", "ushort");

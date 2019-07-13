@@ -34,7 +34,8 @@
 const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 kernel
-void histogram_image_2d(DTYPE_IMAGE_IN_2D src, DTYPE_IMAGE_OUT_3D dst_histogram, float minimum, float maximum, int step_size_x, int step_size_y)
+void histogram_image_2d(DTYPE_IMAGE_IN_2D src, DTYPE_IMAGE_OUT_3D dst_histogram, 
+                        float minimum, float maximum, int step_size_x, int step_size_y)
 {
     int     image_width = GET_IMAGE_WIDTH(src);
     int     image_height = GET_IMAGE_HEIGHT(src);

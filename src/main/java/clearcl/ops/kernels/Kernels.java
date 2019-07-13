@@ -14,6 +14,7 @@ import clearcl.interfaces.ClearCLImageInterface;
 import clearcl.ocllib.OCLlib;
 import coremem.buffers.ContiguousBuffer;
 import coremem.enums.NativeTypeEnum;
+import coremem.offheap.OffHeapMemory;
 
 /**
  * This class contains convenience access functions for OpenCL based image
@@ -2020,9 +2021,9 @@ public class Kernels
 
   /**
    * Calculates a histogram from the input Buffer, and places the histogram
-   * values in the dstHistogram, Create the dstHistogram as follows:
-   * ClearCLBuffer histogram = clke.createCLBuffer(new long[]{numberOfBins,1,1},
-   * NativeTypeEnum.Float);
+   * values in the dstHistogram, Create the dstHistogram as follows: long[]
+   * histDims = {numberOfBins,1,1}; ClearCLBuffer histogram =
+   * clke.createCLBuffer(histDims, NativeTypeEnum.Float);
    * 
    * @param clke
    *          CLKernelExecutor instance *
@@ -2033,11 +2034,11 @@ public class Kernels
    * @param minimumGreyValue
    *          minimum value of the input image
    * @param maximumGreyValue
-   *          maximum valuye of the input image
+   *          maximum value of the input image
    * @throws CLKernelException
    */
   public static void histogram(CLKernelExecutor clke,
-                               ClearCLBuffer src,
+                               ClearCLImageInterface src,
                                ClearCLBuffer dstHistogram,
                                Float minimumGreyValue,
                                Float maximumGreyValue) throws CLKernelException
@@ -2048,7 +2049,7 @@ public class Kernels
     int stepSizeZ = 1;
 
     long[] globalSizes = new long[]
-    { src.getHeight() / stepSizeZ, 1, 1 };
+    { src.getWidth() / stepSizeZ, 1, 1 };
 
     long numberOfPartialHistograms = globalSizes[0] * globalSizes[1]
                                      * globalSizes[2];
@@ -2083,6 +2084,57 @@ public class Kernels
     // timeStamp) + " msec");
 
     partialHistograms.close();
+  }
+
+  /**
+   * Calculates a histogram from the input Buffer, and places the histogram
+   * values in the dstHistogram. Size (number of bins) of the histogram is
+   * determined by the size of dstHistogra,
+   * 
+   * long[] histDims = {numberOfBins,1,1}; ClearCLBuffer histogram =
+   * clke.createCLBuffer(histDims, NativeTypeEnum.Float);
+   * 
+   * @param clke
+   *          CLKernelExecutor instance *
+   * @param src
+   *          Input CLBuffer
+   * @param dstHistogram
+   *          output histogram Need to be allocated and not null. Size
+   *          determines histogram size
+   * @param minimumGreyValue
+   *          minimum value of the input image
+   * @param maximumGreyValue
+   *          maximum value of the input image
+   * @throws CLKernelException
+   */
+  public static void histogram(CLKernelExecutor clke,
+                               ClearCLImageInterface src,
+                               int[] dstHistogram,
+                               Float minimumGreyValue,
+                               Float maximumGreyValue) throws CLKernelException
+  {
+    long[] histDims =
+    { dstHistogram.length, 1, 1 };
+    // TODO: It must be more efficient to do this with Int or Long,
+    // however, CLKernelExecutor does not support those types
+    ClearCLBuffer histogram =
+                            clke.createCLBuffer(histDims,
+                                                NativeTypeEnum.Float);
+    histogram(clke,
+              src,
+              histogram,
+              minimumGreyValue,
+              maximumGreyValue);
+
+    OffHeapMemory lBuffer =
+                          OffHeapMemory.allocateFloats(dstHistogram.length);
+    histogram.writeTo(lBuffer, true);
+    float[] fBuf = new float[dstHistogram.length];
+    lBuffer.copyTo(fBuf);
+    for (int i = 0; i < fBuf.length; i++)
+    {
+      dstHistogram[i] = (int) fBuf[i];
+    }
   }
 
   public static void gradientX(CLKernelExecutor clke,
@@ -2831,50 +2883,6 @@ public class Kernels
                  "kernels/projections.cl",
                  "min_project_3d_2d",
                  parameters);
-  }
-
-  public static float[] minMax(CLKernelExecutor clke,
-                               ClearCLBuffer src,
-                               int nrReductions) throws CLKernelException
-  {
-
-    ClearCLBuffer mScratchBuffer = clke.createCLBuffer(new long[]
-    { 2 * nrReductions }, NativeTypeEnum.Float);
-
-    ClearCLHostImageBuffer mScratchHostBuffer =
-                                              ClearCLHostImageBuffer.allocateSameAs(mScratchBuffer);
-
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", mScratchBuffer);
-    parameters.put("length",
-                   src.getLength() * src.getNumberOfChannels());
-
-    clke.execute(OCLlib.class,
-                 "kernels/reductions.cl",
-                 "reduce_minmax_" + src.getDimension() + "d",
-                 new long[]
-                 { Math.min(src.getLength() * src.getNumberOfChannels(), nrReductions) }, parameters);
-
-    mScratchBuffer.copyTo(mScratchHostBuffer, true);
-
-    ContiguousBuffer lContiguousBuffer =
-                                       ContiguousBuffer.wrap(mScratchHostBuffer.getContiguousMemory());
-
-    float lMin = Float.POSITIVE_INFINITY;
-    float lMax = Float.NEGATIVE_INFINITY;
-    lContiguousBuffer.rewind();
-    while (lContiguousBuffer.hasRemainingFloat())
-    {
-      float lMinValue = lContiguousBuffer.readFloat();
-      lMin = Math.min(lMin, lMinValue);
-      float lMaxValue = lContiguousBuffer.readFloat();
-      lMax = Math.max(lMax, lMaxValue);
-    }
-
-    return new float[]
-    { lMin, lMax };
-
   }
 
   public static float[] minMax(CLKernelExecutor clke,
