@@ -89,11 +89,18 @@ public class ClearCLDevice extends ClearCLBase
    */
   public double getVersion()
   {
-    String lStringVersion =
-                          getBackend().getDeviceVersion(mDevicePointer)
-                                      .replace("OpenCL C", "")
-                                      .trim();
-    Double lDoubleVersion = Double.parseDouble(lStringVersion);
+    final String[] lStringVersion =
+                                  getBackend().getDeviceVersion(mDevicePointer)
+                                              .replace("OpenCL C", "")
+                                              .trim()
+                                              .split("\\s+");
+
+    if (lStringVersion.length == 0)
+    {
+      return 0.;
+    }
+
+    Double lDoubleVersion = Double.parseDouble(lStringVersion[0]);
     return lDoubleVersion;
   }
 
