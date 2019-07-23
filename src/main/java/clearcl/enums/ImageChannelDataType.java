@@ -37,7 +37,7 @@ public enum ImageChannelDataType
   }
 
   /**
-   * Return correspodning native type.
+   * Return corresponding native type.
    * 
    * @return native type.
    */

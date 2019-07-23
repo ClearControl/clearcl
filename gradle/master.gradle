@@ -11,7 +11,7 @@ ext {
   // When editiong this file, be carefull that GitHub does not always instantly reflect the changes.
 
   // Level 0 (don't depend on any other lib): 
-  versionsMap['coremem']                 = "0.4.6"
+  versionsMap['coremem']                 = "0.4.8"
   versionsMap['dockfx']                  = "0.1.12"
   versionsMap['cleargl']                 = "2.2.1"  // Ulrik Guenter (skalarproduktraum) is currently maintaing this project and releases versions
   versionsMap['clearaudio']              = "1.0.2"
@@ -30,7 +30,7 @@ ext {
   
   // device adapters:
   versionsMap['dcamj']                   = "2.1.7"  // depends directly on coremem
-  versionsMap['clearcl']                 = "0.6.2"  // depends directly on coremem
+  versionsMap['clearcl']                 = "0.6.3"  // depends directly on coremem
   
   // Level 2:
   versionsMap['clearvolume']             = "1.4.2"  // depends directly on clearcl, clearaudio, cleargl

@@ -11,6 +11,7 @@ import clearcl.selector.DeviceSelector;
 import clearcl.selector.DeviceTypeSelector;
 import clearcl.selector.FastestDeviceSelector;
 import clearcl.selector.GlobalMemorySelector;
+import coremem.rgc.RessourceCleaner;
 
 /**
  * ClearCL is the starting point for creating ClearCL objects for OpenCL.
@@ -20,6 +21,18 @@ import clearcl.selector.GlobalMemorySelector;
  */
 public class ClearCL extends ClearCLBase
 {
+
+  static
+  {
+    // Forces the resource garbage collector to start
+    RessourceCleaner.cleanNow();
+  }
+
+  // This switch should never be touched, true -> RGC on, false--> RGC off
+  public static boolean sRGC = true;
+
+  // Turns on RGC debugging.
+  public static boolean sDebugRGC = false;
 
   HashSet<ClearCLDevice> mAccessedDeviceList = new HashSet<>();
 

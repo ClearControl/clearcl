@@ -44,11 +44,6 @@ public class ClearCLImage extends ClearCLMemBase implements
   private final ImageChannelDataType mImageChannelDataType;
   private final long[] mDimensions;
 
-  // This will register this buffer for GC cleanup
-  {
-    RessourceCleaner.register(this);
-  }
-
   /**
    * This constructor is called internally from an OpenCl context.
    * 
@@ -89,6 +84,10 @@ public class ClearCLImage extends ClearCLMemBase implements
     mImageChannelOrder = pImageChannelOrder;
     mImageChannelDataType = pImageChannelType;
     mDimensions = pDimensions;
+
+    // This will register this image for GC cleanup
+    if (ClearCL.sRGC)
+      RessourceCleaner.register(this);
   }
 
   /**
@@ -1074,6 +1073,7 @@ public class ClearCLImage extends ClearCLMemBase implements
   @Override
   public void close()
   {
+
     if (getPeerPointer() != null)
     {
       if (mImageCleaner != null)
@@ -1088,7 +1088,7 @@ public class ClearCLImage extends ClearCLMemBase implements
   private static class ImageCleaner implements Cleaner
   {
     private ClearCLBackendInterface mBackend;
-    private ClearCLPeerPointer mClearCLPeerPointer;
+    private volatile ClearCLPeerPointer mClearCLPeerPointer;
 
     public ImageCleaner(ClearCLBackendInterface pBackend,
                         ClearCLPeerPointer pClearCLPeerPointer)
@@ -1100,24 +1100,35 @@ public class ClearCLImage extends ClearCLMemBase implements
     @Override
     public void run()
     {
+
       try
       {
         if (mClearCLPeerPointer != null)
+        {
+          if (ClearCL.sDebugRGC)
+            System.out.println("Releasing image: "
+                               + mClearCLPeerPointer.toString());
           mBackend.releaseImage(mClearCLPeerPointer);
+          mClearCLPeerPointer = null;
+        }
+
       }
-      catch (Exception e)
+      catch (Throwable e)
       {
-        e.printStackTrace();
+        if (ClearCL.sDebugRGC)
+          e.printStackTrace();
       }
     }
+
   }
 
-  ImageCleaner mImageCleaner = new ImageCleaner(getBackend(),
-                                                getPeerPointer());
+  ImageCleaner mImageCleaner;
 
   @Override
   public Cleaner getCleaner()
   {
+    mImageCleaner = new ImageCleaner(getBackend(), getPeerPointer());
+
     return mImageCleaner;
   }
 }

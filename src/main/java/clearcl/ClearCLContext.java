@@ -1,16 +1,12 @@
 package clearcl;
 
+import java.io.Closeable;
 import java.io.IOException;
 
-import clearcl.abs.ClearCLBase;
 import clearcl.backend.ClearCLBackendInterface;
-import clearcl.enums.HostAccessType;
-import clearcl.enums.ImageChannelDataType;
-import clearcl.enums.ImageChannelOrder;
-import clearcl.enums.ImageType;
-import clearcl.enums.KernelAccessType;
-import clearcl.enums.MemAllocMode;
+import clearcl.enums.*;
 import clearcl.exceptions.OpenCLException;
+import clearcl.recycling.ClearCLRecyclablePeerPointer;
 import coremem.enums.NativeTypeEnum;
 import coremem.rgc.Cleanable;
 import coremem.rgc.Cleaner;
@@ -21,39 +17,71 @@ import coremem.rgc.RessourceCleaner;
  *
  * @author royer
  */
-public class ClearCLContext extends ClearCLBase implements Cleanable
+public class ClearCLContext implements Cleanable, Closeable
 {
+
   private boolean mDebugNotifyAllocation = false;
 
   private final ClearCLDevice mDevice;
-
   private final ClearCLQueue mDefaultQueue;
 
-  // This will register this buffer for GC cleanup
-  {
-    RessourceCleaner.register(this);
-  }
+  private ClearCLRecyclablePeerPointer mContextPointer;
 
   /**
    * Construction of this object is done from within a ClearClDevice.
-   * 
+   *
    * @param pClearCLDevice
    *          device
    * @param pContextPointer
    *          context peer pointer
    */
   ClearCLContext(final ClearCLDevice pClearCLDevice,
-                 ClearCLPeerPointer pContextPointer)
+                 ClearCLRecyclablePeerPointer pContextPointer)
   {
-    super(pClearCLDevice.getBackend(), pContextPointer);
+    super();
     mDevice = pClearCLDevice;
-
+    mContextPointer = pContextPointer;
     mDefaultQueue = createQueue();
+
+    // This will register this context for GC cleanup
+    if (ClearCL.sRGC)
+      RessourceCleaner.register(this);
+  }
+
+  /**
+   * Returns the backend
+   *
+   * @return backend
+   */
+  public ClearCLBackendInterface getBackend()
+  {
+    return mDevice.getBackend();
+  }
+
+  /**
+   * Sets the peer pointer
+   *
+   * @param pPeerPointer
+   *          peer pointer
+   */
+  public void setPeerPointer(ClearCLRecyclablePeerPointer pPeerPointer)
+  {
+    mContextPointer = pPeerPointer;
+  }
+
+  /**
+   * Sets the peer pointer
+   *
+   * @return peer pointer
+   */
+  public ClearCLRecyclablePeerPointer getPeerPointer()
+  {
+    return mContextPointer;
   }
 
   /**
    * Returns context's device
-   * 
+   *
    * @return device
    */
   public ClearCLDevice getDevice()
@@ -63,7 +91,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
 
   /**
    * Returns the default queue. All devices are created with a default queue.
-   * 
+   *
    * @return default queue
    */
   public ClearCLQueue getDefaultQueue()
@@ -73,11 +101,12 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
 
   /**
    * Creates a queue.
-   * 
+   *
    * @return queue
    */
   public ClearCLQueue createQueue()
   {
+
     final ClearCLPeerPointer lQueuePointer =
                                            getBackend().getQueuePeerPointer(getDevice().getPeerPointer(),
                                                                             getPeerPointer(),
@@ -86,6 +115,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
                                      new ClearCLQueue(this,
                                                       lQueuePointer);
     return lClearCLQueue;
+
   }
 
   /**
@@ -119,7 +149,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
   /**
    * Creates an OpenCL buffer with a given data type and length. The host and
    * kernel access policy is read and write access for both.
-   * 
+   *
    * @param pNativeType
    *          native type
    * @param pBufferLengthInElements
@@ -138,7 +168,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
 
   /**
    * Creates an OpenCL buffer with a given access policy, data type and length.
-   * 
+   *
    * @param pHostAccessType
    *          host access type
    * @param pKernelAccessType
@@ -165,7 +195,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
    * Creates an OpenCL buffer with a given access policy, data type, memory
    * allocation mode and length. The host and kernel access policy is read and
    * write access for both.
-   * 
+   *
    * @param pMemAllocMode
    *          memory allocation mode
    * @param pNativeType
@@ -188,7 +218,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
   /**
    * Creates an OpenCL buffer with a given data type, access policy, memory
    * allocation mode, native type, and length.
-   * 
+   *
    * @param pMemAllocMode
    *          memory allocation mode
    * @param pHostAccessType
@@ -219,7 +249,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
    * Creates an OpenCL buffer with a given data type, memory allocation mode and
    * access policy, memory allocation mode, native type, and dimensions. In this
    * case the buffer can be interpreted as an image.
-   * 
+   *
    * @param pMemAllocMode
    *          memory allocation mode
    * @param pHostAccessType
@@ -241,6 +271,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
                                     final NativeTypeEnum pNativeType,
                                     final long... pDimensions)
   {
+
     notifyMemoryAllocation();
 
     long lVolume = 1;
@@ -271,11 +302,12 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
                                                          pNativeType,
                                                          pDimensions);
     return lClearCLBuffer;
+
   }
 
   /**
    * Creates an image with same parameters as the given image,
-   * 
+   *
    * @param pImage
    *          template image to use
    * @return created image
@@ -287,7 +319,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
 
   /**
    * Creates an image with same parameters as the given image,
-   * 
+   *
    * @param pImage
    *          template image to use
    * @param pChannelDataType
@@ -311,14 +343,12 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
    * Creates 1D, 2D, or 3D single channel images with a given channel data type,
    * and dimensions. The host and kernel access policy is read and write access
    * for both.
-   * 
-   * 
+   *
    * @param pImageChannelType
    *          channel data type
    * @param pDimensions
    *          dimensions
-   * 
-   * @return 1D,2D, or 3D image
+   * @return 1D, 2D, or 3D image
    */
   public ClearCLImage createSingleChannelImage(final ImageChannelDataType pImageChannelType,
                                                final long... pDimensions)
@@ -337,14 +367,14 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
    * Creates 1D, 2D, or 3D image with a given channel order, channel data type,
    * and dimensions. The host and kernel access policy is read and write access
    * for both.
-   * 
+   *
    * @param pImageChannelOrder
    *          channel order
    * @param pImageChannelType
    *          channel data type
    * @param pDimensions
    *          dimensions
-   * @return 1D,2D, or 3D image
+   * @return 1D, 2D, or 3D image
    */
   public ClearCLImage createImage(final ImageChannelOrder pImageChannelOrder,
                                   final ImageChannelDataType pImageChannelType,
@@ -361,7 +391,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
   /**
    * Creates 1D, 2D, or 3D single channel image with a given memory allocation
    * and access policy, channel data type, and dimensions.
-   * 
+   *
    * @param pHostAccessType
    *          host access type
    * @param pKernelAccessType
@@ -370,7 +400,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
    *          channel data type
    * @param pDimensions
    *          dimensions
-   * @return 1D,2D, or 3D image
+   * @return 1D, 2D, or 3D image
    */
   public ClearCLImage createSingleChannelImage(final HostAccessType pHostAccessType,
                                                final KernelAccessType pKernelAccessType,
@@ -390,8 +420,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
   /**
    * Creates 1D, 2D, or 3D image with a given memory allocation and access
    * policy, channel order, channel data type, and dimensions.
-   * 
-   * 
+   *
    * @param pHostAccessType
    *          host access type
    * @param pKernelAccessType
@@ -402,7 +431,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
    *          channel data type
    * @param pDimensions
    *          dimensions
-   * @return 1D,2D, or 3D image
+   * @return 1D, 2D, or 3D image
    */
   public ClearCLImage createImage(final HostAccessType pHostAccessType,
                                   final KernelAccessType pKernelAccessType,
@@ -421,8 +450,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
   /**
    * Creates 1D, 2D, or 3D image with a given memory allocation and access
    * policy, channel order, channel data type, and dimensions.
-   * 
-   * 
+   *
    * @param pMemAllocMode
    *          memory allocation mode
    * @param pHostAccessType
@@ -435,7 +463,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
    *          channel data type
    * @param pDimensions
    *          dimensions
-   * @return 1D,2D, or 3D image
+   * @return 1D, 2D, or 3D image
    */
   public ClearCLImage createImage(final MemAllocMode pMemAllocMode,
                                   final HostAccessType pHostAccessType,
@@ -444,6 +472,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
                                   final ImageChannelDataType pImageChannelType,
                                   final long... pDimensions)
   {
+
     notifyMemoryAllocation();
 
     final ImageType lImageType =
@@ -471,11 +500,12 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
                                                         pDimensions);
 
     return lClearCLImage;
+
   }
 
   /**
    * Creates a program, with optional source code
-   * 
+   *
    * @param pSourceCode
    *          optional varargs of source code strings.
    * @return program
@@ -484,8 +514,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
   {
     final ClearCLProgram lClearCLProgram =
                                          new ClearCLProgram(getDevice(),
-                                                            this,
-                                                            null);
+                                                            this);
     for (final String lSourceCode : pSourceCode)
       lClearCLProgram.addSource(lSourceCode);
 
@@ -495,7 +524,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
   /**
    * Creates a program given a list of resources locate relative to a reference
    * class.
-   * 
+   *
    * @param pClassForRessource
    *          reference class to locate resources
    * @param pRessourceNames
@@ -519,7 +548,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
    * Returns the boolean flag that decides whether to print a message with a
    * stack trace every time a buffer or image is allocated. this is practical to
    * detect OpenCl memory trashing/leaking
-   * 
+   *
    * @return true -> debug messages, false -> no debug messages
    */
   public boolean isDebugNotifyAllocation()
@@ -529,7 +558,7 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
 
   /**
    * Sets the debug allocation notification flag.
-   * 
+   *
    * @param pDebugNotifyAllocation
    *          true -> debug messages, false -> no debug messages
    */
@@ -557,51 +586,66 @@ public class ClearCLContext extends ClearCLBase implements Cleanable
   @Override
   public void close()
   {
+
     if (getPeerPointer() != null)
     {
       if (mContextCleaner != null)
-        mContextCleaner.mClearCLPeerPointer = null;
-      getBackend().releaseContext(getPeerPointer());
+        mContextCleaner.mClearCLContextPeerPointer = null;
+      getPeerPointer().release();
       setPeerPointer(null);
     }
+
   }
 
   // NOTE: this _must_ be a static class, otherwise instances of this class will
   // implicitely hold a reference of this image...
   private static class ContextCleaner implements Cleaner
   {
-    public ClearCLBackendInterface mBackend;
-    public ClearCLPeerPointer mClearCLPeerPointer;
+    private ClearCLBackendInterface mBackend;
+    private volatile ClearCLRecyclablePeerPointer mClearCLContextPeerPointer;
 
     public ContextCleaner(ClearCLBackendInterface pBackend,
-                          ClearCLPeerPointer pClearCLPeerPointer)
+                          ClearCLRecyclablePeerPointer pClearCLContextPeerPointer)
     {
       mBackend = pBackend;
-      mClearCLPeerPointer = pClearCLPeerPointer;
+      mClearCLContextPeerPointer = pClearCLContextPeerPointer;
     }
 
     @Override
     public void run()
     {
+
       try
       {
-        if (mClearCLPeerPointer != null)
-          mBackend.releaseContext(mClearCLPeerPointer);
+        if (mClearCLContextPeerPointer != null)
+        {
+          if (ClearCL.sDebugRGC)
+          {
+            System.out.println("Releasing context: "
+                               + mClearCLContextPeerPointer.toString());
+            System.out.println("          pointer: "
+                               + mClearCLContextPeerPointer.getPointer());
+          }
+          mClearCLContextPeerPointer.release();
+          mClearCLContextPeerPointer = null;
+        }
       }
-      catch (Exception e)
+      catch (Throwable e)
       {
-        e.printStackTrace();
+        if (ClearCL.sDebugRGC)
+          e.printStackTrace();
       }
+
     }
   }
 
-  ContextCleaner mContextCleaner =
-                                 new ContextCleaner(getBackend(),
-                                                    getPeerPointer());
+  ContextCleaner mContextCleaner;
 
   @Override
   public Cleaner getCleaner()
   {
+    mContextCleaner = new ContextCleaner(getBackend(),
+                                         getPeerPointer());
     return mContextCleaner;
   }
 
