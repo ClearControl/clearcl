@@ -109,6 +109,18 @@ public class KernelsTests
   @After
   public void cleanupKernelTests() throws IOException
   {
+    for (ClearCLImage clImg : srcImages) {
+      clImg.close();
+    }
+    for (ClearCLImage clImg : dstImages) {
+      clImg.close();
+    }
+    for (ClearCLBuffer clBuf : srcBuffers) {
+      clBuf.close();
+    }
+    for (ClearCLBuffer clBuf : dstBuffers) {
+      clBuf.close();
+    }
 
     gCLKE.close();
 
