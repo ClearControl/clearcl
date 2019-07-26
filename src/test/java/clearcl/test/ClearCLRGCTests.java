@@ -11,8 +11,6 @@ import clearcl.enums.ImageChannelDataType;
 import coremem.enums.NativeTypeEnum;
 import coremem.rgc.RessourceCleaner;
 
-import org.junit.Test;
-
 /**
  * Basic ressource gargabe collection (RGC) for images and buffers tests .
  *
@@ -27,7 +25,7 @@ public class ClearCLRGCTests
    * @throws Exception
    *           NA
    */
-  @Test
+
   public void testRGC() throws Exception
   {
     final ClearCLBackendInterface lClearCLBackendInterface =
