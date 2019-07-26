@@ -37,11 +37,6 @@ public class ClearCLBuffer extends ClearCLMemBase implements
   private long mNumberOfChannels;
   private final long[] mDimensions;
 
-  // This will register this buffer for GC cleanup
-  {
-    RessourceCleaner.register(this);
-  }
-
   /**
    * This constructor is called internally from an OpenCl context.
    *
@@ -77,6 +72,10 @@ public class ClearCLBuffer extends ClearCLMemBase implements
     mNumberOfChannels = pNumberOfChannels;
     mNativeType = pNativeType;
     mDimensions = pDimensions;
+
+    // This will register this buffer for GC cleanup
+    if (ClearCL.sRGC)
+      RessourceCleaner.register(this);
   }
 
   /**
@@ -753,13 +752,16 @@ public class ClearCLBuffer extends ClearCLMemBase implements
   @Override
   public void close()
   {
+
     if (getPeerPointer() != null)
     {
+
       if (mBufferCleaner != null)
         mBufferCleaner.mClearCLPeerPointer = null;
       getBackend().releaseBuffer(getPeerPointer());
       setPeerPointer(null);
     }
+
   }
 
   // NOTE: this _must_ be a static class, otherwise instances of this class will
@@ -767,7 +769,7 @@ public class ClearCLBuffer extends ClearCLMemBase implements
   private static class BufferCleaner implements Cleaner
   {
     public ClearCLBackendInterface mBackend;
-    public ClearCLPeerPointer mClearCLPeerPointer;
+    public volatile ClearCLPeerPointer mClearCLPeerPointer;
 
     public BufferCleaner(ClearCLBackendInterface pBackend,
                          ClearCLPeerPointer pClearCLPeerPointer)
@@ -779,26 +781,35 @@ public class ClearCLBuffer extends ClearCLMemBase implements
     @Override
     public void run()
     {
+
       try
       {
         if (mClearCLPeerPointer != null)
+        {
+          if (ClearCL.sDebugRGC)
+            System.out.println("Releasing buffer: "
+                               + mClearCLPeerPointer.toString());
           mBackend.releaseBuffer(mClearCLPeerPointer);
-        /*System.out.println("Cleaning buffer pointer: "
-                           + mClearCLPeerPointer);/**/
+          mClearCLPeerPointer = null;
+        }
       }
-      catch (Exception e)
+      catch (Throwable e)
       {
-        e.printStackTrace();
+        if (ClearCL.sDebugRGC)
+          e.printStackTrace();
       }
     }
+
   }
 
-  BufferCleaner mBufferCleaner = new BufferCleaner(getBackend(),
-                                                   getPeerPointer());
+  BufferCleaner mBufferCleaner;
 
   @Override
   public Cleaner getCleaner()
   {
+    mBufferCleaner =
+                   new BufferCleaner(getBackend(), getPeerPointer());
+
     return mBufferCleaner;
   }
 

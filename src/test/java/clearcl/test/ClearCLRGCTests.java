@@ -126,9 +126,6 @@ public class ClearCLRGCTests
       if (pI % 2 == 0)
         lLocalContext.close();
 
-      if (pI % 4 == 0)
-        lProgram.close();
-
       if (pI % 8 == 0)
         lKernel.close();
 

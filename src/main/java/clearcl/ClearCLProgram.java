@@ -6,23 +6,18 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import clearcl.abs.ClearCLBase;
-import clearcl.backend.ClearCLBackendInterface;
 import clearcl.enums.BuildStatus;
 import clearcl.enums.ImageChannelDataType;
 import clearcl.exceptions.ClearCLProgramNotBuiltException;
 import clearcl.ocllib.OCLlib;
 import clearcl.util.StringUtils;
-import coremem.rgc.Cleanable;
-import coremem.rgc.Cleaner;
-import coremem.rgc.RessourceCleaner;
 
 /**
  * ClearCLProgram is the ClearCL abstraction for OpenCl programs.
  *
  * @author royer
  */
-public class ClearCLProgram extends ClearCLBase implements Cleanable
+public class ClearCLProgram implements AutoCloseable
 {
   private final ClearCLDevice mDevice;
   private final ClearCLContext mContext;
@@ -36,26 +31,18 @@ public class ClearCLProgram extends ClearCLBase implements Cleanable
 
   private volatile boolean mModified = true;
   private volatile String mLastBuiltSourceCode;
-  private ConcurrentHashMap<String, ClearCLKernel> mKernelCache =
-                                                                new ConcurrentHashMap<String, ClearCLKernel>();
 
-  // This will register this buffer for GC cleanup
-  {
-    RessourceCleaner.register(this);
-  }
+  private ClearCLCompiledProgram mCompiledProgram;
 
   /**
    * This constructor is called internally from an OpenCl context.
    *
    * @param pDevice
    * @param pClearCLContext
-   * @param pProgramPointer
    */
   ClearCLProgram(ClearCLDevice pDevice,
-                 ClearCLContext pClearCLContext,
-                 ClearCLPeerPointer pProgramPointer)
+                 ClearCLContext pClearCLContext)
   {
-    super(pClearCLContext.getBackend(), pProgramPointer);
     mDevice = pDevice;
     mContext = pClearCLContext;
     mSourceCode = new ArrayList<String>();
@@ -72,6 +59,7 @@ public class ClearCLProgram extends ClearCLBase implements Cleanable
   public void addIncludesSearchPackage(String pPackagePath)
   {
     mIncludesSearchPackages.add(pPackagePath);
+    mModified = true;
   }
 
   /**
@@ -86,6 +74,7 @@ public class ClearCLProgram extends ClearCLBase implements Cleanable
   {
     String lPackageName = pReferenceClass.getPackage().getName();
     mIncludesSearchPackages.add(lPackageName);
+    mModified = true;
   }
 
   /**
@@ -388,6 +377,12 @@ public class ClearCLProgram extends ClearCLBase implements Cleanable
    */
   public BuildStatus build() throws IOException
   {
+
+    // If nothing changed, don't build.
+    if (!mModified)
+      return getBuildStatus();
+
+    // Get the source:
     try
     {
       mLastBuiltSourceCode = getSourceCode();
@@ -399,18 +394,19 @@ public class ClearCLProgram extends ClearCLBase implements Cleanable
     }
 
     ClearCLPeerPointer lProgramPeerPointer =
-                                           getBackend().getProgramPeerPointer(mContext.getPeerPointer(),
-                                                                              mLastBuiltSourceCode);
-
-    ClearCLPeerPointer lCurrentProgramPeerPointer = getPeerPointer();
-    if (lCurrentProgramPeerPointer != null)
-      getBackend().releaseProgram(lCurrentProgramPeerPointer);
-
-    setPeerPointer(lProgramPeerPointer);
+                                           mContext.getBackend()
+                                                   .getProgramPeerPointer(mContext.getPeerPointer(),
+                                                                          mLastBuiltSourceCode);
 
     String lOptions = concatenateOptions();
+    mContext.getBackend().buildProgram(lProgramPeerPointer, lOptions);
 
-    getBackend().buildProgram(getPeerPointer(), lOptions);
+    mCompiledProgram =
+                     new ClearCLCompiledProgram(mDevice,
+                                                mContext,
+                                                this,
+                                                mLastBuiltSourceCode,
+                                                lProgramPeerPointer);
 
     mModified = false;
 
@@ -620,9 +616,13 @@ public class ClearCLProgram extends ClearCLBase implements Cleanable
    */
   public BuildStatus getBuildStatus()
   {
+    if (mCompiledProgram == null || mModified)
+      throw new ClearCLProgramNotBuiltException();
+
     BuildStatus lBuildStatus =
-                             getBackend().getBuildStatus(getDevice().getPeerPointer(),
-                                                         getPeerPointer());
+                             mContext.getBackend()
+                                     .getBuildStatus(getDevice().getPeerPointer(),
+                                                     mCompiledProgram.getPeerPointer());
     return lBuildStatus;
   }
 
@@ -633,10 +633,13 @@ public class ClearCLProgram extends ClearCLBase implements Cleanable
    */
   public String getBuildLog()
   {
-    String lBuildLog = getBackend()
-                                   .getBuildLog(getDevice().getPeerPointer(),
-                                                getPeerPointer())
-                                   .trim();
+    if (mCompiledProgram == null || mModified)
+      throw new ClearCLProgramNotBuiltException();
+
+    String lBuildLog = mContext.getBackend()
+                               .getBuildLog(getDevice().getPeerPointer(),
+                                            mCompiledProgram.getPeerPointer())
+                               .trim();
     return lBuildLog;
   }
 
@@ -651,13 +654,10 @@ public class ClearCLProgram extends ClearCLBase implements Cleanable
    */
   public ClearCLKernel getKernel(String pKernelName)
   {
-    ClearCLKernel lClearCLKernel = mKernelCache.get(pKernelName);
-    if (lClearCLKernel == null)
-    {
-      lClearCLKernel = createKernel(pKernelName);
-      mKernelCache.put(pKernelName, lClearCLKernel);
-    }
-    return lClearCLKernel;
+    if (mCompiledProgram == null || mModified)
+      throw new ClearCLProgramNotBuiltException();
+
+    return mCompiledProgram.getKernel(pKernelName);
   }
 
   /**
@@ -669,20 +669,10 @@ public class ClearCLProgram extends ClearCLBase implements Cleanable
    */
   public ClearCLKernel createKernel(String pKernelName)
   {
-    if (mModified)
+    if (mCompiledProgram == null || mModified)
       throw new ClearCLProgramNotBuiltException();
 
-    ClearCLPeerPointer lKernelPointer =
-                                      getBackend().getKernelPeerPointer(this.getPeerPointer(),
-                                                                        pKernelName);
-
-    ClearCLKernel lClearCLKernel =
-                                 new ClearCLKernel(getContext(),
-                                                   this,
-                                                   lKernelPointer,
-                                                   pKernelName,
-                                                   mLastBuiltSourceCode);
-    return lClearCLKernel;
+    return mCompiledProgram.createKernel(pKernelName);
   }
 
   /**
@@ -860,58 +850,9 @@ public class ClearCLProgram extends ClearCLBase implements Cleanable
     addBuildOption("-cl-nv-opt-level=" + N);
   }
 
-  /* (non-Javadoc)
-   * @see clearcl.ClearCLBase#close()
-   */
   @Override
-  public void close()
+  public void close() throws IOException
   {
-    if (getPeerPointer() != null)
-    {
-      if (mProgramCleaner != null)
-        mProgramCleaner.mClearCLPeerPointer = null;
-      getBackend().releaseProgram(getPeerPointer());
-      setPeerPointer(null);
-    }
+    // nothing to do
   }
-
-  // NOTE: this _must_ be a static class, otherwise instances of this class will
-  // implicitely hold a reference of this image...
-  private static class ProgramCleaner implements Cleaner
-  {
-    public ClearCLBackendInterface mBackend;
-    public ClearCLPeerPointer mClearCLPeerPointer;
-
-    public ProgramCleaner(ClearCLBackendInterface pBackend,
-                          ClearCLPeerPointer pClearCLPeerPointer)
-    {
-      mBackend = pBackend;
-      mClearCLPeerPointer = pClearCLPeerPointer;
-    }
-
-    @Override
-    public void run()
-    {
-      try
-      {
-        if (mClearCLPeerPointer != null)
-          mBackend.releaseProgram(mClearCLPeerPointer);
-      }
-      catch (Exception e)
-      {
-        e.printStackTrace();
-      }
-    }
-  }
-
-  ProgramCleaner mProgramCleaner =
-                                 new ProgramCleaner(getBackend(),
-                                                    getPeerPointer());
-
-  @Override
-  public Cleaner getCleaner()
-  {
-    return mProgramCleaner;
-  }
-
 }

@@ -45,7 +45,7 @@ public class ClearCLKernel extends ClearCLBase
   }
 
   private final ClearCLContext mClearCLContext;
-  private final ClearCLProgram mClearCLProgram;
+  private final ClearCLCompiledProgram mClearCLCompiledProgram;
   private final String mName;
   private final String mSourceCode;
 
@@ -64,17 +64,12 @@ public class ClearCLKernel extends ClearCLBase
   private long[] mLocalSizes = null;
   private boolean mLogExecutiontime = true;
 
-  // This will register this buffer for GC cleanup
-  {
-    RessourceCleaner.register(this);
-  }
-
   /**
-   * This constructor is called internally from an OpenCl program.
+   * This constructor is called internally from a compiled program.
    * 
    * @param pClearCLContext
    *          context
-   * @param pClearCLProgram
+   * @param pClearCLCompiledProgram
    *          program
    * @param pKernelPointer
    *          kernel peer pointer
@@ -83,19 +78,23 @@ public class ClearCLKernel extends ClearCLBase
    * @param pSourceCode
    */
   ClearCLKernel(final ClearCLContext pClearCLContext,
-                final ClearCLProgram pClearCLProgram,
+                final ClearCLCompiledProgram pClearCLCompiledProgram,
                 final ClearCLPeerPointer pKernelPointer,
                 final String pKernelName,
                 final String pSourceCode)
   {
-    super(pClearCLProgram.getBackend(), pKernelPointer);
+    super(pClearCLCompiledProgram.getBackend(), pKernelPointer);
     mClearCLContext = pClearCLContext;
-    mClearCLProgram = pClearCLProgram;
+    mClearCLCompiledProgram = pClearCLCompiledProgram;
     mName = pKernelName;
     mSourceCode = pSourceCode;
 
     mNameToIndexMap = getKernelIndexMap(pKernelName);
     mDefaultArgumentsMap = getKernelDefaultArgumentsMap(pKernelName);
+
+    // This will register this kernel for GC cleanup
+    if (ClearCL.sRGC)
+      RessourceCleaner.register(this);
   }
 
   /**
@@ -507,9 +506,9 @@ public class ClearCLKernel extends ClearCLBase
   @Override
   public String toString()
   {
-    return String.format("ClearCLKernel [mName=%s, mClearCLProgram=%s]",
+    return String.format("ClearCLKernel [mName=%s, mClearCLCompiledProgram=%s]",
                          mName,
-                         mClearCLProgram);
+                         mClearCLCompiledProgram);
   }
 
   /**
@@ -692,6 +691,7 @@ public class ClearCLKernel extends ClearCLBase
   @Override
   public void close()
   {
+
     if (getPeerPointer() != null)
     {
       if (mKernelCleaner != null)
@@ -699,6 +699,7 @@ public class ClearCLKernel extends ClearCLBase
       getBackend().releaseKernel(getPeerPointer());
       setPeerPointer(null);
     }
+
   }
 
   // NOTE: this _must_ be a static class, otherwise instances of this class will
@@ -706,7 +707,7 @@ public class ClearCLKernel extends ClearCLBase
   private static class KernelCleaner implements Cleaner
   {
     public ClearCLBackendInterface mBackend;
-    public ClearCLPeerPointer mClearCLPeerPointer;
+    public volatile ClearCLPeerPointer mClearCLPeerPointer;
 
     public KernelCleaner(ClearCLBackendInterface pBackend,
                          ClearCLPeerPointer pClearCLPeerPointer)
@@ -721,21 +722,29 @@ public class ClearCLKernel extends ClearCLBase
       try
       {
         if (mClearCLPeerPointer != null)
+        {
+          if (ClearCL.sDebugRGC)
+            System.out.println("Releasing kernel: "
+                               + mClearCLPeerPointer.toString());
           mBackend.releaseKernel(mClearCLPeerPointer);
+          mClearCLPeerPointer = null;
+        }
       }
-      catch (Exception e)
+      catch (Throwable e)
       {
-        e.printStackTrace();
+        if (ClearCL.sDebugRGC)
+          e.printStackTrace();
       }
     }
   }
 
-  KernelCleaner mKernelCleaner = new KernelCleaner(getBackend(),
-                                                   getPeerPointer());
+  KernelCleaner mKernelCleaner;
 
   @Override
   public Cleaner getCleaner()
   {
+    mKernelCleaner =
+                   new KernelCleaner(getBackend(), getPeerPointer());
     return mKernelCleaner;
   }
 
