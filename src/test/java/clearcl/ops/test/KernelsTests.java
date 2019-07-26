@@ -164,6 +164,7 @@ public class KernelsTests
         Kernels.set(gCLKE, src2, 2.0f);
         Kernels.addImages(gCLKE, srcImages[i], src2, dstImages[i]);
         float minMax[] = Kernels.minMax(gCLKE, dstImages[i], 36);
+        src2.close();
         Assert.assertEquals(3.0f, minMax[0], 0.000001);
       }
       for (int i = 0; i < srcBuffers.length; i++)
@@ -173,6 +174,7 @@ public class KernelsTests
         Kernels.set(gCLKE, src2, 2.0f);
         Kernels.addImages(gCLKE, srcBuffers[i], src2, dstBuffers[i]);
         float minMax[] = Kernels.minMax(gCLKE, dstBuffers[i], 36);
+        src2.close();
         Assert.assertEquals(3.0f, minMax[0], 0.000001);
       }
     }
@@ -181,6 +183,38 @@ public class KernelsTests
       Assert.fail(clkExc.getMessage());
     }
 
+  }
+
+  @Test
+  public void testAddImageAndScalar() throws IOException
+  {
+    try
+    {
+      for (int i = 0; i < srcImages.length; i++)
+      {
+        Kernels.set(gCLKE, srcImages[i], 1.0f);
+        Kernels.addImageAndScalar(gCLKE,
+                                  srcImages[i],
+                                  dstImages[i],
+                                  4.0f);
+        float minMax[] = Kernels.minMax(gCLKE, dstImages[i], 36);
+        Assert.assertEquals(5.0f, minMax[0], 0.0000001);
+      }
+      for (int i = 0; i < srcBuffers.length; i++)
+      {
+        Kernels.set(gCLKE, srcBuffers[i], 11.0f);
+        Kernels.addImageAndScalar(gCLKE,
+                                  srcBuffers[i],
+                                  dstBuffers[i],
+                                  -3.0f);
+        float minMax[] = Kernels.minMax(gCLKE, dstBuffers[i], 36);
+        Assert.assertEquals(8.0f, minMax[0], 0.000001);
+      }
+    }
+    catch (CLKernelException clkExc)
+    {
+      Assert.fail(clkExc.getMessage());
+    }
   }
 
   @Test

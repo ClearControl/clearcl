@@ -97,29 +97,8 @@ public class Kernels
   }
 
   public static void addImageAndScalar(CLKernelExecutor clke,
-                                       ClearCLImage src,
-                                       ClearCLImage dst,
-                                       Float scalar) throws CLKernelException
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("scalar", scalar);
-    parameters.put("dst", dst);
-
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
-    }
-
-    clke.execute(OCLlib.class,
-                 "kernels/math.cl",
-                 "addScalar_" + src.getDimension() + "d",
-                 parameters);
-  }
-
-  public static void addImageAndScalar(CLKernelExecutor clke,
-                                       ClearCLBuffer src,
-                                       ClearCLBuffer dst,
+                                       ClearCLImageInterface src,
+                                       ClearCLImageInterface dst,
                                        Float scalar) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
