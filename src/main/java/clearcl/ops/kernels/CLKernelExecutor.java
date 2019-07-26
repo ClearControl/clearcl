@@ -704,7 +704,7 @@ public class CLKernelExecutor
     }
   }
 
-  public void close()
+  public void close() throws IOException
   {
     for (String key : programCacheMap.keySet())
     {
