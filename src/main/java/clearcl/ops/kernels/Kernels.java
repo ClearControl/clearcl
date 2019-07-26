@@ -42,8 +42,8 @@ public class Kernels
    * @throws CLKernelException
    */
   public static void absolute(CLKernelExecutor clke,
-                              ClearCLImage src,
-                              ClearCLImage dst) throws CLKernelException
+                              ClearCLImageInterface src,
+                              ClearCLImageInterface dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -51,38 +51,7 @@ public class Kernels
 
     if (!checkDimensions(src.getDimension(), dst.getDimension()))
     {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
-    }
-
-    clke.execute(OCLlib.class,
-                 "kernels/math.cl",
-                 "absolute_" + src.getDimension() + "d",
-                 parameters);
-  }
-
-  /**
-   * Computes the absolute value of every individual pixel x in a given image.
-   * f(x) = |x|
-   * 
-   * @param clke
-   *          Executor that holds ClearCL context instance
-   * @param src
-   *          src buffer
-   * @param dst
-   *          output buffer
-   * @throws CLKernelException
-   */
-  public static void absolute(CLKernelExecutor clke,
-                              ClearCLBuffer src,
-                              ClearCLBuffer dst) throws CLKernelException
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
+      throw new IllegalArgumentException("Error: number of dimensions don't match! (absolute)");
     }
 
     clke.execute(OCLlib.class,
@@ -106,45 +75,9 @@ public class Kernels
    * @throws CLKernelException
    */
   public static void addImages(CLKernelExecutor clke,
-                               ClearCLImage src,
-                               ClearCLImage src1,
-                               ClearCLImage dst) throws CLKernelException
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("src1", src1);
-    parameters.put("dst", dst);
-
-    if (!checkDimensions(src.getDimension(),
-                         src1.getDimension(),
-                         dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (addImages)");
-    }
-    clke.execute(OCLlib.class,
-                 "kernels/math.cl",
-                 "addPixelwise_" + src.getDimension() + "d",
-                 parameters);
-  }
-
-  /**
-   * Calculates the sum of pairs of pixels x and y of two buffers X and Y. f(x,
-   * y) = x + y
-   * 
-   * @param clke
-   *          Executor that holds ClearCL context instance
-   * @param src
-   *          src buffer
-   * @param src1
-   *          second source buffer
-   * @param dst
-   *          output buffer
-   * @throws CLKernelException
-   */
-  public static void addImages(CLKernelExecutor clke,
-                               ClearCLBuffer src,
-                               ClearCLBuffer src1,
-                               ClearCLBuffer dst) throws CLKernelException
+                               ClearCLImageInterface src,
+                               ClearCLImageInterface src1,
+                               ClearCLImageInterface dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
@@ -4154,21 +4087,7 @@ public class Kernels
   }
 
   public static void set(CLKernelExecutor clke,
-                         ClearCLImage clImage,
-                         Float value) throws CLKernelException
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("dst", clImage);
-    parameters.put("value", value);
-
-    clke.execute(OCLlib.class,
-                 "kernels/set.cl",
-                 "set_" + clImage.getDimension() + "d",
-                 parameters);
-  }
-
-  public static void set(CLKernelExecutor clke,
-                         ClearCLBuffer clImage,
+                         ClearCLImageInterface clImage,
                          Float value) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();

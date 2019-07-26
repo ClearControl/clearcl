@@ -45,6 +45,16 @@ public class KernelsTests
   { xSize, ySize, zSize };
   final long[][] allDimensions =
   { dimensions1D, dimensions2D, dimensions3D };
+  ClearCLImage srcFloat, srcUByte, srcUShort;
+  ClearCLImage dstFloat, dstUByte, dstUShort;
+  ClearCLBuffer srcBufFloat, srcBufUByte, srcBufUShort;
+  ClearCLBuffer dstBufFloat, dstBufUByte, dstBufUShort;
+  ClearCLImage[] srcImages;
+  ClearCLImage[] dstImages;
+  ClearCLBuffer[] srcBuffers =
+  { srcBufFloat, srcBufUByte, srcBufUShort };
+  ClearCLBuffer[] dstBuffers =
+  { dstBufFloat, dstBufUByte, dstBufUShort };
 
   @Before
   public void initKernelTests() throws IOException
@@ -60,6 +70,40 @@ public class KernelsTests
 
     gCLKE = new CLKernelExecutor(gCLContext,
                                  clearcl.ocllib.OCLlib.class);
+
+    // create src and dst images and buffers for all types to speed up testing
+    // and reduce testing code
+
+    srcFloat = gCLKE.createCLImage(dimensions2D,
+                                   ImageChannelDataType.Float);
+    dstFloat = gCLKE.createCLImage(srcFloat);
+    srcUByte = gCLKE.createCLImage(dimensions2D,
+                                   ImageChannelDataType.UnsignedInt8);
+    dstUByte = gCLKE.createCLImage(srcUByte);
+    srcUShort =
+              gCLKE.createCLImage(dimensions2D,
+                                  ImageChannelDataType.UnsignedInt16);
+    dstUShort = gCLKE.createCLImage(srcUShort);
+
+    srcBufFloat = gCLKE.createCLBuffer(dimensions2D,
+                                       NativeTypeEnum.Float);
+    dstBufFloat = gCLKE.createCLBuffer(srcBufFloat);
+    srcBufUByte = gCLKE.createCLBuffer(dimensions2D,
+                                       NativeTypeEnum.UnsignedByte);
+    dstBufUByte = gCLKE.createCLBuffer(srcBufUByte);
+    srcBufUShort = gCLKE.createCLBuffer(dimensions2D,
+                                        NativeTypeEnum.UnsignedShort);
+    dstBufUShort = gCLKE.createCLBuffer(srcBufUShort);
+
+    srcImages = new ClearCLImage[]
+    { srcFloat, srcUByte, srcUShort };
+    dstImages = new ClearCLImage[]
+    { dstFloat, dstUByte, dstUShort };
+    srcBuffers = new ClearCLBuffer[]
+    { srcBufFloat, srcBufUByte, srcBufUShort };
+    dstBuffers = new ClearCLBuffer[]
+    { dstBufFloat, dstBufUByte, dstBufUShort };
+
   }
 
   @After
@@ -69,6 +113,58 @@ public class KernelsTests
     gCLKE.close();
 
     gCLContext.close();
+  }
+
+  @Test
+  public void testAbsolute() throws IOException
+  {
+    // Todo: check unsigned integer types?
+    try
+    {
+      Kernels.set(gCLKE, srcFloat, -3.0f);
+      Kernels.absolute(gCLKE, srcFloat, dstFloat);
+      float[] minMax = Kernels.minMax(gCLKE, dstFloat, 36);
+      Assert.assertEquals(3.0f, minMax[0], 0.000001);
+      Kernels.set(gCLKE, srcBufFloat, -5.0f);
+      Kernels.absolute(gCLKE, srcBufFloat, dstBufFloat);
+      minMax = Kernels.minMax(gCLKE, dstBufFloat, 36);
+      Assert.assertEquals(5.0f, minMax[0], 0.000001);
+    }
+    catch (CLKernelException clkExc)
+    {
+      Assert.fail(clkExc.getMessage());
+    }
+  }
+
+  @Test
+  public void testAddImages() throws IOException
+  {
+    try
+    {
+      for (int i = 0; i < srcImages.length; i++)
+      {
+        ClearCLImage src2 = gCLKE.createCLImage(srcImages[i]);
+        Kernels.set(gCLKE, srcImages[i], 1.0f);
+        Kernels.set(gCLKE, src2, 2.0f);
+        Kernels.addImages(gCLKE, srcImages[i], src2, dstImages[i]);
+        float minMax[] = Kernels.minMax(gCLKE, dstImages[i], 36);
+        Assert.assertEquals(3.0f, minMax[0], 0.000001);
+      }
+      for (int i = 0; i < srcBuffers.length; i++)
+      {
+        ClearCLBuffer src2 = gCLKE.createCLBuffer(srcBuffers[i]);
+        Kernels.set(gCLKE, srcBuffers[i], 1.0f);
+        Kernels.set(gCLKE, src2, 2.0f);
+        Kernels.addImages(gCLKE, srcBuffers[i], src2, dstBuffers[i]);
+        float minMax[] = Kernels.minMax(gCLKE, dstBuffers[i], 36);
+        Assert.assertEquals(3.0f, minMax[0], 0.000001);
+      }
+    }
+    catch (CLKernelException clkExc)
+    {
+      Assert.fail(clkExc.getMessage());
+    }
+
   }
 
   @Test
@@ -255,7 +351,7 @@ public class KernelsTests
   }
 
   @Test
-  public void TestMinimumImages()
+  public void testMinimumImages()
   {
     ImageChannelDataType[] types =
     { ImageChannelDataType.Float,
@@ -263,11 +359,11 @@ public class KernelsTests
       ImageChannelDataType.UnsignedInt8 };
     for (ImageChannelDataType type : types)
     {
-      TestMinimumImages(type);
+      testMinimumImages(type);
     }
   }
 
-  public void TestMinimumImages(ImageChannelDataType type)
+  public void testMinimumImages(ImageChannelDataType type)
   {
     ClearCLImage src1 = gCLKE.createCLImage(dimensions2D, type);
     ClearCLImage src2 = gCLKE.createCLImage(src1);
@@ -288,7 +384,7 @@ public class KernelsTests
   }
 
   @Test
-  public void TestHistogram()
+  public void testHistogram()
   {
     ClearCLImage lCLImage =
                           gCLKE.createCLImage(dimensions2D,
