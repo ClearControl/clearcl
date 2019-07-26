@@ -186,6 +186,54 @@ public class KernelsTests
   }
 
   @Test
+  public void testAddImagesWeighted() throws IOException
+  {
+    try
+    {
+      final float x = 3.0f;
+      final float y = 7.0f;
+      final float a = 2.0f;
+      final float b = 3.0f;
+      // ensure this will still work with integers
+      final float result = x * a + y * b;
+      for (int i = 0; i < srcImages.length; i++)
+      {
+        ClearCLImage src2 = gCLKE.createCLImage(srcImages[i]);
+        Kernels.set(gCLKE, srcImages[i], x);
+        Kernels.set(gCLKE, src2, y);
+        Kernels.addImagesWeighted(gCLKE,
+                                  srcImages[i],
+                                  src2,
+                                  dstImages[i],
+                                  a,
+                                  b);
+        float minMax[] = Kernels.minMax(gCLKE, dstImages[i], 36);
+        src2.close();
+        Assert.assertEquals(result, minMax[0], 0.0000001);
+      }
+      for (int i = 0; i < srcBuffers.length; i++)
+      {
+        ClearCLBuffer src2 = gCLKE.createCLBuffer(srcBuffers[i]);
+        Kernels.set(gCLKE, srcBuffers[i], x);
+        Kernels.set(gCLKE, src2, y);
+        Kernels.addImagesWeighted(gCLKE,
+                                  srcBuffers[i],
+                                  src2,
+                                  dstBuffers[i],
+                                  a,
+                                  b);
+        float minMax[] = Kernels.minMax(gCLKE, dstBuffers[i], 36);
+        src2.close();
+        Assert.assertEquals(result, minMax[0], 0.000001);
+      }
+    }
+    catch (CLKernelException clkExc)
+    {
+      Assert.fail(clkExc.getMessage());
+    }
+  }
+
+  @Test
   public void testAddImageAndScalar() throws IOException
   {
     try

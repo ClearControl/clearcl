@@ -136,53 +136,9 @@ public class Kernels
    * @throws CLKernelException
    */
   public static void addImagesWeighted(CLKernelExecutor clke,
-                                       ClearCLImage src,
-                                       ClearCLImage src1,
-                                       ClearCLImage dst,
-                                       Float factor,
-                                       Float factor1) throws CLKernelException
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", src);
-    parameters.put("src1", src1);
-    parameters.put("factor", factor);
-    parameters.put("factor1", factor1);
-    parameters.put("dst", dst);
-
-    if (!checkDimensions(src.getDimension(),
-                         src1.getDimension(),
-                         dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
-    }
-    clke.execute(OCLlib.class,
-                 "kernels/math.cl",
-                 "addWeightedPixelwise_" + src.getDimension() + "d",
-                 parameters);
-  }
-
-  /**
-   * Calculates the sum of pairs of pixels x and y from buffers X and Y weighted
-   * with factors a and b. f(x, y, a, b) = x * a + y * b
-   * 
-   * @param clke
-   *          - Executor that holds ClearCL context instance
-   * @param src
-   *          - src buffer
-   * @param src1
-   *          - second source buffer
-   * @param dst
-   *          - output buffer
-   * @param factor
-   *          first factor (a)
-   * @param factor1
-   *          second factor (b)
-   * @throws CLKernelException
-   */
-  public static void addImagesWeighted(CLKernelExecutor clke,
-                                       ClearCLBuffer src,
-                                       ClearCLBuffer src1,
-                                       ClearCLBuffer dst,
+                                       ClearCLImageInterface src,
+                                       ClearCLImageInterface src1,
+                                       ClearCLImageInterface dst,
                                        Float factor,
                                        Float factor1) throws CLKernelException
   {
