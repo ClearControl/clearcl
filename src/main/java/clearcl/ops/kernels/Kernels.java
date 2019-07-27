@@ -37,11 +37,11 @@ public class Kernels
    * f(x) = |x|
    * 
    * @param clke
-   *          - Executor that holds ClearCL context instance
+   *          Executor that holds ClearCL context instance
    * @param src
-   *          - src image
+   *          src image
    * @param dst
-   *          - output image
+   *          output image
    * @throws CLKernelException
    */
   public static void absolute(CLKernelExecutor clke,
@@ -1073,6 +1073,21 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Divides input images src (x) and src1 (y) by each other pixel wise.
+   * 
+   * f(x, y) = x / y
+   * 
+   * @param clke
+   *          - Executor that holds ClearCL context instance
+   * @param src
+   *          input image x
+   * @param src1
+   *          input image y (divisor)
+   * @param dst
+   *          output image
+   * @throws CLKernelException
+   */
   public static void divideImages(CLKernelExecutor clke,
                                   ClearCLImageInterface src,
                                   ClearCLImageInterface src1,
@@ -1222,6 +1237,7 @@ public class Kernels
    * Flips an image in X, Y, and/or Z direction depending on boolean flags.
    * 
    * @param clke
+   *          - Executor that holds ClearCL context instance
    * @param src
    *          input image
    * @param dst
@@ -1257,6 +1273,7 @@ public class Kernels
    * Flips an image in X,and/or Y direction depending on boolean flags.
    * 
    * @param clke
+   *          - Executor that holds ClearCL context instance
    * @param src
    *          input image
    * @param dst
@@ -1290,6 +1307,7 @@ public class Kernels
    * will be assigned the value: c - a;
    * 
    * @param clke
+   *          - Executor that holds ClearCL context instance
    * @param src
    *          input image
    * @param dst
@@ -1319,6 +1337,7 @@ public class Kernels
    * will be assigned the value: c - a;
    * 
    * @param clke
+   *          - Executor that holds ClearCL context instance
    * @param src
    *          input image
    * @param dst
@@ -1348,6 +1367,7 @@ public class Kernels
    * will be assigned the value: c - a;
    * 
    * @param clke
+   *          - Executor that holds ClearCL context instance
    * @param src
    *          input image
    * @param dst
@@ -1381,7 +1401,7 @@ public class Kernels
    * NativeTypeEnum.Float);
    * 
    * @param clke
-   *          CLKernelExecutor instance *
+   *          - Executor that holds ClearCL context instance
    * @param src
    *          input image
    * @param dstHistogram
@@ -1450,7 +1470,7 @@ public class Kernels
    * NativeTypeEnum.Float);
    * 
    * @param clke
-   *          CLKernelExecutor instance *
+   *          Executor that holds ClearCL context instance
    * @param src
    *          Input CLBuffer
    * @param dstHistogram
@@ -1502,6 +1522,7 @@ public class Kernels
    * For binary images, use binaryNot.
    * 
    * @param clke
+   *          Executor that holds ClearCL context instance
    * @param input3d
    *          input image
    * @param output3d
@@ -1523,6 +1544,7 @@ public class Kernels
    * f(x) = (1 if (x >= m)); (0 otherwise)
    * 
    * @param clke
+   *          Executor that holds ClearCL context instance
    * @param src
    *          input image
    * @param dst
@@ -1561,6 +1583,7 @@ public class Kernels
    * f(x,m) = (x if (m != 0); (0 otherwise))
    * 
    * @param clke
+   *          Executor that holds ClearCL context instance
    * @param src
    *          input image
    * @param dst
@@ -1598,6 +1621,7 @@ public class Kernels
    * f(x,m) = (x if (m != 0); (0 otherwise))
    * 
    * @param clke
+   *          Executor that holds ClearCL context instance
    * @param src
    *          input image
    * 
@@ -1717,6 +1741,22 @@ public class Kernels
                            src.getDimension());
   }
 
+  /**
+   * Computes the maximum of a pair of pixel values x, y from input images X and
+   * Y.
+   * 
+   * f(x, y) = max(x, y)
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          input image x
+   * @param src1
+   *          input image y *
+   * @param dst
+   *          output image
+   * @throws CLKernelException
+   */
   public static void maximumImages(CLKernelExecutor clke,
                                    ClearCLImageInterface src,
                                    ClearCLImageInterface src1,
@@ -1739,14 +1779,30 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Computes the maximum of a constant scalar s pixel and the pixel values x of
+   * the input image.
+   * 
+   * f(x, s) = max(x, s)
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          input image x
+   * @param dst
+   *          output image
+   * @param scalarS
+   *          value to compare to input image pixel values
+   * @throws CLKernelException
+   */
   public static void maximumImageAndScalar(CLKernelExecutor clke,
                                            ClearCLImageInterface src,
                                            ClearCLImageInterface dst,
-                                           Float valueB) throws CLKernelException
+                                           Float scalarS) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
-    parameters.put("valueB", valueB);
+    parameters.put("valueB", scalarS);
     parameters.put("dst", dst);
 
     if (!checkDimensions(src.getDimension(),
@@ -1761,6 +1817,22 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Computes the minimum of a pair of pixel values x, y from input images X and
+   * Y.
+   * 
+   * f(x, y) = min(x, y)
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          input image X
+   * @param src1
+   *          input image Y
+   * @param dst
+   *          output image
+   * @throws CLKernelException
+   */
   public static void minimumImages(CLKernelExecutor clke,
                                    ClearCLImageInterface src,
                                    ClearCLImageInterface src1,
@@ -1783,14 +1855,30 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Computes the minimum of a constant scalar s and pixel values x of the input
+   * image.
+   * 
+   * f(x, s) = min(x, s)
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          input image x
+   * @param dst
+   *          output image
+   * @param scalarS
+   *          value to compare to input image pixel values
+   * @throws CLKernelException
+   */
   public static void minimumImageAndScalar(CLKernelExecutor clke,
                                            ClearCLImageInterface src,
                                            ClearCLImageInterface dst,
-                                           Float valueB) throws CLKernelException
+                                           Float scalarS) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
-    parameters.put("valueB", valueB);
+    parameters.put("valueB", scalarS);
     parameters.put("dst", dst);
 
     if (!checkDimensions(src.getDimension(),
@@ -1805,13 +1893,25 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Assigns the maximum pixel value of the input stack to the corresponding
+   * pixel of the output image .
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          input image x
+   * @param dst
+   *          output image
+   * @throws CLKernelException
+   */
   public static void maximumZProjection(CLKernelExecutor clke,
                                         ClearCLImageInterface src,
-                                        ClearCLImageInterface dst_max) throws CLKernelException
+                                        ClearCLImageInterface dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
-    parameters.put("dst_max", dst_max);
+    parameters.put("dst_max", dst);
 
     clke.execute(OCLlib.class,
                  "kernels/projections.cl",
@@ -1820,13 +1920,25 @@ public class Kernels
 
   }
 
+  /**
+   * Assigns the minimum pixel value of the input stack and assigns that value
+   * to the corresponding pixel of the output image .
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          input image x
+   * @param dst
+   *          output image
+   * @throws CLKernelException
+   */
   public static void minimumZProjection(CLKernelExecutor clke,
                                         ClearCLImageInterface src,
-                                        ClearCLImageInterface dst_min) throws CLKernelException
+                                        ClearCLImageInterface dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
     parameters.put("src", src);
-    parameters.put("dst_min", dst_min);
+    parameters.put("dst_min", dst);
 
     clke.execute(OCLlib.class,
                  "kernels/projections.cl",
@@ -1838,6 +1950,7 @@ public class Kernels
    * Determines minimum and maximum of the input image
    * 
    * @param clke
+   *          Executor that holds ClearCL context instance
    * @param src
    *          input image
    * @param nrReductions
@@ -1920,6 +2033,18 @@ public class Kernels
 
   }
 
+  /**
+   * Assigns the mean pixel value of the input stack to the corresponding pixel
+   * of the output image .
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          input image x
+   * @param dst
+   *          output image
+   * @throws CLKernelException
+   */
   public static void meanZProjection(CLKernelExecutor clke,
                                      ClearCLImageInterface src,
                                      ClearCLImageInterface dst) throws CLKernelException
@@ -1934,6 +2059,21 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Unclear what this function is doing. This is the original description:
+   * 
+   * Determines the maximum projection of an image along a given dimension.
+   * Furthermore, the X and Y dimensions of the resulting image must be
+   * specified by the user according to its definition: X = 0 Y = 1 Z = 2
+   * 
+   * @param clke
+   * @param src
+   * @param dst_max
+   * @param projectedDimensionX
+   * @param projectedDimensionY
+   * @param projectedDimension
+   * @throws CLKernelException
+   */
   public static void maximumXYZProjection(CLKernelExecutor clke,
                                           ClearCLImageInterface src,
                                           ClearCLImageInterface dst_max,
@@ -2281,6 +2421,21 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Multiplies all pairs of pixel values x and y from two input image X and Y.
+   * 
+   * f(x, y) = x * y
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          input image x
+   * @param src1
+   *          input image y
+   * @param dst
+   *          output image
+   * @throws CLKernelException
+   */
   public static void multiplyImages(CLKernelExecutor clke,
                                     ClearCLImageInterface src,
                                     ClearCLImageInterface src1,
@@ -2304,6 +2459,19 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * TODO: what does this function do?
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          input image X
+   * @param dst
+   *          output image
+   * @param dimension
+   *          unclear what this is or what it is for
+   * @throws CLKernelException
+   */
   public static void multiplyImageAndCoordinate(CLKernelExecutor clke,
                                                 ClearCLImageInterface src,
                                                 ClearCLImageInterface dst,
@@ -2323,6 +2491,21 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Multiplies all pixels value x in input image X with a constant scalar s.
+   * 
+   * f(x, s) = x * s
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          input image X
+   * @param dst
+   *          output image
+   * @param scalar
+   *          value to multiply input with
+   * @throws CLKernelException
+   */
   public static void multiplyImageAndScalar(CLKernelExecutor clke,
                                             ClearCLImageInterface src,
                                             ClearCLImageInterface dst,
@@ -2382,6 +2565,22 @@ public class Kernels
     }
   }
 
+  /**
+   * Multiplies all pairs of pixel values x and y from input image stack X and
+   * 2D input image Y. x and y are at the same spatial position within a plane.
+   * 
+   * f(x, y) = x * y
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param input3d
+   *          input stack X
+   * @param input2d
+   *          input plane Y
+   * @param output3d
+   *          output stack
+   * @throws CLKernelException
+   */
   public static void multiplyStackWithPlane(CLKernelExecutor clke,
                                             ClearCLImageInterface input3d,
                                             ClearCLImageInterface input2d,
@@ -2397,6 +2596,21 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Computes all pixels value x to the power of the given exponent a.
+   * 
+   * f(x, a) = x * a
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Input image
+   * @param dst
+   *          Output image
+   * @param exponent
+   *          Exponent to be applied to each pixel value
+   * @throws CLKernelException
+   */
   public static void power(CLKernelExecutor clke,
                            ClearCLImageInterface src,
                            ClearCLImageInterface dst,
@@ -2430,6 +2644,19 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Flips Y and Z axis of an image stack. This operation is similar to ImageJs
+   * ‘Reslice [/]’ method but does not offer certain option such as
+   * interpolation.
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Input image
+   * @param dst
+   *          Output image
+   * @throws CLKernelException
+   */
   public static void resliceBottom(CLKernelExecutor clke,
                                    ClearCLImageInterface src,
                                    ClearCLImageInterface dst) throws CLKernelException
@@ -2446,6 +2673,19 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Flips X, Y and Z axis of an image stack. This operation is similar to
+   * ImageJs ‘Reslice [/]’ method but does not offer certain option such as
+   * interpolation.
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Input image
+   * @param dst
+   *          Output image
+   * @throws CLKernelException
+   */
   public static void resliceLeft(CLKernelExecutor clke,
                                  ClearCLImageInterface src,
                                  ClearCLImageInterface dst) throws CLKernelException
@@ -2460,6 +2700,19 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Flips X and Z axis of an image stack. This operation is similar to ImageJs
+   * ‘Reslice [/]’ method but does not offer certain option such as
+   * interpolation.
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Input image
+   * @param dst
+   *          Output image
+   * @throws CLKernelException
+   */
   public static void resliceRight(CLKernelExecutor clke,
                                   ClearCLImageInterface src,
                                   ClearCLImageInterface dst) throws CLKernelException
@@ -2474,6 +2727,19 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Flips Y and Z axis of an image stack. This operation is similar to ImageJs
+   * ‘Reslice [/]’ method but does not offer certain option such as
+   * interpolation.
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Input image
+   * @param dst
+   *          Output image
+   * @throws CLKernelException
+   */
   public static void resliceTop(CLKernelExecutor clke,
                                 ClearCLImageInterface src,
                                 ClearCLImageInterface dst) throws CLKernelException
@@ -2488,6 +2754,21 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Rotates a given input image by 90 degrees counter-clockwise. For that, X
+   * and Y axis of an image stack are flipped.
+   * 
+   * This operation is similar to ImageJs ‘Reslice [/]’ method but does not
+   * offer certain option such as interpolation.
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Input image
+   * @param dst
+   *          Output image
+   * @throws CLKernelException
+   */
   public static void rotateLeft(CLKernelExecutor clke,
                                 ClearCLImageInterface src,
                                 ClearCLImageInterface dst) throws CLKernelException
@@ -2502,6 +2783,21 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Rotates a given input image by 90 degrees clockwise. For that, X and Y axis
+   * of an image stack are flipped.
+   * 
+   * This operation is similar to ImageJs ‘Reslice [/]’ method but does not
+   * offer certain option such as interpolation.
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Input image
+   * @param dst
+   *          Output image
+   * @throws CLKernelException
+   */
   public static void rotateRight(CLKernelExecutor clke,
                                  ClearCLImageInterface src,
                                  ClearCLImageInterface dst) throws CLKernelException
@@ -2516,6 +2812,19 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Sets all pixel values x of input image X to a constant value v.
+   * 
+   * f(x) = v
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param clImage
+   *          Input image
+   * @param value
+   *          Value to set each element to
+   * @throws CLKernelException
+   */
   public static void set(CLKernelExecutor clke,
                          ClearCLImageInterface clImage,
                          Float value) throws CLKernelException
@@ -2560,17 +2869,27 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Subtracts input image Y from input image X (pixel by pixel)
+   * 
+   * f (x, y) = x - y;
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Input image X
+   * @param src1
+   *          Input image Y
+   * @param dst
+   *          Output image
+   * @throws CLKernelException
+   */
   public static void subtractImages(CLKernelExecutor clke,
-                                    ClearCLImageInterface subtrahend,
-                                    ClearCLImageInterface minuend,
-                                    ClearCLImageInterface destination) throws CLKernelException
+                                    ClearCLImageInterface src,
+                                    ClearCLImageInterface src1,
+                                    ClearCLImageInterface dst) throws CLKernelException
   {
-    addImagesWeighted(clke,
-                      subtrahend,
-                      minuend,
-                      destination,
-                      1f,
-                      -1f);
+    addImagesWeighted(clke, src, src1, dst, 1f, -1f);
   }
 
   /*
@@ -2770,13 +3089,25 @@ public class Kernels
   }
   */
 
+  /**
+   * Assigns the sum of all pixels along the z axis of the input stack to the
+   * output image
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Input image stack
+   * @param dst
+   *          Output image (planar)
+   * @throws CLKernelException
+   */
   public static void sumZProjection(CLKernelExecutor clke,
-                                    ClearCLImageInterface clImage,
-                                    ClearCLImageInterface clReducedImage) throws CLKernelException
+                                    ClearCLImageInterface src,
+                                    ClearCLImageInterface dst) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
-    parameters.put("src", clImage);
-    parameters.put("dst", clReducedImage);
+    parameters.put("src", src);
+    parameters.put("dst", dst);
     clke.execute(OCLlib.class,
                  "kernels/projections.cl",
                  "sum_project_3d_2d",
@@ -2917,32 +3248,26 @@ public class Kernels
     }
   }
 
+  /**
+   * Computes a binary image with pixel values 0 and 1. All pixels x of the
+   * input image with value larger or equal to a given threshold t will be set
+   * to 1 in the output image.
+   * 
+   * f(x,t) = (1 if (x >= t); (0 otherwise))
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Input image
+   * @param dst
+   *          Output image
+   * @param threshold
+   *          Threshold value to apply
+   * @throws CLKernelException
+   */
   public static void threshold(CLKernelExecutor clke,
                                ClearCLImageInterface src,
                                ClearCLImageInterface dst,
-                               Float threshold) throws CLKernelException
-  {
-    HashMap<String, Object> parameters = new HashMap<>();
-
-    parameters.clear();
-    parameters.put("threshold", threshold);
-    parameters.put("src", src);
-    parameters.put("dst", dst);
-
-    if (!checkDimensions(src.getDimension(), dst.getDimension()))
-    {
-      throw new IllegalArgumentException("Error: number of dimensions don't match! (addImageAndScalar)");
-    }
-
-    clke.execute(OCLlib.class,
-                 "kernels/thresholding.cl",
-                 "apply_threshold_" + src.getDimension() + "d",
-                 parameters);
-  }
-
-  public static void threshold(CLKernelExecutor clke,
-                               ClearCLBuffer src,
-                               ClearCLBuffer dst,
                                Float threshold) throws CLKernelException
   {
     HashMap<String, Object> parameters = new HashMap<>();
