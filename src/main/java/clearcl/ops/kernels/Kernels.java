@@ -234,6 +234,22 @@ public class Kernels
   }
   */
 
+  /**
+   * Deforms a 2D image according to distances provided in the given vector images. It is recommended to use 32-bit
+   * images for input, output and vector images.
+   *
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Source image
+   * @param vectorX
+   *          Local displacement in X
+   * @param vectorY
+   *          Local displacement in Y
+   * @param dst
+   *          Destination image
+   * @throws CLKernelException
+   */
   public static void applyVectorfield(CLKernelExecutor clke,
                                       ClearCLImageInterface src,
                                       ClearCLImageInterface vectorX,
@@ -252,6 +268,24 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Deforms a 2D image according to distances provided in the given vector images. It is recommended to use 32-bit
+   * images for input, output and vector images.
+   *
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Source image
+   * @param vectorX
+   *          Local displacement in X
+   * @param vectorY
+   *          Local displacement in Y
+   * @param vectorZ
+   *          Local displacement in Z
+   * @param dst
+   *          Destination image
+   * @throws CLKernelException
+   */
   public static void applyVectorfield(CLKernelExecutor clke,
                                       ClearCLImageInterface src,
                                       ClearCLImageInterface vectorX,
@@ -645,6 +679,17 @@ public class Kernels
   }
   */
 
+  /**
+   * Duplicate an image
+   *
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Source image
+   * @param dst
+   *          Destination image
+   * @throws CLKernelException
+   */
   public static void copy(CLKernelExecutor clke,
                           ClearCLImageInterface src,
                           ClearCLImageInterface dst) throws CLKernelException
@@ -656,6 +701,20 @@ public class Kernels
                  dst.getDimension());
   }
 
+  /**
+   * Copies a defined slice of a source image stack to a destination image, if source is 3D and destination is 2D.
+   * Copies an image into a defined slice of a destination image stack, if source is 2D and destination is 3D.
+   *
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Source image: 2D or 3D
+   * @param dst
+   *          Destination image: 3D or 2D
+   * @param planeIndex
+   *          Defined source/destination z plane (0 indexed)
+   * @throws CLKernelException
+   */
   public static void copySlice(CLKernelExecutor clke,
                                ClearCLImageInterface src,
                                ClearCLImageInterface dst,
@@ -685,6 +744,24 @@ public class Kernels
     }
   }
 
+  /**
+   * Crops out a part of a 3D image stack and stores it in another image. The size of the cropped region depends on
+   * the size of the destination image.
+   *
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Source image
+   * @param dst
+   *          Destination image
+   * @param startX
+   *          X position of the cropped region
+   * @param startY
+   *          Y position of the cropped region
+   * @param startZ
+   *          Z position of the cropped region
+   * @throws CLKernelException
+   */
   public static void crop(CLKernelExecutor clke,
                           ClearCLImageInterface src,
                           ClearCLImageInterface dst,
@@ -704,6 +781,22 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Crops out a part of a 2D image and stores it in another image. The size of the cropped region depends on
+   * the size of the destination image.
+   *
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Source image
+   * @param dst
+   *          Destination image
+   * @param startX
+   *          X position of the cropped region
+   * @param startY
+   *          Y position of the cropped region
+   * @throws CLKernelException
+   */
   public static void crop(CLKernelExecutor clke,
                           ClearCLImageInterface src,
                           ClearCLImageInterface dst,
@@ -2460,16 +2553,17 @@ public class Kernels
   }
 
   /**
-   * TODO: what does this function do?
+   * Multiply every pixel intensity with its X/Y/Z coordinate depending on given dimension.
+   * This method can be used to calculate the center of mass of an image.
    * 
    * @param clke
    *          Executor that holds ClearCL context instance
    * @param src
-   *          input image X
+   *          input image
    * @param dst
    *          output image
    * @param dimension
-   *          unclear what this is or what it is for
+   *          Target dimension (0: X, 1: Y, 2: Z)
    * @throws CLKernelException
    */
   public static void multiplyImageAndCoordinate(CLKernelExecutor clke,
@@ -2526,6 +2620,22 @@ public class Kernels
                  parameters);
   }
 
+
+  /**
+   * Multiplies all pixels value x in input image X with a scalar s given for every z-slice.
+   *
+   * f(x, s) = x * s
+   *
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          input image X
+   * @param dst
+   *          output image
+   * @param scalars
+   *          array of values to multiply input z-slices with
+   * @throws CLKernelException
+   */
   public static void multiplySliceBySliceWithScalars(CLKernelExecutor clke,
                                                      ClearCLImageInterface src,
                                                      ClearCLImageInterface dst,
@@ -2599,7 +2709,7 @@ public class Kernels
   /**
    * Computes all pixels value x to the power of the given exponent a.
    * 
-   * f(x, a) = x * a
+   * f(x, a) = x ^ a
    * 
    * @param clke
    *          Executor that holds ClearCL context instance
@@ -2626,6 +2736,22 @@ public class Kernels
                  parameters);
   }
 
+
+  /**
+   * Performs a projection of an image stack similar to ImageJs
+   * ‘Radial Reslice’ method. Pseudo X-Z planes starting the at the X/Y plane center going to the images edge are
+   * projected into the destination image.
+   *
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param src
+   *          Input image
+   * @param dst
+   *          Output image
+   * @param deltaAngle
+   *          angle step
+   * @throws CLKernelException
+   */
   public static void radialProjection(CLKernelExecutor clke,
                                       ClearCLImageInterface src,
                                       ClearCLImageInterface dst,
@@ -2839,6 +2965,20 @@ public class Kernels
                  parameters);
   }
 
+  /**
+   * Splits a given input image stack into n output image stacks by redistributing slices.
+   * Slices 0, n, 2*n, ... will become part of the first output stack.
+   * Slices 1, n+1, 2*n+1, ... will become part of the second output stack.
+   * Only up to 12 output stacks are supported.
+   *
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param clImageIn
+   *          input image stack
+   * @param clImagesOut
+   *          output image stacks
+   * @throws CLKernelException
+   */
   public static void splitStack(CLKernelExecutor clke,
                                 ClearCLImageInterface clImageIn,
                                 ClearCLImageInterface... clImagesOut) throws CLKernelException
