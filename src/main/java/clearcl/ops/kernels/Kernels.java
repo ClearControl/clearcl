@@ -3250,7 +3250,7 @@ public class Kernels
 
   /**
    * Computes a binary image with pixel values 0 and 1. All pixels x of the
-   * input image with value larger or equal to a given threshold t will be set
+   * input image with value larger than or equal to a given threshold t will be set
    * to 1 in the output image.
    * 
    * f(x,t) = (1 if (x >= t); (0 otherwise))
