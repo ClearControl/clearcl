@@ -3,7 +3,9 @@
 //default xorfractal dx=0i
 //default xorfractal dy=0i
 //default xorfractal u =0f
-__kernel void xorfractal  (__write_only image3d_t image, 
+
+
+__kernel void xorfractal  (__write_only DTYPE_IMAGE_OUT_3D dst, 
                                         int       dx, 
                                         int       dy, 
                                         float     u 
@@ -13,7 +15,7 @@ __kernel void xorfractal  (__write_only image3d_t image,
 	int y = get_global_id(1);
 	int z = get_global_id(2);
 	
-	write_imagef (image, (int4)(x, y, z, 0), u*((x+dx)^((y+dy)+1)^(z+2)));
+	WRITE_IMAGE_3D (dst, (int4)(x, y, z, 0), u*((x+dx)^((y+dy)+1)^(z+2)));
 }
 
 
@@ -22,16 +24,16 @@ __kernel void xorfractal  (__write_only image3d_t image,
 //default xorsphere cy=0i
 //default xorsphere cz=0i
 //default xorsphere r =80f
-__kernel void xorsphere   (__write_only image3d_t image, 
+__kernel void xorsphere   (__write_only DTYPE_IMAGE_OUT_3D dst, 
                                         int       cx, 
                                         int       cy,
                                         int       cz,  
                                         float     r 
                           )
 {
-  const int width  = get_image_width(image);
-  const int height = get_image_height(image);
-  const int depth  = get_image_depth(image);
+  const int width  = get_image_width(dst);
+  const int height = get_image_height(dst);
+  const int depth  = get_image_depth(dst);
   
   float4 dim = (float4){width,height,depth,1};
   
@@ -47,7 +49,7 @@ __kernel void xorsphere   (__write_only image3d_t image,
   
   float value = (float)( (x^y^z)*((d<r)?1:0) );
   
-  write_imagef (image, (int4){x,y,z,0}, value);
+  WRITE_IMAGE_3D (dst, (int4){x,y,z,0}, value);
 }
 
 
@@ -56,16 +58,16 @@ __kernel void xorsphere   (__write_only image3d_t image,
 //default sphere cy=0i
 //default sphere cz=0i
 //default sphere r =80f
-__kernel void sphere   (__write_only image3d_t image, 
+__kernel void sphere   (__write_only DTYPE_IMAGE_OUT_3D dst, 
                                         int       cx, 
                                         int       cy,
                                         int       cz,  
                                         float     r 
                           )
 {
-  const int width  = get_image_width(image);
-  const int height = get_image_height(image);
-  const int depth  = get_image_depth(image);
+  const int width  = get_image_width(dst);
+  const int height = get_image_height(dst);
+  const int depth  = get_image_depth(dst);
   
   float4 dim = (float4){width,height,depth,1};
   
@@ -81,7 +83,7 @@ __kernel void sphere   (__write_only image3d_t image,
   
   float value = (float)((d<r)?1:0);
   
-  write_imagef (image, (int4){x,y,z,0}, value);
+  WRITE_IMAGE_3D (dst, (int4){x,y,z,0}, value);
 }
 
 // A kernel to fill an image with a line:
@@ -90,7 +92,7 @@ __kernel void sphere   (__write_only image3d_t image,
 //default aline c=0i
 //default aline d=1i
 //default aline r=0.1f
-__kernel void aline   (__write_only image3d_t image, 
+__kernel void aline   (__write_only DTYPE_IMAGE_OUT_3D dst, 
                                    int       a, 
                                    int       b,
                                    int       c,
@@ -98,9 +100,9 @@ __kernel void aline   (__write_only image3d_t image,
                                    float     r 
                      )
 {
-  const int width  = get_image_width(image);
-  const int height = get_image_height(image);
-  const int depth  = get_image_depth(image);
+  const int width  = get_image_width(dst);
+  const int height = get_image_height(dst);
+  const int depth  = get_image_depth(dst);
   
   const int x = get_global_id(0); 
   const int y = get_global_id(1);
@@ -114,5 +116,5 @@ __kernel void aline   (__write_only image3d_t image,
   
   float value = (float)((dist<r)?1:0);
   
-  write_imagef (image, (int4){x,y,z,0}, value);
+  WRITE_IMAGE_3D (dst, (int4){x,y,z,0}, value);
 }

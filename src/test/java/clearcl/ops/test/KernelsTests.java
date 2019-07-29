@@ -55,6 +55,7 @@ public class KernelsTests
   { srcBufFloat, srcBufUByte, srcBufUShort };
   ClearCLBuffer[] dstBuffers =
   { dstBufFloat, dstBufUByte, dstBufUShort };
+  ClearCLImage dstFloat3D;
 
   @Before
   public void initKernelTests() throws IOException
@@ -103,6 +104,8 @@ public class KernelsTests
     { srcBufFloat, srcBufUByte, srcBufUShort };
     dstBuffers = new ClearCLBuffer[]
     { dstBufFloat, dstBufUByte, dstBufUShort };
+    dstFloat3D = gCLKE.createCLImage(dimensions3D,
+                                     ImageChannelDataType.Float);
 
   }
 
@@ -554,6 +557,29 @@ public class KernelsTests
     }
 
     lCLImage.close();
+  }
+
+  @Test
+  public void testPhantomImages() throws IOException
+  {
+    try
+    {
+      Kernels.xorFractal(gCLKE, dstFloat, 2, 3, 0.2f);
+      float[] minMax = Kernels.minMax(gCLKE, dstFloat, 36);
+      Assert.assertEquals(0.0, minMax[0], 0.0000001);
+      Assert.assertEquals(409.4, minMax[1], 0.00001);
+      Kernels.xorFractal(gCLKE, dstUShort, 2, 3, 0.2f);
+      minMax = Kernels.minMax(gCLKE, dstUShort, 36);
+      Assert.assertEquals(0.0f, minMax[0], 0.0000001);
+      Assert.assertEquals(409.0f, minMax[1], 0.00000001);
+      Kernels.xorSphere(gCLKE, dstFloat3D, 0, 0, 0, 40.0f);
+      Kernels.sphere(gCLKE, dstFloat3D, 0, 0, 0, 40.0f);
+      Kernels.line(gCLKE, dstFloat3D, 5, 5, 25, 25, 2.0f);
+    }
+    catch (CLKernelException clkExc)
+    {
+      Assert.fail(clkExc.getMessage());
+    }
   }
 
 }

@@ -235,8 +235,9 @@ public class Kernels
   */
 
   /**
-   * Deforms a 2D image according to distances provided in the given vector images. It is recommended to use 32-bit
-   * images for input, output and vector images.
+   * Deforms a 2D image according to distances provided in the given vector
+   * images. It is recommended to use 32-bit images for input, output and vector
+   * images.
    *
    * @param clke
    *          Executor that holds ClearCL context instance
@@ -269,8 +270,9 @@ public class Kernels
   }
 
   /**
-   * Deforms a 2D image according to distances provided in the given vector images. It is recommended to use 32-bit
-   * images for input, output and vector images.
+   * Deforms a 2D image according to distances provided in the given vector
+   * images. It is recommended to use 32-bit images for input, output and vector
+   * images.
    *
    * @param clke
    *          Executor that holds ClearCL context instance
@@ -702,8 +704,9 @@ public class Kernels
   }
 
   /**
-   * Copies a defined slice of a source image stack to a destination image, if source is 3D and destination is 2D.
-   * Copies an image into a defined slice of a destination image stack, if source is 2D and destination is 3D.
+   * Copies a defined slice of a source image stack to a destination image, if
+   * source is 3D and destination is 2D. Copies an image into a defined slice of
+   * a destination image stack, if source is 2D and destination is 3D.
    *
    * @param clke
    *          Executor that holds ClearCL context instance
@@ -745,8 +748,8 @@ public class Kernels
   }
 
   /**
-   * Crops out a part of a 3D image stack and stores it in another image. The size of the cropped region depends on
-   * the size of the destination image.
+   * Crops out a part of a 3D image stack and stores it in another image. The
+   * size of the cropped region depends on the size of the destination image.
    *
    * @param clke
    *          Executor that holds ClearCL context instance
@@ -782,8 +785,8 @@ public class Kernels
   }
 
   /**
-   * Crops out a part of a 2D image and stores it in another image. The size of the cropped region depends on
-   * the size of the destination image.
+   * Crops out a part of a 2D image and stores it in another image. The size of
+   * the cropped region depends on the size of the destination image.
    *
    * @param clke
    *          Executor that holds ClearCL context instance
@@ -2553,8 +2556,9 @@ public class Kernels
   }
 
   /**
-   * Multiply every pixel intensity with its X/Y/Z coordinate depending on given dimension.
-   * This method can be used to calculate the center of mass of an image.
+   * Multiply every pixel intensity with its X/Y/Z coordinate depending on given
+   * dimension. This method can be used to calculate the center of mass of an
+   * image.
    * 
    * @param clke
    *          Executor that holds ClearCL context instance
@@ -2620,9 +2624,9 @@ public class Kernels
                  parameters);
   }
 
-
   /**
-   * Multiplies all pixels value x in input image X with a scalar s given for every z-slice.
+   * Multiplies all pixels value x in input image X with a scalar s given for
+   * every z-slice.
    *
    * f(x, s) = x * s
    *
@@ -2736,11 +2740,10 @@ public class Kernels
                  parameters);
   }
 
-
   /**
-   * Performs a projection of an image stack similar to ImageJs
-   * ‘Radial Reslice’ method. Pseudo X-Z planes starting the at the X/Y plane center going to the images edge are
-   * projected into the destination image.
+   * Performs a projection of an image stack similar to ImageJs ‘Radial Reslice’
+   * method. Pseudo X-Z planes starting the at the X/Y plane center going to the
+   * images edge are projected into the destination image.
    *
    * @param clke
    *          Executor that holds ClearCL context instance
@@ -2966,10 +2969,10 @@ public class Kernels
   }
 
   /**
-   * Splits a given input image stack into n output image stacks by redistributing slices.
-   * Slices 0, n, 2*n, ... will become part of the first output stack.
-   * Slices 1, n+1, 2*n+1, ... will become part of the second output stack.
-   * Only up to 12 output stacks are supported.
+   * Splits a given input image stack into n output image stacks by
+   * redistributing slices. Slices 0, n, 2*n, ... will become part of the first
+   * output stack. Slices 1, n+1, 2*n+1, ... will become part of the second
+   * output stack. Only up to 12 output stacks are supported.
    *
    * @param clke
    *          Executor that holds ClearCL context instance
@@ -3390,8 +3393,8 @@ public class Kernels
 
   /**
    * Computes a binary image with pixel values 0 and 1. All pixels x of the
-   * input image with value larger than or equal to a given threshold t will be set
-   * to 1 in the output image.
+   * input image with value larger than or equal to a given threshold t will be
+   * set to 1 in the output image.
    * 
    * f(x,t) = (1 if (x >= t); (0 otherwise))
    * 
@@ -3425,6 +3428,171 @@ public class Kernels
     clke.execute(OCLlib.class,
                  "kernels/thresholding.cl",
                  "apply_threshold_" + src.getDimension() + "d",
+                 parameters);
+  }
+
+  /**
+   * Fills an image with the XOR fractal.
+   * 
+   * u*((x+dx)^((y+dy)+1)^(z+2), where ^ is the bitwise exclusive OR operator,
+   * and x, y, and z are the pixel coordinates
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param dst
+   *          Image to be filled with the fractal
+   * @param dx
+   *          XORFractal dx parameter
+   * @param dy
+   *          XORFractal dx parameter
+   * @param u
+   *          XORFractal u parameter
+   * @throws CLKernelException
+   */
+  public static void xorFractal(CLKernelExecutor clke,
+                                ClearCLImage dst,
+                                int dx,
+                                int dy,
+                                float u) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+
+    parameters.clear();
+    parameters.put("dst", dst);
+    parameters.put("dx", dx);
+    parameters.put("dy", dy);
+    parameters.put("u", u);
+
+    clke.execute(OCLlib.class,
+                 "kernels/phantoms.cl",
+                 "xorfractal",
+                 parameters);
+
+  }
+
+  /**
+   * A kernel to fill an image with a XOR fractal filled sphere
+   * 
+   * *
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param dst
+   *          Image to be filled with the fractal
+   * @param cx
+   *          XORFractal cx parameter
+   * @param cy
+   *          XORFractal cy parameter
+   * @param cz
+   *          XORFractal cz parameter
+   * @param r
+   *          Sphere diameter
+   * @throws CLKernelException
+   */
+  public static void xorSphere(CLKernelExecutor clke,
+                               ClearCLImage dst,
+                               int cx,
+                               int cy,
+                               int cz,
+                               float r) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+
+    parameters.clear();
+    parameters.put("dst", dst);
+    parameters.put("cx", cx);
+    parameters.put("cy", cy);
+    parameters.put("cz", cz);
+    parameters.put("r", r);
+
+    clke.execute(OCLlib.class,
+                 "kernels/phantoms.cl",
+                 "xorsphere",
+                 parameters);
+  }
+
+  /**
+   * A kernel to fill an image with a sphere
+   * 
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param dst
+   *          Image to be filled with the fractal
+   * @param cx
+   *          XORFractal cx parameter
+   * @param cy
+   *          XORFractal cy parameter
+   * @param cz
+   *          XORFractal cz parameter
+   * @param r
+   *          Sphere diameter
+   * @throws CLKernelException
+   */
+  public static void sphere(CLKernelExecutor clke,
+                            ClearCLImage dst,
+                            int cx,
+                            int cy,
+                            int cz,
+                            float r) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+
+    parameters.clear();
+    parameters.put("dst", dst);
+    parameters.put("cx", cx);
+    parameters.put("cy", cy);
+    parameters.put("cz", cz);
+    parameters.put("r", r);
+
+    clke.execute(OCLlib.class,
+                 "kernels/phantoms.cl",
+                 "sphere",
+                 parameters);
+  }
+
+  /**
+   * A kernel to fill an image with a line
+   * 
+   * *
+   * 
+   * @param clke
+   *          Executor that holds ClearCL context instance
+   * @param dst
+   *          Image to be filled with the line
+   * @param a
+   *          line...
+   * @param b
+   *          TODO
+   * @param c
+   *          TODO
+   * @param d
+   *          TODO
+   * @param r
+   *          TODO
+   * @throws CLKernelException
+   */
+  public static void line(CLKernelExecutor clke,
+                          ClearCLImage dst,
+                          int a,
+                          int b,
+                          int c,
+                          int d,
+                          float r) throws CLKernelException
+  {
+    HashMap<String, Object> parameters = new HashMap<>();
+
+    parameters.clear();
+    parameters.put("dst", dst);
+    parameters.put("a", a);
+    parameters.put("b", b);
+    parameters.put("c", c);
+    parameters.put("d", d);
+    parameters.put("r", r);
+
+    clke.execute(OCLlib.class,
+                 "kernels/phantoms.cl",
+                 "aline",
                  parameters);
   }
 
