@@ -269,22 +269,82 @@ public class KernelsTests
   }
 
   @Test
-  public void testBlurImage() throws IOException
+  public void testArgMaximumZProjection()
   {
-
-    ClearCLBuffer lCLsrcBuffer =
-                               gCLContext.createBuffer(MemAllocMode.Best,
-                                                       HostAccessType.ReadWrite,
-                                                       KernelAccessType.ReadWrite,
-                                                       1,
-                                                       NativeTypeEnum.UnsignedShort,
-                                                       dimensions2D);
-
-    ClearCLBuffer lCldstBuffer = gCLKE.createCLBuffer(lCLsrcBuffer);
-
     try
     {
-      Kernels.blur(gCLKE, lCLsrcBuffer, lCldstBuffer, 4.0f, 4.0f);
+      Kernels.xorFractal(gCLKE, dstFloat3D, 2, 3, 0.2f);
+      ClearCLImage dstFloatIndex = gCLKE.createCLImage(dstFloat);
+      Kernels.argMaximumZProjection(gCLKE,
+                                    dstFloat3D,
+                                    dstFloat,
+                                    dstFloatIndex);
+      float[] minMax = Kernels.minMax(gCLKE, dstFloat, 36);
+      Assert.assertEquals(409.4, minMax[1], 0.0001);
+      minMax = Kernels.minMax(gCLKE, dstFloatIndex, 36);
+      Assert.assertEquals(3.0f, minMax[1], 0.0001);
+      dstFloatIndex.close();
+    }
+    catch (CLKernelException clkExc)
+    {
+      Assert.fail(clkExc.getMessage());
+    }
+
+  }
+
+  @Test
+  public void testBlurImage()
+  {
+    try
+    {
+      for (int i = 0; i < srcBuffers.length; i++)
+      {
+        Kernels.blur(gCLKE, srcBuffers[i], dstBuffers[i], 4.0f, 4.0f);
+      }
+      for (int i = 0; i < srcImages.length; i++)
+      {
+        Kernels.blur(gCLKE, srcImages[i], dstImages[i], 4.0f, 4.0f);
+      }
+    }
+    catch (CLKernelException clkExc)
+    {
+      Assert.fail(clkExc.getMessage());
+    }
+  }
+
+  @Test
+  public void testBinaryAnd()
+  {
+    try
+    {
+      for (int i = 0; i < srcBuffers.length; i++)
+      {
+        ClearCLBuffer mask = gCLKE.createCLBuffer(srcBuffers[i]);
+        Kernels.set(gCLKE, mask, 1.0f);
+        Kernels.binaryAnd(gCLKE, srcBuffers[i], mask, dstBuffers[i]);
+        // Check equality between src and dst
+        Kernels.subtractImages(gCLKE,
+                               srcBuffers[i],
+                               dstBuffers[i],
+                               mask);
+        float[] minMax = Kernels.minMax(gCLKE, mask, 36);
+        Assert.assertEquals(minMax[0], minMax[1], 0.0000001);
+        mask.close();
+      }
+      for (int i = 0; i < srcImages.length; i++)
+      {
+        ClearCLImage mask = gCLKE.createCLImage(srcImages[i]);
+        Kernels.binaryAnd(gCLKE, srcImages[i], mask, dstImages[i]);
+        Kernels.set(gCLKE, mask, 1.0f);
+        // Check equality between src and dst
+        Kernels.subtractImages(gCLKE,
+                               srcBuffers[i],
+                               dstBuffers[i],
+                               mask);
+        float[] minMax = Kernels.minMax(gCLKE, mask, 36);
+        Assert.assertEquals(minMax[0], minMax[1], 0.0000001);
+        mask.close();
+      }
     }
     catch (CLKernelException clkExc)
     {
@@ -316,9 +376,6 @@ public class KernelsTests
         lJavaMax = Math.max(lJavaMax, lValue);
         lBuffer.setFloatAligned(i, lValue);
       }
-
-      // System.out.println("lJavaMin=" + lJavaMin);
-      // System.out.println("lJavaMax=" + lJavaMax);
 
       lCLBuffer.readFrom(lBuffer, true);
       try
