@@ -90,7 +90,7 @@ public class ClearCLAllocationStressTests
           System.out.println(lDevice.getName());
           ClearCLContext lMainContext = lDevice.createContext();
 
-          for (int i = 0; i < 10; i++)
+          for (int i = 0; i < 100; i++)
           {
             // System.out.println(
             // "_____________________________________________________________");
@@ -112,6 +112,7 @@ public class ClearCLAllocationStressTests
             if (i % 5 == 0)
               System.gc();
 
+            System.out.println("Number of objects in RC: " + RessourceCleaner.getNumberOfRegisteredObjects());
           }
         }
 
