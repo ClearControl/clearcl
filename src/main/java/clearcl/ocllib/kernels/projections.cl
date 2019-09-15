@@ -6,7 +6,7 @@ __kernel void sum_project_3d_2d(
 
   const int x = get_global_id(0);
   const int y = get_global_id(1);
-  DTYPE_IN sum = 0;
+  float sum = 0;
   for(int z = 0; z < GET_IMAGE_IN_DEPTH(src); z++)
   {
     sum = sum + READ_IMAGE_3D(src,sampler,(int4)(x,y,z,0)).x;
