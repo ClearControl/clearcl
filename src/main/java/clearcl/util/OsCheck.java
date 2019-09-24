@@ -44,12 +44,10 @@ public final class OsCheck
   };
 
   /**
-   * detect the operating system from the os.name System property and cache the
+   * Detects the operating system from the os.name System property and cache the
    * result
    * 
-   * @return os type
-   * 
-   * @returns - the operating system detected
+   * @return - the operating system detected
    */
   public static OSType getOperatingSystemType()
   {

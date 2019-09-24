@@ -4,6 +4,10 @@
 
 project.ext.codeformatfile = (new File(projectDir,'/gradle/codeformat.eclipse.xml')).getAbsolutePath()
 
+compileJava {
+       options.compilerArgs << '-Xlint:unchecked'
+}
+
 spotless {
     java {
         importOrder(['java', 'javax', 'com', 'org'])

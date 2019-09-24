@@ -37,7 +37,9 @@ import clearcl.enums.MemAllocMode;
 import clearcl.exceptions.ClearCLUnsupportedException;
 import clearcl.interfaces.ClearCLImageInterface;
 import clearcl.ocllib.OCLlib;
-import clearcl.ops.math.MinMax;
+import clearcl.ops.kernels.CLKernelException;
+import clearcl.ops.kernels.CLKernelExecutor;
+import clearcl.ops.kernels.Kernels;
 import clearcl.util.ElapsedTime;
 import clearcl.util.Region2;
 import clearcl.viewer.jfx.DirectWritableImage;
@@ -61,7 +63,7 @@ public class ClearCLImagePanel extends BorderPane
   private volatile ClearCLHostImageBuffer mClearCLHostImage;
   private ClearCLProgram mProgramFloat, mProgramUint, mProgramInt;
   private ClearCLKernel mRenderKernel;
-  private MinMax mMinMax;
+  private final CLKernelExecutor mClke;
 
   private ReentrantLock mLock = new ReentrantLock();
 
@@ -143,7 +145,7 @@ public class ClearCLImagePanel extends BorderPane
         throw new ClearCLUnsupportedException("1D image visualizationnot supported");
       }
 
-      mMinMax = new MinMax(lContext.getDefaultQueue());
+      mClke = new CLKernelExecutor(lContext, this.getClass());
 
     }
     catch (IOException e)
@@ -319,30 +321,39 @@ public class ClearCLImagePanel extends BorderPane
 
         if (mAuto.get() || mTrueMin == null)
         {
-          float[] lMinMax = mMinMax.minmax(mClearCLImage, 32);
-          /*System.out.format("computed: min=%f, max=%f \n",
+          try
+          {
+            float[] lMinMax =
+                            Kernels.minMax(mClke, mClearCLImage, 32);
+            /*System.out.format("computed: min=%f, max=%f \n",
                             lMinMax[0],
                             lMinMax[1]);/**/
 
-          float lMinValue = lMinMax[0];
-          float lMaxValue = lMinMax[1];
+            float lMinValue = lMinMax[0];
+            float lMaxValue = lMinMax[1];
 
-          if (Float.isInfinite(lMinValue)
-              || Float.isInfinite(lMaxValue))
-            System.err.println("Image has infinite value! "
-                               + mClearCLImage);
-          else
-          {
+            if (Float.isInfinite(lMinValue)
+                || Float.isInfinite(lMaxValue))
+              System.err.println("Image has infinite value! "
+                                 + mClearCLImage);
+            else
+            {
 
-            mTrueMin = (1 - cSmoothingFactor) * lMinValue
-                       + cSmoothingFactor * mTrueMin;
-            mTrueMax = (1 - cSmoothingFactor) * lMaxValue
-                       + cSmoothingFactor * mTrueMax;
+              mTrueMin = (1 - cSmoothingFactor) * lMinValue
+                         + cSmoothingFactor * mTrueMin;
+              mTrueMax = (1 - cSmoothingFactor) * lMaxValue
+                         + cSmoothingFactor * mTrueMax;
 
+            }
+
+            lMin = mTrueMin;
+            lMax = mTrueMax;
           }
-
-          lMin = mTrueMin;
-          lMax = mTrueMax;
+          catch (CLKernelException clke)
+          {
+            lMin = mTrueMin + (mTrueMax - mTrueMin) * mMin.get();
+            lMax = mTrueMin + (mTrueMax - mTrueMin) * mMax.get();
+          }
 
         }
         else

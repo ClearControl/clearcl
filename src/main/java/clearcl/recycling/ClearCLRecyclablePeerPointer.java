@@ -26,8 +26,8 @@ public class ClearCLRecyclablePeerPointer extends ClearCLPeerPointer
 
   private RecyclerInterface<ClearCLRecyclablePeerPointer, ClearCLRecyclableRequest> mRecycler;
 
-  private AtomicBoolean mReleased = new AtomicBoolean(true);
-  private Class<?> mClass;
+  private final AtomicBoolean mReleased = new AtomicBoolean(true);
+  private final Class<?> mClass;
 
   /**
    * Constructs a recyclable peer pointer given an existing peer pointer. The
@@ -59,7 +59,7 @@ public class ClearCLRecyclablePeerPointer extends ClearCLPeerPointer
   }
 
   @Override
-  public void setRecycler(RecyclerInterface pRecycler)
+  public void setRecycler(RecyclerInterface<ClearCLRecyclablePeerPointer, ClearCLRecyclableRequest> pRecycler)
   {
     mRecycler = pRecycler;
   }

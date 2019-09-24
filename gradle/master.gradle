@@ -2,64 +2,74 @@
 // Current release versions for Clear* projects:
 
 ext {
-  groupname = "net.clearcontrol"
-  versionsMap = [:]
+    groupname = "net.clearcontrol"
+    versionsMap = [:]
 
-  // the dependency graph is layed out in 'levels' that represent their dependency depth: 
-  // direct dependency is given, dependencies are transitive.
-  // Dependencies in the same level do not depend on each other.
-  // When editiong this file, be carefull that GitHub does not always instantly reflect the changes.
+    // the dependency graph is layed out in 'levels' that represent their dependency depth:
+    // direct dependency is given, dependencies are transitive.
+    // Dependencies in the same level do not depend on each other.
+    // When editiong this file, be carefull that GitHub does not always instantly reflect the changes.
 
-  // Level 0 (don't depend on any other lib): 
-  versionsMap['coremem']                 = "0.4.8"
-  versionsMap['dockfx']                  = "0.1.12"
-  versionsMap['cleargl']                 = "2.2.1"  // Ulrik Guenter (skalarproduktraum) is currently maintaing this project and releases versions
-  versionsMap['clearaudio']              = "1.0.2"
+    // Level 0 (don't depend on any other lib):
+<<<<<<< HEAD
+    versionsMap['coremem']                 = "0.4.8"
+=======
+    versionsMap['coremem']                 = "0.4.7"
+>>>>>>> Re-adding master.gradle file, as I now discovered it
+    versionsMap['dockfx']                  = "0.1.12"
+    versionsMap['cleargl']                 = "2.2.1"  // Ulrik Guenter (skalarproduktraum) is currently maintaing this project and releases versions
+    versionsMap['clearaudio']              = "1.0.2"
 
-  // devices adapters:
-  versionsMap['aptj']                    = "0.2.3"  
-  versionsMap['asdkj']                   = "1.0.2"
-  versionsMap['mirao52j']                = "1.0.1"
-  versionsMap['dmp40j']                  = "0.1.0"
-  versionsMap['nirioj']                  = "1.0.2"
-  versionsMap['andorsdkj']               = "0.1.0"
-  versionsMap['ecc100j']                 = "1.0.1"
-    
-  // Level 1:
-  versionsMap['halcyon']                 = "0.3.7"  // depends directly on dockfx
-  
-  // device adapters:
-  versionsMap['dcamj']                   = "2.1.7"  // depends directly on coremem
-  versionsMap['clearcl']                 = "0.6.3"  // depends directly on coremem
-  
-  // Level 2:
-  versionsMap['clearvolume']             = "1.4.2"  // depends directly on clearcl, clearaudio, cleargl
-  versionsMap['simbryo']                 = "0.9.1"  // depends directly on clearcl
-  
-  // Level 3:
-  versionsMap['fastfuse']                = "0.6.5"  // depends directly on symbryo
-  
-  // Level 4
-  versionsMap['clearclij']               = "0.3.10"  // depends directly FastFuse and indirectly to ClearCL        
-  
-  // Level 5:
-  versionsMap['clearcontrol']            = "0.16.8" // depends directly on halcyon, clearvolume, fastfuse, and _all_ devices adapters
-    
-  // Level 6:
-  versionsMap['clearcontrol-lightsheet'] = "1.27.9" // depends directly on clearcontrol, only
+    // devices adapters:
+    versionsMap['aptj']                    = "0.0.5"
+    versionsMap['asdkj']                   = "1.0.2"
+    versionsMap['mirao52j']                = "1.0.1"
+    versionsMap['dmp40j']                  = "0.1.0"
+    versionsMap['nirioj']                  = "1.1.0"  // breaking version change from 1.0.2 to 1.1.0
+    versionsMap['andorsdkj']               = "0.1.0"
+    versionsMap['ecc100j']                 = "1.0.1"
 
-  
-  // Loads locale file: ~/.gradle/local.gradle
-  // You can override versions locally for example:
-  // 
-  //  ext/versionsMap['symbrio']         = "1.0.1-LR"
-  // 
-  
-  localfilename = project.gradle.gradleUserHomeDir.getAbsolutePath()+'/local.gradle'
-  if(file(localfilename).exists()){
-    apply from: localfilename
-  }
-  
+    // Level 1:
+    versionsMap['halcyon']                 = "0.3.7"  // depends directly on dockfx
+
+    // device adapters:
+    versionsMap['dcamj']                   = "2.1.7"  // depends directly on coremem
+<<<<<<< HEAD
+    versionsMap['clearcl']                 = "0.6.3"  // depends directly on coremem
+=======
+    versionsMap['clearcl']                 = "0.6.2"  // depends directly on coremem
+>>>>>>> Re-adding master.gradle file, as I now discovered it
+
+    // Level 2:
+    versionsMap['clearvolume']             = "1.4.2"  // depends directly on clearcl, clearaudio, cleargl
+    versionsMap['simbryo']                 = "0.9.1"  // depends directly on clearcl
+
+    // Level 3:
+    versionsMap['fastfuse']                = "0.6.5"  // depends directly on symbryo
+
+    // Level 4
+    versionsMap['clearclij']               = "0.3.18"  // depends directly FastFuse and indirectly to ClearCL
+
+    // Level 5:
+    versionsMap['clearcontrol']            = "0.17.0" // depends directly on halcyon, clearvolume, fastfuse, and _all_ devices adapters
+                                                       // breaking version change from 0.16.14 to 0.17.0
+
+    // Level 6:
+    versionsMap['clearcontrol-lightsheet'] = "1.30.0" // depends on clearcontrol only; breaking version change from 1.29.0 to 1.30.0
+
+    // Level 7:
+    versionsMap['clearcontrol-lightsheet-csbd'] = "0.0.1" // depends directly on clearcontrol-lightsheet
+
+    // Loads locale file: ~/.gradle/local.gradle
+    // You can override versions locally for example:
+    //
+    //  ext/versionsMap['symbrio']         = "1.0.1-LR"
+    //
+
+    localfilename = project.gradle.gradleUserHomeDir.getAbsolutePath()+'/local.gradle'
+    if(file(localfilename).exists()){
+        apply from: localfilename
+    }
 }
 
 ext.depver = { name -> project.ext.versionsMap[name] }
@@ -71,27 +81,27 @@ project.ext.spotlessfile = (new File(projectDir,'/gradle/spotless.gradle')).getA
 // Download files:
 try {
     download {
-    src 'https://github.com/ClearControl/master/blob/master/installGitHooks?raw=true'
-    dest project.ext.githooksfile
-    overwrite false
-    onlyIfModified true
-    tempAndMove true
+        src 'https://github.com/ClearControl/master/blob/master/installGitHooks?raw=true'
+        dest project.ext.githooksfile
+        overwrite false
+        onlyIfModified true
+        tempAndMove true
     }
-    
+
     download {
-    src 'https://github.com/ClearControl/master/blob/master/bintrayUpload.gradle?raw=true'
-    dest project.ext.bintrayfile
-    overwrite false
-    onlyIfModified true
-    tempAndMove true
+        src 'https://github.com/ClearControl/master/blob/master/bintrayUpload.gradle?raw=true'
+        dest project.ext.bintrayfile
+        overwrite false
+        onlyIfModified true
+        tempAndMove true
     }
-    
+
     download {
-    src 'https://github.com/ClearControl/master/blob/master/spotless.gradle?raw=true'
-    dest project.ext.spotlessfile
-    overwrite false
-    onlyIfModified true
-    tempAndMove true
+        src 'https://github.com/ClearControl/master/blob/master/spotless.gradle?raw=true'
+        dest project.ext.spotlessfile
+        overwrite false
+        onlyIfModified true
+        tempAndMove true
     }
 }
 catch (Throwable e)
@@ -111,4 +121,4 @@ apply from: project.ext.spotlessfile
 
 
 
-  
+ 
